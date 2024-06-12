@@ -187,9 +187,6 @@ app.listen(3000, () => {
 node server.js
 }
 
-#15.git项目管理
-install_termux_install(){
-}
 #0.shotcut
 install_shortcuts(){
 echo	'#!/bin/sh
