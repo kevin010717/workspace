@@ -31,6 +31,7 @@ pkg i root-repo x11-repo -y
 pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs -y
 passwd
 whoami
+git clone https://mirror.ghproxy.com/https://github.com/kevin010717/termux-install .termux-install
 read -p "结束，按回车键继续…" key
 }
 
@@ -186,6 +187,9 @@ app.listen(3000, () => {
 node server.js
 }
 
+#15.git项目管理
+install_termux_install(){
+}
 #0.shotcut
 install_shortcuts(){
 echo	'#!/bin/sh
