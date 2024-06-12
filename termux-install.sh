@@ -39,6 +39,7 @@ read -p "结束，按回车键继续…" key
 #2.zsh
 install_ohmyzsh(){
 sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
 read -p "结束，按回车键继续…" key
 }
 
