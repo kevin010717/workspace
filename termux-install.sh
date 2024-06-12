@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/zsh
+
 #termux 安装软件脚本
 
 #todo
@@ -19,7 +20,44 @@ BLUE_COLOR='\033[1;34m'
 PINK_COLOR='\033[1;35m'
 SHAN='\033[1;33;5m'    # Yellow, with blinking
 RES='\033[0m'
-  
+
+get_local_ipv4_using_hostname() {
+  hostname -I 2>&- | awk '{print $1}'
+  echo "Exit status: $?"
+}
+
+# iproute2
+get_local_ipv4_using_iproute2() {
+  # OR ip route get 1.2.3.4 | awk '{print $7}'
+  ip -4 route 2>&- | awk '{print $NF}' | grep -Eo --color=never '[0-9]+(\.[0-9]+){3}'
+  echo "Exit status: $?"
+}
+
+# net-tools
+get_local_ipv4_using_ifconfig() {
+  ( ifconfig 2>&- || ip addr show 2>&- ) | grep -Eo '^\s+inet\s+\S+' | grep -Eo '[0-9]+(\.[0-9]+){3}' | grep -Ev '127\.0\.0\.1|0\.0\.0\.0'
+  echo "Exit status: $?"
+}
+
+# 获取本机 IPv4 地址
+get_local_ipv4() {
+  set -o pipefail
+  get_local_ipv4_using_hostname || get_local_ipv4_using_iproute2 || get_local_ipv4_using_ifconfig
+  echo "Exit status: $?"
+}
+
+get_local_ipv4_select() {
+  local ips=$(get_local_ipv4)
+  local retcode=$?
+  if [ $retcode -ne 0 ]; then
+      return $retcode
+  fi
+  echo "$ips" | grep -m 1 "^192\." || \
+  echo "$ips" | grep -m 1 "^172\." || \
+  echo "$ips" | grep -m 1 "^10\." || \
+  echo "$ips" | head -n 1
+}
+
 #1.update
 install_update() {
 echo "bell-character = ignore" >> ~/.termux/termux.properties
@@ -31,6 +69,8 @@ pkg i root-repo x11-repo -y
 pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs -y
 passwd
 whoami
+#del "C:\Users\admin\.ssh\known_hosts"
+#ssh u0_a589@192.168.1.12 -p 8022
 gh auth login
 git config --global user.email "k511153362@gmail.com"
 git config --global user.name "kevin010717"
@@ -94,12 +134,9 @@ echo 'echo "1.download it"
       echo "2.listen to it"  
       read choice 
       case $choice in 
-        1) 
-          yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" $1;; 
-        2)
-          mpv --no-video -v $1;;
-        *) 
-          mpv --no-video -v $1;;
+        1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" $1;; 
+        2) mpv --no-video -v $1;;
+        *) mpv --no-video -v $1;;
       esac' >  ~/bin/termux-url-opener
 read -p "结束，按回车键继续…" key
 }
@@ -191,59 +228,9 @@ app.listen(3000, () => {
 node server.js
 }
 
-#0.shotcut
-install_shortcuts(){
-echo	'#!/bin/sh
-		RED_COLOR="\033[1;31m"
-		GREEN_COLOR="\033[1;32m"
-		YELLOW_COLOR="\033[1;33m"
-		BLUE_COLOR="\033[1;34m"
-		PINK_COLOR="\033[1;35m"
-		SHAN="\033[1;33;5m"    # Yellow, with blinking
-		RES="\033[0m"
-		while true
-		do
-		  echo  "${GREEN_COLOR}1.openssh${RES}"
-		  echo  "${GREEN_COLOR}2.clouddrive2${RES}"
-		  echo  "${GREEN_COLOR}3.samba${RES}"
-		  echo  "${GREEN_COLOR}4.obs${RES}"
-		  echo  "${GREEN_COLOR}5.mpv termux-url-opener${RES}"
-		  echo  "${GREEN_COLOR}6.streamlink biliup${RES}"
-		  echo  "${GREEN_COLOR}7.filebrowser${RES}"
-		  echo  "${GREEN_COLOR}8.aria2${RES}"
-		  echo  "${GREEN_COLOR}9.chfs${RES}"
-		  echo  "${GREEN_COLOR}10.http-sever${RES}"
-		  echo  "${GREEN_COLOR}11.qbittorrent${RES}"
-		  echo  "${GREEN_COLOR}12.code-server${RES}"
-		  read choice 
-		  case $choice in 
-			1) sshd;;
-			2) sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
-        #am start -a android.intent.action.VIEW -d http://
-        ;;
-
-			3) smbclient -p 445 //127.0.0.1/internal -U admin;;
-			4) obs;;
-			5) ~/bin/termux-url-opener;;
-			6) mkdir .biliup && cd .biliup && biliup start;;
-			7)sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache > /dev/null 2>&1 &;;
-			   #nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files > /dev/null 2>&1 &;;
-			8) node ~/.webui-aria2/node-server.js
-			   echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker";;
-			9) chfs --port=1234 ;;
-			10) http-server ;;
-			11) sudo qbittorrent ;;
-			12) cat ~/.config/code-server/config.yaml #查看密码
-				code-server ;;
-			*) break;;
-		  esac
-		done' > $PREFIX/bin/jj
-chmod +x $PREFIX/bin/jj
-read -p "结束，按回车键继续…" key
-}
-
-while true
-do
+install(){
+ while true
+ do
   echo  "${GREEN_COLOR}1.update${RES}"
   echo  "${GREEN_COLOR}2.ohmyzsh${RES}"
   echo  "${GREEN_COLOR}3.clouddrive2${RES}"
@@ -275,6 +262,57 @@ do
 	13) install_code_server;;
 	0) install_shortcuts;;
 	*) break;;
+  esac
+ done
+}
+start(){
+	while true
+	do
+		echo  "${GREEN_COLOR}1.openssh${RES}"
+		echo  "${GREEN_COLOR}2.clouddrive2${RES}"
+		echo  "${GREEN_COLOR}3.samba${RES}"
+		echo  "${GREEN_COLOR}4.obs${RES}"
+		echo  "${GREEN_COLOR}5.mpv termux-url-opener${RES}"
+		echo  "${GREEN_COLOR}6.streamlink biliup${RES}"
+		echo  "${GREEN_COLOR}7.filebrowser${RES}"
+		echo  "${GREEN_COLOR}8.aria2${RES}"
+		echo  "${GREEN_COLOR}9.chfs${RES}"
+		echo  "${GREEN_COLOR}10.http-sever${RES}"
+		echo  "${GREEN_COLOR}11.qbittorrent${RES}"
+		echo  "${GREEN_COLOR}12.code-server${RES}"
+		read choice 
+		case $choice in 
+		1) sshd;;
+		2) sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
+       echo "访问地址：${GREEN_COLOR}http://$(get_local_ipv4_select):19798/${RES}\r\n"
+       am start -a android.intent.action.VIEW -d http://$(get_local_ipv4_select):19798/ ;;
+		3) smbclient -p 445 //127.0.0.1/internal -U admin;;
+		4) obs;;
+		5) ~/bin/termux-url-opener;;
+		6) mkdir .biliup && cd .biliup && biliup start;;
+		7) sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache > /dev/null 2>&1 &;;
+		   #nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files > /dev/null 2>&1 &;;
+		8) node ~/.webui-aria2/node-server.js
+		   echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker";;
+		9) chfs --port=1234 ;;
+		10) http-server ;;
+		11) sudo qbittorrent ;;
+		12) cat ~/.config/code-server/config.yaml #查看密码
+		  	code-server ;;
+		*) break;;
+		  esac
+	done
+}
+
+while true
+do
+  echo  "${GREEN_COLOR}1.install${RES}"
+  echo  "${GREEN_COLOR}2.start${RES}"
+  read choice
+  case $choice in
+    1)install;;
+    2) start;;
+    *) break;;
   esac
 done
 
