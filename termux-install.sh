@@ -218,7 +218,9 @@ echo	'#!/bin/sh
 		  read choice 
 		  case $choice in 
 			1) sshd;;
-			2) sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive";;
+			2) sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
+        #am start -a android.intent.action.VIEW -d https://;;
+
 			3) smbclient -p 445 //127.0.0.1/internal -U admin;;
 			4) obs;;
 			5) ~/bin/termux-url-opener;;
