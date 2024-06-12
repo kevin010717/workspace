@@ -19,7 +19,7 @@ BLUE_COLOR='\033[1;34m'
 PINK_COLOR='\033[1;35m'
 SHAN='\033[1;33;5m'    # Yellow, with blinking
 RES='\033[0m'
-
+  
 #1.update
 install_update() {
 echo "bell-character = ignore" >> ~/.termux/termux.properties
