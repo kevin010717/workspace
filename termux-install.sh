@@ -219,7 +219,8 @@ echo	'#!/bin/sh
 		  case $choice in 
 			1) sshd;;
 			2) sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
-        #am start -a android.intent.action.VIEW -d https://;;
+        #am start -a android.intent.action.VIEW -d http://
+        ;;
 
 			3) smbclient -p 445 //127.0.0.1/internal -U admin;;
 			4) obs;;
