@@ -31,6 +31,9 @@ pkg i root-repo x11-repo -y
 pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs -y
 passwd
 whoami
+git config --global user.email "k511153362@gmail.
+  com"
+git config --global user.name kevin010717  
 git clone https://mirror.ghproxy.com/https://github.com/kevin010717/termux-install .termux-install
 read -p "结束，按回车键继续…" key
 }
