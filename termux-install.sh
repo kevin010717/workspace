@@ -54,8 +54,6 @@ get-local-ipv4-select() {
   grep -m 1 "^10\." <<<"$ips" || \
   head -n 1 <<<"$ips"
 }
-echo -e "访问地址：${GREEN_COLOR}http://$(get-local-ipv4-select):19798/${RES}\r\n"
-
 
 #1.update
 install_update() {
