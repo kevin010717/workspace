@@ -173,6 +173,7 @@ git add .
 git commit -m "1"
 git push origin main
 wget -O $PREFIX/bin/termux-install https://github.com/kevin010717/termux-install/blob/main/termux-install.sh
+cp termux-install.sh $PREFIX/bin/termux-install
 }
 start-tmoe(){
 bash -c "$(curl -L l.tmoe.me)"
