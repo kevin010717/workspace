@@ -160,15 +160,13 @@ done < file1.txt
 rm -r file1.txt img
 }
 start-thumbnails(){
-# 定义一个生成缩略图的函数
 generate_thumbnail() {
   local video_file="$1"
   local thumbnail_file="${video_file%.*}.png"
 
-  sudo ffmpeg -y -i "$video_file" -frames 1 -vf "thumbnail,scale=1080:-1,tile=1X5:padding=10:color=white" "$thumbnail_file"
+  sudo ffmpeg -hide_banner -loglevel panic -y -i "$video_file" -frames 1 -vf "thumbnail,scale=1080:-1,tile=1X5:padding=10:color=white" "$thumbnail_file"
 }
 
-# 遍历当前文件夹下的所有MP4和MKV文件
 for video_file in *.mp4 *.mkv; do
   # 忽略非文件类型的东西（如目录）
   [[ -f "$video_file" ]] || continue
