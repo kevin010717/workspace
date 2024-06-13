@@ -88,7 +88,7 @@ read -p "结束，按回车键继续…" key
 }
 
 start-clouddrive2(){
-sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
+#sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
 echo "访问地址：${GREEN_COLOR}http://$(get-local-ipv4-select):19798/${RES}\r\n"
 am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):19798/ 
 }
@@ -119,7 +119,68 @@ do
 done
 }
 start-yacd(){
-am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):9090
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):9090/ui
+}
+start-gif(){
+find . -type f \( -iname \*.mp4 -o -iname \*.mkv \) > file1.txt
+mkdir -p img
+while IFS= read -r file; do
+  echo "处理文件 $(basename "$file")"
+  #    read -p "按回车继续"
+  #获取时长并分段
+  filename="$file"
+  duration=$(ffprobe -v quiet -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$filename") < /dev/null
+  step=$(echo "$duration / 13" | bc -l)
+  echo $duration
+  echo $step
+  #获取素材
+  for f in $(seq 1 12)
+  do
+    step_int=$(printf "%.0f" $step)
+    pos=$((step_int * f))
+    ffmpeg -hide_banner -loglevel panic -ss "$pos" -t 2 -i "$file" -r 15 -vf "scale=500:-1" img/$f.gif -y < /dev/null
+  done
+  #拼接up素材
+ffmpeg -hide_banner -loglevel panic -i img/1.gif -i img/2.gif -i img/3.gif -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0[outv]" -map "[outv]" -strict -2 img/up.gif -y < /dev/null
+
+#拼接down素材
+ffmpeg -hide_banner -loglevel panic -i img/4.gif -i img/5.gif -i img/6.gif -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0[outv]" -map "[outv]" -strict -2 img/down.gif -y < /dev/null
+
+#拼接left素材
+ffmpeg -hide_banner -loglevel panic -i img/7.gif -i img/8.gif -i img/9.gif -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0[outv]" -map "[outv]" -strict -2 img/left.gif -y < /dev/null
+
+#拼接right素材
+ffmpeg -hide_banner -loglevel panic -i img/10.gif -i img/11.gif -i img/12.gif -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0[outv]" -map "[outv]" -strict -2 img/right.gif -y < /dev/null
+
+# 拼接素材
+# ffmpeg -y -v warning -i img\up.gif -i img\down.gif -filter_complex "[0:v]pad=iw:ih*2[a];[a][1:v]overlay=0:h,fps=10,scale=-1:358" "%%~ni.gif"  
+ffmpeg -hide_banner -loglevel panic -y -v warning -i img/up.gif -i img/down.gif -i img/left.gif -i img/right.gif -filter_complex "[0:v]pad=iw*2:ih*2[a];[a][1:v]overlay=0:h[b];[b][2:v]overlay=w:0[c];[c][3:v]overlay=w:h,fps=15,scale=600:-1" $(basename "${file%.*}").gif < /dev/null
+#    echo " ">$(basename "${file%}")
+done < file1.txt
+rm -r file1.txt img
+}
+start-thumbnails(){
+# 定义一个生成缩略图的函数
+generate_thumbnail() {
+  local video_file="$1"
+  local thumbnail_file="${video_file%.*}.png"
+
+  sudo ffmpeg -y -i "$video_file" -frames 1 -vf "thumbnail,scale=1080:-1,tile=1X5:padding=10:color=white" "$thumbnail_file"
+}
+
+# 遍历当前文件夹下的所有MP4和MKV文件
+for video_file in *.mp4 *.mkv; do
+  # 忽略非文件类型的东西（如目录）
+  [[ -f "$video_file" ]] || continue
+
+  echo "正在处理视频文件：$video_file"
+  generate_thumbnail "$video_file"
+done
+}
+start-git(){
+git add .
+git commit -m "1"
+git push origin main
 }
 
 install-mpv-termux-url-opener(){
@@ -131,13 +192,13 @@ echo "script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
 #配置termux-url-opener
 mkdir -p ~/bin
 echo 'echo "1.download it" 
-      echo "2.listen to it"  
-      read choice 
-      case $choice in 
-        1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" $1;; 
-        2) mpv --no-video -v $1;;
-        *) mpv --no-video -v $1;;
-      esac' >  ~/bin/termux-url-opener
+echo "2.listen to it"  
+read choice 
+case $choice in 
+  1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" $1;; 
+  2) mpv --no-video -v $1;;
+  *) mpv --no-video -v $1;;
+esac' >  ~/bin/termux-url-opener
 read -p "结束，按回车键继续…" key
 }
 start-termux-url-opener(){
@@ -301,6 +362,9 @@ start(){
 		echo -e "${GREEN_COLOR}10.code-server${RES}"
 		echo -e "${GREEN_COLOR}11.http-sever${RES}"
 		echo -e "${GREEN_COLOR}12.biliup${RES}"
+		echo -e "${GREEN_COLOR}13.thumbnails${RES}"
+		echo -e "${GREEN_COLOR}14.gif${RES}"
+		echo -e "${GREEN_COLOR}15.git${RES}"
 		read choice 
 		case $choice in 
 		1) start-clouddrive2;;
@@ -315,6 +379,9 @@ start(){
 		10) start-code-sever;;
 		11) http-server ;;
 		12) start-biliup;;
+    13) start-thumbnails;;
+    14) start-gif;;
+    15) start-git;;
 		*) break;;
 		  esac
 	done
