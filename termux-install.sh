@@ -172,10 +172,10 @@ start-git(){
 git add .
 git commit -m "1"
 git push origin main
-wget -O $PREFIX/bin/termux-install https://raw.githubusercontent.com/kevin010717/termux-install/main/termux-install.sh
 cp termux-install.sh $PREFIX/bin/termux-install
 }
-start-tmoe(){
+
+install-tmoe(){
 bash -c "$(curl -L l.tmoe.me)"
 }
 
@@ -308,6 +308,15 @@ app.listen(3000, () => {
 node server.js
 }
 
+install-calibreweb(){
+  pkg install python libxml2 libxslt pkg-config
+  pip install cython wheel
+  CFLAGS="-Wno-error=incompatible-function-pointer-types -O0" pip install lxml
+  pkg i python-cryptography python-lxml
+  pip install --user -U calibreweb 
+  echo “export PATH="${HOME}/.local/bin:${PATH}"”> .bashrc && source .bashrc && echo $PATH
+}
+
 install(){
  while true
  do
@@ -324,6 +333,7 @@ install(){
   echo -e "${GREEN_COLOR}11.http-sever${RES}"
   echo -e "${GREEN_COLOR}12.qbittorrent${RES}"
   echo -e "${GREEN_COLOR}13.code-server${RES}"
+  echo -e "${GREEN_COLOR}14.tmoe${RES}"
   read choice 
   case $choice in 
 	1) install-update;;
@@ -339,6 +349,7 @@ install(){
 	11) install-http-server;;
 	12) install-qbittorrent;;
 	13) install-code-server;;
+  14) install-tmoe;;
 	*) break;;
   esac
  done
