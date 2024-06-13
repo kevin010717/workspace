@@ -46,9 +46,9 @@ if [ $retcode -ne 0 ]; then
   return $retcode
 fi
 grep -m 1 "^192\." <<<"$ips" || \
-  grep -m 1 "^172\." <<<"$ips" || \
-  grep -m 1 "^10\." <<<"$ips" || \
-  head -n 1 <<<"$ips"
+grep -m 1 "^172\." <<<"$ips" || \
+grep -m 1 "^10\." <<<"$ips" || \
+head -n 1 <<<"$ips"
 }
 
 install-update() {
@@ -172,7 +172,7 @@ start-git(){
 git add .
 git commit -m "1"
 git push origin main
-wget https://github.com/kevin010717/termux-install/blob/main/termux-install.sh /data/data/com.termux/files/usr/bin/
+wget https://github.com/kevin010717/termux-install/blob/main/termux-install.sh $PREFIX/bin
 }
 start-tmoe(){
 bash -c "$(curl -L l.tmoe.me)"
@@ -401,7 +401,7 @@ cat << EOF > $PREFIX/bin/cheet
 #!/bin/sh
 echo "
 
-apt install cmatrix
+pkg install cmatrix
 #cmatrix
 
 pkg install nyancat
@@ -414,38 +414,38 @@ npm install mapscii -g
 pkg install coreutils
 #factor <target number>
 
-apt install figlet
+pkg install figlet
 #figlet <target string>
 
-apt install toilet
+pkg install toilet
 #toilet -f mono12 -F gay Kuan
 
-apt install weechat
+pkg install weechat
 #weechat
 #/server add freenode8001 chat.freenode.net/8001
 #/connect freenode8001
 #/nick Kuan
 #/join #termux
 
-apt install fortune
+pkg install fortune
 #fortune
 
-apt install cowsay
+pkg install cowsay
 #cowsay -l
 
-apt install sl
+aptapt install sl
 #sl
 
-apt install w3m
+pkg install w3m
 #w3m baidu.com
 
-apt install greed
+pkg install greed
 #greed
 
-apt install moon-buggy
+pkg install moon-buggy
 #moon-buggy
 
-apt install curl
+pkg install curl
 #curl wttr.in/Beijin"
 
 nano  $PREFIX/etc/motd
@@ -454,13 +454,9 @@ nano  $PREFIX/etc/motd
 pip install scrap_engine
 git clone https://github.com/lxgr-linux/pokete.git
 ./pokete/pokete.py
-echo $HOME
-echo $PREFIX
-echo $TMPPREFIX
+
 EOF
 chmod +x $PREFIX/bin/cheet
-
-
 
 : <<'END_COMMENT'
 #5 kodbox
