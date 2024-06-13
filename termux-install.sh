@@ -81,10 +81,8 @@ install-clouddrive2(){
 curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
 read -p "结束，按回车键继续…" key
 }
-
 start-clouddrive2(){
-#sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
-echo "访问地址：${GREEN_COLOR}http://$(get-local-ipv4-select):19798/${RES}\r\n"
+sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" > /dev/null 2>&1 &
 am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):19798/ 
 }
 
@@ -174,6 +172,7 @@ start-git(){
 git add .
 git commit -m "1"
 git push origin main
+wget https://github.com/kevin010717/termux-install/blob/main/termux-install.sh /data/data/com.termux/files/usr/bin/
 }
 start-tmoe(){
 bash -c "$(curl -L l.tmoe.me)"
