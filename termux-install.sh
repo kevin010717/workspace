@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #set -x
+chmod +x "$0"
 
 #termux 安装软件脚本
 
@@ -24,39 +25,38 @@ PINK_COLOR='\e[1;35m'
 SHAN='\e[1;33;5m'
 RES='\e[0m'
 get-local-ipv4-using-hostname() {
-  hostname -I 2>&- | awk '{print $1}'
+hostname -I 2>&- | awk '{print $1}'
 }
 
 # iproute2
 get-local-ipv4-using-iproute2() {
-  # OR ip route get 1.2.3.4 | awk '{print $7}'
-  ip -4 route 2>&- | awk '{print $NF}' | grep -Eo --color=never '[0-9]+(\.[0-9]+){3}'
+# OR ip route get 1.2.3.4 | awk '{print $7}'
+ip -4 route 2>&- | awk '{print $NF}' | grep -Eo --color=never '[0-9]+(\.[0-9]+){3}'
 }
 
 # net-tools
 get-local-ipv4-using-ifconfig() {
-  ( ifconfig 2>&- || ip addr show 2>&- ) | grep -Eo '^\s+inet\s+\S+' | grep -Eo '[0-9]+(\.[0-9]+){3}' | grep -Ev '127\.0\.0\.1|0\.0\.0\.0'
+( ifconfig 2>&- || ip addr show 2>&- ) | grep -Eo '^\s+inet\s+\S+' | grep -Eo '[0-9]+(\.[0-9]+){3}' | grep -Ev '127\.0\.0\.1|0\.0\.0\.0'
 }
 
 # 获取本机 IPv4 地址
 get-local-ipv4() {
-  set -o pipefail
-  get-local-ipv4-using-hostname || get-local-ipv4-using-iproute2 || get-local-ipv4-using-ifconfig
+set -o pipefail
+get-local-ipv4-using-hostname || get-local-ipv4-using-iproute2 || get-local-ipv4-using-ifconfig
 }
 get-local-ipv4-select() {
-  local ips=$(get-local-ipv4)
-  local retcode=$?
-  if [ $retcode -ne 0 ]; then
-      return $retcode
-  fi
-  grep -m 1 "^192\." <<<"$ips" || \
+local ips=$(get-local-ipv4)
+local retcode=$?
+if [ $retcode -ne 0 ]; then
+  return $retcode
+fi
+grep -m 1 "^192\." <<<"$ips" || \
   grep -m 1 "^172\." <<<"$ips" || \
   grep -m 1 "^10\." <<<"$ips" || \
   head -n 1 <<<"$ips"
 }
 
-#1.update
-install_update() {
+install-update() {
 echo "bell-character = ignore" >> ~/.termux/termux.properties
 termux-reload-settings
 termux-setup-storage
@@ -76,31 +76,34 @@ read -p "结束，按回车键继续…" key
 }
 
 
-#2.zsh
-install_ohmyzsh(){
+install-ohmyzsh(){
 sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
 read -p "结束，按回车键继续…" key
 }
 
-#3.clouddrive2
-install_clouddrive2(){
+install-clouddrive2(){
 curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
 read -p "结束，按回车键继续…" key
 }
 
-#4.samba
-install_samba(){
+start-clouddrive2(){
+sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
+echo "访问地址：${GREEN_COLOR}http://$(get-local-ipv4-select):19798/${RES}\r\n"
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):19798/ 
+}
+
+install-samba(){
 mkdir $PREFIX/etc/samba
 sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' /data/data/com.termux/files/usr/share/doc/samba/smb.conf.example > $PREFIX/etc/samba/smb.conf
 pdbedit -a -u admin
 read -p "结束，按回车键继续…" key
 }
+start-samba(){
+smbclient -p 445 //127.0.0.1/internal -U admin
+}
 
-#5.obs
-install_obs(){
-echo << EOF > $PREFIX/bin/obs
-#!/bin/sh
+start-obs(){
 folder="/data/data/com.termux/files/home/video/" 
 read -p "请输入您的推流地址和推流码(rtmp协议):" rtmp 
 while true 
@@ -114,12 +117,12 @@ do
    #ffmpeg -re -i "$video" -i "$folder/image.jpg" -filter_complex overlay=W-w-5:5 -c:v libx264 -c:a aac -b:a 192k -strict -2 -f flv ${rtmp}
  done 
 done
-EOF
-chmod +x $PREFIX/bin/obs
+}
+start-yacd(){
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):9090
 }
 
-#6.mpv termux-url-opener
-install_mpv_termux_url_opener(){
+install-mpv-termux-url-opener(){
 pip install youtube-dl yt-dlp you-get PySocks
 #配置mpv
 cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/
@@ -137,9 +140,11 @@ echo 'echo "1.download it"
       esac' >  ~/bin/termux-url-opener
 read -p "结束，按回车键继续…" key
 }
+start-termux-url-opener(){
+ ~/bin/termux-url-opener
+}
 
-#7.streamlink biliup
-install_streamlink_biliup(){
+install-streamlink-biliup(){
 mkdir builds
 cd builds/
 git clone https://github.com/saghul/pycares
@@ -150,22 +155,27 @@ rm -r builds -y
 
 pip install --user -U streamlink biliup
 echo “export PATH="${HOME}/.local/bin:${PATH}"”> .bashrc && source .bashrc && echo $PATH
-
 read -p "结束，按回车键继续…" key
-
+}
+start-biliup(){
+mkdir .biliup && cd .biliup && biliup start
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):3000
 }
 
-#8.filebrowser
-install_filebrowser(){
+install-filebrowser(){
 mkdir .filebrowser
 wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
 tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
 chmod +x .filebrowser/filebrowser
 read -p "结束，按回车键继续…" key
 }
+start-filebrowser(){
+sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache > /dev/null 2>&1 &
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):18650 
+#nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files > /dev/null 2>&1 &;;
+}
 
-#9.aria2
-install_aria2(){
+install-aria2(){
  pkg install aria2
 # aria2c --enable-rpc --rpc-listen-all 
  pkg install git nodejs
@@ -173,9 +183,13 @@ install_aria2(){
  mv webui-aria2 .webui-aria2
 read -p "结束，按回车键继续…" key
 }
- 
-#10.chfs
-install_chfs(){
+start-aria2(){
+nohup node ~/.webui-aria2/node-server.js > /dev/null 2>&1 &
+echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8888 
+} 
+
+install-chfs(){
 wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
 unzip chfs-linux-arm64-3.1.zip 
 mv chfs-linux-arm64-3.1 chfs
@@ -183,31 +197,43 @@ mv chfs /data/data/com.termux/files/usr/bin/
 rm chfs-linux-arm64-3.1.zip
 read -p "结束，按回车键继续…" key
 }
+start-chfs(){
+nohup sudo chfs --port=1234  > /dev/null 2>&1 &
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):1234
+}
 
-#11.http-sever
-install_http_server(){
+install-http-server(){
 pkg install nodejs
 npm install -g http-server
 read -p "结束，按回车键继续…" key
 }
+start-http-sever(){
+http-server -a 127.0.0.1 -p 8090
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8090
+}
 
-#12.qbittorrent
-install_qbittorrent(){
+install-qbittorrent(){
 wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
 mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
 chmod +x qbittorrent
 read -p "结束，按回车键继续…" key
 }
+start-qbittorrent(){
+sudo qbittorrent 
+}
 
-#13.code-server
-install_code_server(){
+install-code-server(){
 apt install tur-repo #安装软件源
 apt install code-server #安装
 read -p "结束，按回车键继续…" key
 }
+start-code-sever(){
+cat ~/.config/code-server/config.yaml #查看密码
+code-server
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8080 
+}
 
-#14.node.js开发服务器
-install_node_server(){
+install-node-server(){
 mkdir nodeserver
 cd nodeserver
 npm init
@@ -241,23 +267,21 @@ install(){
   echo -e "${GREEN_COLOR}11.http-sever${RES}"
   echo -e "${GREEN_COLOR}12.qbittorrent${RES}"
   echo -e "${GREEN_COLOR}13.code-server${RES}"
-  echo -e "${GREEN_COLOR}0.shortcuts${RES}"
   read choice 
   case $choice in 
-	1) install_update;;
-	2) install_ohmyzsh;;
-	3) install_clouddrive2;;
-	4) install_samba;;
-	5) install_obs;;
-	6) install_mpv_termux_url_opener;;
-	7) install_streamlink_biliup;;
-	8) install_filebrowser;;
-	9) install_aria2;;
-	10) install_chfs;;
-	11) install_http_server;;
-	12) install_qbittorrent;;
-	13) install_code_server;;
-	0) install_shortcuts;;
+	1) install-update;;
+	2) install-ohmyzsh;;
+	3) install-clouddrive2;;
+	4) install-samba;;
+	5) install-obs;;
+	6) install-mpv-termux-url-opener;;
+	7) install-streamlink-biliup;;
+	8) install-filebrowser;;
+	9) install-aria2;;
+	10) install-chfs;;
+	11) install-http-server;;
+	12) install-qbittorrent;;
+	13) install-code-server;;
 	*) break;;
   esac
  done
@@ -265,37 +289,32 @@ install(){
 start(){
 	while true
 	do
-		echo -e "${GREEN_COLOR}1.openssh${RES}"
-		echo -e "${GREEN_COLOR}2.clouddrive2${RES}"
-		echo -e "${GREEN_COLOR}3.samba${RES}"
-		echo -e "${GREEN_COLOR}4.obs${RES}"
-		echo -e "${GREEN_COLOR}5.mpv termux-url-opener${RES}"
-		echo -e "${GREEN_COLOR}6.streamlink biliup${RES}"
-		echo -e "${GREEN_COLOR}7.filebrowser${RES}"
-		echo -e "${GREEN_COLOR}8.aria2${RES}"
+		echo -e "${GREEN_COLOR}1.clouddrive2${RES}"
+		echo -e "${GREEN_COLOR}2.filebrowser${RES}"
+		echo -e "${GREEN_COLOR}3.yacd${RES}"
+		echo -e "${GREEN_COLOR}4.aria2${RES}"
+		echo -e "${GREEN_COLOR}5.qbittorrent${RES}"
+		echo -e "${GREEN_COLOR}6.samba${RES}"
+		echo -e "${GREEN_COLOR}7.termux-url-opener${RES}"
+		echo -e "${GREEN_COLOR}8.obs${RES}"
 		echo -e "${GREEN_COLOR}9.chfs${RES}"
-		echo -e "${GREEN_COLOR}10.http-sever${RES}"
-		echo -e "${GREEN_COLOR}11.qbittorrent${RES}"
-		echo -e "${GREEN_COLOR}12.code-server${RES}"
+		echo -e "${GREEN_COLOR}10.code-server${RES}"
+		echo -e "${GREEN_COLOR}11.http-sever${RES}"
+		echo -e "${GREEN_COLOR}12.biliup${RES}"
 		read choice 
 		case $choice in 
-		1) sshd;;
-		2) sudo nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive"
-       echo "访问地址：${GREEN_COLOR}http://$(get-local-ipv4-select):19798/${RES}\r\n"
-       am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):19798/ ;;
-		3) smbclient -p 445 //127.0.0.1/internal -U admin;;
-		4) obs;;
-		5) ~/bin/termux-url-opener;;
-		6) mkdir .biliup && cd .biliup && biliup start;;
-		7) sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache > /dev/null 2>&1 &;;
-		   #nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files > /dev/null 2>&1 &;;
-		8) node ~/.webui-aria2/node-server.js
-		   echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker";;
-		9) chfs --port=1234 ;;
-		10) http-server ;;
-		11) sudo qbittorrent ;;
-		12) cat ~/.config/code-server/config.yaml #查看密码
-		  	code-server ;;
+		1) start-clouddrive2;;
+  	2) start-filebrowser;;
+    3) start-yacd;;
+		4) start-aria2;;
+		5) start-qbittorrent;;
+    6) start-samba;;
+		7) start-termux-url-opener;;
+		8) start-obs;;
+    9) start-chfs;;
+		10) start-code-sever;;
+		11) http-server ;;
+		12) start-biliup;;
 		*) break;;
 		  esac
 	done
