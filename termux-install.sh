@@ -5,17 +5,12 @@ chmod +x "$0"
 #termux 安装软件脚本
 
 #todo
-#termux代理软件：v2ray singbox mihomo(clash.meta) dae crashshell 目前用magisk模块
-#termux-api
-#chatgpt
-#tmux + neovim + nvchad(lazyvim)
-#创建git仓库
-#bash -c "$(curl -L l.tmoe.me)"
-#zerotier
 #calibre-web
 #markdown-web
-
-
+#chatgpt
+#termux-api
+#zerotier
+#termux代理软件：v2ray singbox mihomo(clash.meta) dae crashshell 目前用magisk模块
 
 RED_COLOR='\e[1;31m'
 GREEN_COLOR='\e[1;32m'
@@ -179,6 +174,9 @@ start-git(){
 git add .
 git commit -m "1"
 git push origin main
+}
+start-tmoe(){
+bash -c "$(curl -L l.tmoe.me)"
 }
 
 install-mpv-termux-url-opener(){
@@ -363,6 +361,7 @@ start(){
 		echo -e "${GREEN_COLOR}13.thumbnails${RES}"
 		echo -e "${GREEN_COLOR}14.gif${RES}"
 		echo -e "${GREEN_COLOR}15.git${RES}"
+		echo -e "${GREEN_COLOR}16.tmoe${RES}"
 		read choice 
 		case $choice in 
 		1) start-clouddrive2;;
@@ -380,6 +379,7 @@ start(){
     13) start-thumbnails;;
     14) start-gif;;
     15) start-git;;
+    16) start-tmoe;;
 		*) break;;
 		  esac
 	done
