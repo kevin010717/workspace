@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-set -x
+#set -x
 
 #termux 安装软件脚本
 
