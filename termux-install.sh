@@ -228,20 +228,20 @@ node server.js
 install(){
  while true
  do
-  echo  "${GREEN_COLOR}1.update${RES}"
-  echo  "${GREEN_COLOR}2.ohmyzsh${RES}"
-  echo  "${GREEN_COLOR}3.clouddrive2${RES}"
-  echo  "${GREEN_COLOR}4.samba${RES}"
-  echo  "${GREEN_COLOR}5.obs${RES}"
-  echo  "${GREEN_COLOR}6.mpv termux-url-opener${RES}"
-  echo  "${GREEN_COLOR}7.streamlink biliup${RES}"
-  echo  "${GREEN_COLOR}8.filebrowser${RES}"
-  echo  "${GREEN_COLOR}9.aria2${RES}"
-  echo  "${GREEN_COLOR}10.chfs${RES}"
-  echo  "${GREEN_COLOR}11.http-sever${RES}"
-  echo  "${GREEN_COLOR}12.qbittorrent${RES}"
-  echo  "${GREEN_COLOR}13.code-server${RES}"
-  echo  "${GREEN_COLOR}0.shortcuts${RES}"
+  echo -e "${GREEN_COLOR}1.update${RES}"
+  echo -e "${GREEN_COLOR}2.ohmyzsh${RES}"
+  echo -e "${GREEN_COLOR}3.clouddrive2${RES}"
+  echo -e "${GREEN_COLOR}4.samba${RES}"
+  echo -e "${GREEN_COLOR}5.obs${RES}"
+  echo -e "${GREEN_COLOR}6.mpv termux-url-opener${RES}"
+  echo -e "${GREEN_COLOR}7.streamlink biliup${RES}"
+  echo -e "${GREEN_COLOR}8.filebrowser${RES}"
+  echo -e "${GREEN_COLOR}9.aria2${RES}"
+  echo -e "${GREEN_COLOR}10.chfs${RES}"
+  echo -e "${GREEN_COLOR}11.http-sever${RES}"
+  echo -e "${GREEN_COLOR}12.qbittorrent${RES}"
+  echo -e "${GREEN_COLOR}13.code-server${RES}"
+  echo -e "${GREEN_COLOR}0.shortcuts${RES}"
   read choice 
   case $choice in 
 	1) install_update;;
@@ -265,18 +265,18 @@ install(){
 start(){
 	while true
 	do
-		echo  -e "${GREEN_COLOR}1.openssh${RES}"
-		echo  "${GREEN_COLOR}2.clouddrive2${RES}"
-		echo  "${GREEN_COLOR}3.samba${RES}"
-		echo  "${GREEN_COLOR}4.obs${RES}"
-		echo  "${GREEN_COLOR}5.mpv termux-url-opener${RES}"
-		echo  "${GREEN_COLOR}6.streamlink biliup${RES}"
-		echo  "${GREEN_COLOR}7.filebrowser${RES}"
-		echo  "${GREEN_COLOR}8.aria2${RES}"
-		echo  "${GREEN_COLOR}9.chfs${RES}"
-		echo  "${GREEN_COLOR}10.http-sever${RES}"
-		echo  "${GREEN_COLOR}11.qbittorrent${RES}"
-		echo  "${GREEN_COLOR}12.code-server${RES}"
+		echo -e "${GREEN_COLOR}1.openssh${RES}"
+		echo -e "${GREEN_COLOR}2.clouddrive2${RES}"
+		echo -e "${GREEN_COLOR}3.samba${RES}"
+		echo -e "${GREEN_COLOR}4.obs${RES}"
+		echo -e "${GREEN_COLOR}5.mpv termux-url-opener${RES}"
+		echo -e "${GREEN_COLOR}6.streamlink biliup${RES}"
+		echo -e "${GREEN_COLOR}7.filebrowser${RES}"
+		echo -e "${GREEN_COLOR}8.aria2${RES}"
+		echo -e "${GREEN_COLOR}9.chfs${RES}"
+		echo -e "${GREEN_COLOR}10.http-sever${RES}"
+		echo -e "${GREEN_COLOR}11.qbittorrent${RES}"
+		echo -e "${GREEN_COLOR}12.code-server${RES}"
 		read choice 
 		case $choice in 
 		1) sshd;;
