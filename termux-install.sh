@@ -410,7 +410,7 @@ do
   echo  -e "${GREEN_COLOR}2.start${RES}"
   read choice
   case $choice in
-    1)install;;
+    1) install;;
     2) start;;
     *) break;;
   esac
