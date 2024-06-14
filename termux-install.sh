@@ -75,6 +75,11 @@ read -p "结束，按回车键继续…" key
 install-ohmyzsh(){
 sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip
+unzip -o -d ~/.termux/ *.zip  
+rm *.zip
+cp font.ttf font.ttf.bak
+cp .termux/0xProtoNerdFont-Regular.ttf font.ttf
 read -p "结束，按回车键继续…" key
 }
 
