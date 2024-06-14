@@ -7,6 +7,7 @@ chmod +x "$0"
 #todo
 #calibre-web
 #markdown-web
+#gitbook
 #chatgpt
 #termux-api
 #zerotier
@@ -316,7 +317,9 @@ install-calibreweb(){
   pip install --user -U calibreweb 
   echo “export PATH="${HOME}/.local/bin:${PATH}"”> .bashrc && source .bashrc && echo $PATH
 }
-
+start-calibreweb(){
+am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8083 
+}
 install(){
  while true
  do
@@ -372,7 +375,7 @@ start(){
 		echo -e "${GREEN_COLOR}13.thumbnails${RES}"
 		echo -e "${GREEN_COLOR}14.gif${RES}"
 		echo -e "${GREEN_COLOR}15.git${RES}"
-		echo -e "${GREEN_COLOR}16.tmoe${RES}"
+		echo -e "${GREEN_COLOR}16.start-calibreweb${RES}"
 		read choice 
 		case $choice in 
 		1) start-clouddrive2;;
@@ -390,7 +393,7 @@ start(){
     13) start-thumbnails;;
     14) start-gif;;
     15) start-git;;
-    16) start-tmoe;;
+    16) start-calibreweb;;
 		*) break;;
 		  esac
 	done
