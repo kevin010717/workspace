@@ -60,6 +60,8 @@ termux-change-repo
 pkg update && pkg upgrade -y
 pkg i root-repo x11-repo -y
 pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs -y
+pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
+npm install mapscii -g
 passwd
 whoami
 #del "C:\Users\admin\.ssh\known_hosts"
@@ -75,11 +77,6 @@ read -p "结束，按回车键继续…" key
 install-ohmyzsh(){
 sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip
-unzip -o -d ~/.termux/ *.zip  
-rm *.zip
-cp font.ttf font.ttf.bak
-cp .termux/0xProtoNerdFont-Regular.ttf font.ttf
 read -p "结束，按回车键继续…" key
 }
 
@@ -315,12 +312,7 @@ node server.js
 }
 
 install-calibreweb(){
-  pkg install python libxml2 libxslt pkg-config
-  pip install cython wheel
-  CFLAGS="-Wno-error=incompatible-function-pointer-types -O0" pip install lxml
-  pkg i python-cryptography python-lxml
   pip install --user -U calibreweb 
-  echo “export PATH="${HOME}/.local/bin:${PATH}"”> .bashrc && source .bashrc && echo $PATH
 }
 start-calibreweb(){
 am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8083 
@@ -403,109 +395,28 @@ start(){
 		  esac
 	done
 }
-
+fun(){
+  while true
+  do
+ 		echo -e "${GREEN_COLOR}1.cmatrix${RES}"
+		read choice 
+		case $choice in 
+    1) ;;
+    *) break;;
+		  esac 
+  done
+}
 while true
 do
   echo  -e "${GREEN_COLOR}1.install${RES}"
   echo  -e "${GREEN_COLOR}2.start${RES}"
+  echo  -e "${GREEN_COLOR}3.get some fun${RES}"
   read choice
   case $choice in
     1) install;;
     2) start;;
+    3) fun;;
     *) break;;
   esac
 done
-
-#有趣的小程序
-cat << EOF > $PREFIX/bin/cheet
-#!/bin/sh
-echo "
-
-pkg install cmatrix
-#cmatrix
-
-pkg install nyancat
-#nyancat
-
-pkg install nodejs
-npm install mapscii -g
-#mapscii
-
-pkg install coreutils
-#factor <target number>
-
-pkg install figlet
-#figlet <target string>
-
-pkg install toilet
-#toilet -f mono12 -F gay Kuan
-
-pkg install weechat
-#weechat
-#/server add freenode8001 chat.freenode.net/8001
-#/connect freenode8001
-#/nick Kuan
-#/join #termux
-
-pkg install fortune
-#fortune
-
-pkg install cowsay
-#cowsay -l
-
-aptapt install sl
-#sl
-
-pkg install w3m
-#w3m baidu.com
-
-pkg install greed
-#greed
-
-pkg install moon-buggy
-#moon-buggy
-
-pkg install curl
-#curl wttr.in/Beijin"
-
-nano  $PREFIX/etc/motd
-#修改启动问候语
-
-pip install scrap_engine
-git clone https://github.com/lxgr-linux/pokete.git
-./pokete/pokete.py
-
-EOF
-chmod +x $PREFIX/bin/cheet
-
-: <<'END_COMMENT'
-#5 kodbox
-pkg install nginx php php-fpm -y
-配置方法：
-nano $PREFIX/etc/php-fpm.d/www.conf
-#找到：listen = /data/data/com.termux/files/usr/var/run/php-fpm.sock修改为: listen = 127.0.0.1:9000
-nano $PREFIX/etc/nginx/nginx.conf
-#找到index index.html index.htm;修改为: index index.html index.htm index.php;
-#去掉注释并修改为
-location ~ \.php$ {
-    root           html;
-    fastcgi_pass   127.0.0.1:9000;
-    fastcgi_index  index.php;
-    fastcgi_param  SCRIPT_FILENAME  /data/data/com.termux/files/usr/share/nginx/html$fastcgi_script_name;
-    include        fastcgi_params;
-}
-sudo lsof -i :8080 :9000
-kill <pid>
-php-fpm
-nginx
-cd $PREFIX/share/nginx/html
-mkdir kod
-cd kod
-wget https://static.kodcloud.com/update/download/kodbox.1.35.zip
-unzip kodbox.1.35.zip && chmod -Rf 777 ./*
-#直接访问127.0.0.1:8080/kod
-echo "kodbox安装结束，按回车键继续…"
-read -p ""
-END_COMMENT
-
 
