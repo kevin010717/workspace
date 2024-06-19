@@ -59,7 +59,7 @@ termux-setup-storage
 termux-change-repo
 pkg update && pkg upgrade -y
 pkg i root-repo x11-repo -y
-pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk -y
+pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever -y
 pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
 npm install mapscii -g
 passwd
