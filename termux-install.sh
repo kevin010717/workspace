@@ -317,6 +317,9 @@ install-calibreweb(){
 start-calibreweb(){
 am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8083 
 }
+install-leetcode-cli(){
+npm install -g leetcode-cli
+}
 install(){
  while true
  do
