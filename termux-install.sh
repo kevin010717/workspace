@@ -59,11 +59,14 @@ termux-setup-storage
 termux-change-repo
 pkg update && pkg upgrade -y
 pkg i root-repo x11-repo -y
-pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever -y
+pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever slides glow tree neofetch -y
 pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
 npm install mapscii -g
 passwd
 whoami
+ssh-keygen -t rsa
+#cd .ssh
+#ssh-copy-id -i id_rsa.pub kevin@10.147.17.140
 #del "C:\Users\admin\.ssh\known_hosts"
 #ssh u0_a589@192.168.1.12 -p 8022
 gh auth login
@@ -76,7 +79,9 @@ read -p "结束，按回车键继续…" key
 
 install-ohmyzsh(){
 sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+#git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+echo "neofetch">>~/.zshrc
 read -p "结束，按回车键继续…" key
 }
 
