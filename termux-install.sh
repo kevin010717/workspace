@@ -59,9 +59,11 @@ termux-setup-storage
 termux-change-repo
 pkg update && pkg upgrade -y
 pkg i root-repo x11-repo -y
-pkg i openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever slides glow tree neofetch -y
+pkg i android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever slides glow tree neofetch -y
 pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
 npm install mapscii -g
+curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
+su -c pm install termux-api.apk
 passwd
 whoami
 ssh-keygen -t rsa
