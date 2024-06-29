@@ -59,7 +59,9 @@ termux-setup-storage
 termux-change-repo
 pkg update && pkg upgrade -y
 pkg i root-repo x11-repo -y
-pkg i android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever slides glow tree neofetch -y
+pkg i peaclock tty-clock android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever slides glow tree neofetch -y
+cargo install clock-tui
+echo "export PATH="$PATH:/data/data/com.termux/files/home/.cargo/bin"">>.zshrc
 pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
 npm install mapscii -g
 curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
@@ -193,8 +195,8 @@ install-mpv-termux-url-opener(){
 pip install youtube-dl yt-dlp you-get PySocks
 #配置mpv
 cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/
-echo "volume-max=200" >> ~/.config/mpv/mpv.config
-echo "script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp" >> ~/.config/mpv/mpv.config
+echo "volume-max=200" >> ~/.config/mpv/mpv.conf
+echo "script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp" >> ~/.config/mpv/mpv.conf
 #配置termux-url-opener
 mkdir -p ~/bin
 echo 'echo "1.download it" 
