@@ -66,7 +66,8 @@ echo "export PATH="$PATH:/data/data/com.termux/files/home/.cargo/bin"">>.zshrc
 pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
 npm install mapscii -g
 curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
-su -c pm install termux-api.apk
+wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
+su -c pm install termux-api.apk termux-styling.apk
 passwd
 whoami
 ssh-keygen -t rsa
