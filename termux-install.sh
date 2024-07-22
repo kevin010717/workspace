@@ -59,7 +59,7 @@ termux-setup-storage
 termux-change-repo
 pkg update && pkg upgrade -y
 pkg i root-repo x11-repo -y
-pkg i lazygit peaclock tty-clock android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk lua-language-sever slides glow tree neofetch -y
+pkg i lazygit peaclock tty-clock android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
 cargo install clock-tui bk
 pip install epr-reader
 echo "export PATH="$PATH:/data/data/com.termux/files/home/.cargo/bin"">>.zshrc
