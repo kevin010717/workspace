@@ -26,7 +26,7 @@ install_update() {
   termux-change-repo
   pkg update && pkg upgrade -y
   pkg i root-repo x11-repo -y
-  pkg i rust lazygit peaclock tty-clock android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
+  pkg i rxfetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
   pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
   curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
   wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
@@ -61,7 +61,8 @@ install_ohmyzsh() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   #git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
   git clone https://github.com/LazyVim/starter ~/.config/nvim
-  echo "neofetch" >>~/.zshrc
+  #echo "neofetch" >>~/.zshrc
+  echo "rxfetch" >>~/.zshrc
   echo "sshd" >>~/.zshrc
   read -p "结束，按回车键继续…" key
 }
