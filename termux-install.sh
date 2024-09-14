@@ -2,6 +2,14 @@
 #set -x
 chmod +x "$0"
 
+RED_COLOR='\e[1;31m'
+GREEN_COLOR='\e[1;32m'
+YELLOW_COLOR='\e[1;33m'
+BLUE_COLOR='\e[1;34m'
+PINK_COLOR='\e[1;35m'
+SHAN='\e[1;33;5m'
+RES='\e[0m'
+
 #termux 安装软件脚本
 
 #todo
@@ -13,36 +21,28 @@ chmod +x "$0"
 #zerotier
 #termux代理软件：v2ray singbox mihomo(clash.meta) dae crashshell 目前用magisk模块
 
-RED_COLOR='\e[1;31m'
-GREEN_COLOR='\e[1;32m'
-YELLOW_COLOR='\e[1;33m'
-BLUE_COLOR='\e[1;34m'
-PINK_COLOR='\e[1;35m'
-SHAN='\e[1;33;5m'
-RES='\e[0m'
-
-get-local-ipv4-using-hostname() {
+get_local_ipv4_using_hostname() {
   hostname -I 2>&- | awk '{print $1}'
 }
 
 # iproute2
-get-local-ipv4-using-iproute2() {
+get_local_ipv4_using_iproute2() {
   # OR ip route get 1.2.3.4 | awk '{print $7}'
   ip -4 route 2>&- | awk '{print $NF}' | grep -Eo --color=never '[0-9]+(\.[0-9]+){3}'
 }
 
 # net-tools
-get-local-ipv4-using-ifconfig() {
+get_local_ipv4_using_ifconfig() {
   (ifconfig 2>&- || ip addr show 2>&-) | grep -Eo '^\s+inet\s+\S+' | grep -Eo '[0-9]+(\.[0-9]+){3}' | grep -Ev '127\.0\.0\.1|0\.0\.0\.0'
 }
 
 # 获取本机 IPv4 地址
-get-local-ipv4() {
+get_local_ipv4() {
   set -o pipefail
-  get-local-ipv4-using-hostname || get-local-ipv4-using-iproute2 || get-local-ipv4-using-ifconfig
+  get_local_ipv4_using_hostname || get_local_ipv4_using_iproute2 || get_local_ipv4_using_ifconfig
 }
-get-local-ipv4-select() {
-  local ips=$(get-local-ipv4)
+get_local_ipv4_select() {
+  local ips=$(get_local_ipv4)
   local retcode=$?
   if [ $retcode -ne 0 ]; then
     return $retcode
@@ -52,7 +52,7 @@ get-local-ipv4-select() {
     grep -m 1 "^10\." <<<"$ips" ||
     head -n 1 <<<"$ips"
 }
-install-update() {
+install_update() {
   echo "bell-character = ignore" >>~/.termux/termux.properties
   termux-reload-settings
   termux-setup-storage
@@ -83,7 +83,7 @@ install-update() {
   read -p "结束，按回车键继续…" key
 }
 
-install-ohmyzsh() {
+install_ohmyzsh() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   #git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
   git clone https://github.com/LazyVim/starter ~/.config/nvim
@@ -91,26 +91,26 @@ install-ohmyzsh() {
   read -p "结束，按回车键继续…" key
 }
 
-install-clouddrive2() {
+install_clouddrive2() {
   curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
   read -p "结束，按回车键继续…" key
 }
-start-clouddrive2() {
+start_clouddrive2() {
   sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):19798/
 }
 
-install-samba() {
+install_samba() {
   mkdir $PREFIX/etc/samba
   sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' /data/data/com.termux/files/usr/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
   pdbedit -a -u admin
   read -p "结束，按回车键继续…" key
 }
-start-samba() {
+start_samba() {
   smbclient -p 445 //127.0.0.1/internal -U admin
 }
 
-start-obs() {
+start_obs() {
   folder="/data/data/com.termux/files/home/video/"
   read -p "请输入您的推流地址和推流码(rtmp协议):" rtmp
   while true; do
@@ -123,10 +123,10 @@ start-obs() {
     done
   done
 }
-start-yacd() {
+start_yacd() {
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):9090/ui
 }
-start-gif() {
+start_gif() {
   find . -type f \( -iname \*.mp4 -o -iname \*.mkv \) >file1.txt
   mkdir -p img
   while IFS= read -r file; do
@@ -163,7 +163,7 @@ start-gif() {
   done <file1.txt
   rm -r file1.txt img
 }
-start-thumbnails() {
+start_thumbnails() {
   generate_thumbnail() {
     local video_file="$1"
     local thumbnail_file="${video_file%.*}.png"
@@ -179,18 +179,18 @@ start-thumbnails() {
     generate_thumbnail "$video_file"
   done
 }
-start-git() {
+start_git() {
   git add .
   git commit -m "1"
   git push origin main
   cp termux-install.sh $PREFIX/bin/termux-install
 }
 
-install-tmoe() {
+install_tmoe() {
   bash -c "$(curl -L l.tmoe.me)"
 }
 
-install-mpv-termux-url-opener() {
+install_mpv_termux_url_opener() {
   pip install youtube-dl yt-dlp you-get PySocks
   #配置mpv
   cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/
@@ -208,11 +208,11 @@ install-mpv-termux-url-opener() {
 esac' >~/bin/termux-url-opener
   read -p "结束，按回车键继续…" key
 }
-start-termux-url-opener() {
+start_termux_url_opener() {
   ~/bin/termux-url-opener
 }
 
-install-streamlink-biliup() {
+install_streamlink_biliup() {
   mkdir builds
   cd builds/
   git clone https://github.com/saghul/pycares
@@ -225,25 +225,25 @@ install-streamlink-biliup() {
   echo “export PATH="${HOME}/.local/bin:${PATH}"” >.bashrc && source .bashrc && echo $PATH
   read -p "结束，按回车键继续…" key
 }
-start-biliup() {
+start_biliup() {
   mkdir .biliup && cd .biliup && biliup start
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):3000
 }
 
-install-filebrowser() {
+install_filebrowser() {
   mkdir .filebrowser
   wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
   tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
   chmod +x .filebrowser/filebrowser
   read -p "结束，按回车键继续…" key
 }
-start-filebrowser() {
+start_filebrowser() {
   sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):18650
   #nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files > /dev/null 2>&1 &;;
 }
 
-install-aria2() {
+install_aria2() {
   pkg install aria2
   # aria2c --enable-rpc --rpc-listen-all
   pkg install git nodejs
@@ -251,13 +251,13 @@ install-aria2() {
   mv webui-aria2 .webui-aria2
   read -p "结束，按回车键继续…" key
 }
-start-aria2() {
+start_aria2() {
   nohup node ~/.webui-aria2/node-server.js >/dev/null 2>&1 &
   echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8888
 }
 
-install-chfs() {
+install_chfs() {
   wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
   unzip chfs-linux-arm64-3.1.zip
   mv chfs-linux-arm64-3.1 chfs
@@ -265,43 +265,43 @@ install-chfs() {
   rm chfs-linux-arm64-3.1.zip
   read -p "结束，按回车键继续…" key
 }
-start-chfs() {
+start_chfs() {
   nohup sudo chfs --port=1234 >/dev/null 2>&1 &
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):1234
 }
 
-install-http-server() {
+install_http_server() {
   pkg install nodejs
   npm install -g http-server
   read -p "结束，按回车键继续…" key
 }
-start-http-sever() {
+start_http_sever() {
   http-server -a 127.0.0.1 -p 8090
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8090
 }
 
-install-qbittorrent() {
+install_qbittorrent() {
   wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
   mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
   chmod +x qbittorrent
   read -p "结束，按回车键继续…" key
 }
-start-qbittorrent() {
+start_qbittorrent() {
   sudo qbittorrent
 }
 
-install-code-server() {
+install_code_server() {
   apt install tur-repo    #安装软件源
   apt install code-server #安装
   read -p "结束，按回车键继续…" key
 }
-start-code-sever() {
+start_code_sever() {
   cat ~/.config/code-server/config.yaml #查看密码
   code-server
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8080
 }
 
-install-node-server() {
+install_node_server() {
   mkdir nodeserver
   cd nodeserver
   npm init
@@ -319,13 +319,13 @@ app.listen(3000, () => {
   node server.js
 }
 
-install-calibreweb() {
+install_calibreweb() {
   pip install --user -U calibreweb
 }
-start-calibreweb() {
+start_calibreweb() {
   am start -a android.intent.action.VIEW -d http://$(get-local-ipv4-select):8083
 }
-install-leetcode-cli() {
+install_leetcode_cli() {
   npm install -g leetcode-cli
 }
 install() {
@@ -347,20 +347,20 @@ install() {
     echo -e "${GREEN_COLOR}15.all${RES}"
     read choice
     case $choice in
-    1) install-update ;;
-    2) install-ohmyzsh ;;
-    3) install-clouddrive2 ;;
-    4) install-samba ;;
-    5) install-obs ;;
-    6) install-mpv-termux-url-opener ;;
-    7) install-streamlink-biliup ;;
-    8) install-filebrowser ;;
-    9) install-aria2 ;;
-    10) install-chfs ;;
-    11) install-http-server ;;
-    12) install-qbittorrent ;;
-    13) install-code-server ;;
-    14) install-tmoe ;;
+    1) install_update ;;
+    2) install_ohmyzsh ;;
+    3) install_clouddrive2 ;;
+    4) install_samba ;;
+    5) install_obs ;;
+    6) install_mpv_termux_url_opener ;;
+    7) install_streamlink_biliup ;;
+    8) install_filebrowser ;;
+    9) install_aria2 ;;
+    10) install_chfs ;;
+    11) install_http_server ;;
+    12) install_qbittorrent ;;
+    13) install_code_server ;;
+    14) install_tmoe ;;
     *) break ;;
     esac
   done
@@ -385,22 +385,22 @@ start() {
     echo -e "${GREEN_COLOR}16.start-calibreweb${RES}"
     read choice
     case $choice in
-    1) start-clouddrive2 ;;
-    2) start-filebrowser ;;
-    3) start-yacd ;;
-    4) start-aria2 ;;
-    5) start-qbittorrent ;;
-    6) start-samba ;;
-    7) start-termux-url-opener ;;
-    8) start-obs ;;
-    9) start-chfs ;;
-    10) start-code-sever ;;
-    11) http-server ;;
-    12) start-biliup ;;
-    13) start-thumbnails ;;
-    14) start-gif ;;
-    15) start-git ;;
-    16) start-calibreweb ;;
+    1) start_clouddrive2 ;;
+    2) start_filebrowser ;;
+    3) start_yacd ;;
+    4) start_aria2 ;;
+    5) start_qbittorrent ;;
+    6) start_samba ;;
+    7) start_termux_url_opener ;;
+    8) start_obs ;;
+    9) start_chfs ;;
+    10) start_code_sever ;;
+    11) http_server ;;
+    12) start_biliup ;;
+    13) start_thumbnails ;;
+    14) start_gif ;;
+    15) start_git ;;
+    16) start_calibreweb ;;
     *) break ;;
     esac
   done
@@ -509,13 +509,13 @@ nvim() {
   *) break ;;
   esac
 }
-tmux-conf() {
+tmux_conf() {
   cat <<EOF >~/.tmux.conf
 set -g status off
 bind-key -n C-a send-prefix
 EOF
 }
-termux-api() {
+termux_api() {
   termux-battery-status
   termux-camera-info
   termux-contact-list
