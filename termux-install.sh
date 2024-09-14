@@ -32,9 +32,9 @@ install_update() {
   wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
   su -c pm install termux-api.apk termux-styling.apk
   rm termux-api.apk termux-styling.apk
-  npm install mapscii -g
-  cargo install clock-tui bk
-  pip install epr-reader
+  #npm install mapscii -g
+  #cargo install clock-tui bk
+  #pip install epr-reader
 
   passwd
   whoami
