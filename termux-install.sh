@@ -48,6 +48,10 @@ install_update() {
   git config --global user.name "kevin010717"
   gh auth login
 
+  ranger --copy-config=all
+  export RANGER_LOAD_DEFAULT_RC=FALSE
+  #mime ^text,  label editor = nvim -- "$@"
+
   #bash -c "$(curl -L l.tmoe.me)"
   #mytermux.git
   read -p "结束，按回车键继续…" key
