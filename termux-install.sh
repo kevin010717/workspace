@@ -64,6 +64,10 @@ install_ohmyzsh() {
   #echo "neofetch" >>~/.zshrc
   echo "rxfetch" >>~/.zshrc
   echo "sshd" >>~/.zshrc
+  echo 'alias nv="nvim"' >>~/.aliases
+  echo 'alias ra="ranger"' >>~/.aliases
+  #  echo 'alias gitacp="git add . git commit -m "1" git push origin main"' >>~/.aliases
+  source ~/.zshrc ~/.aliases
   read -p "结束，按回车键继续…" key
 }
 
