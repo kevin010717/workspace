@@ -58,6 +58,7 @@ install_ohmyzsh() {
   #git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   echo "neofetch" >>~/.zshrc
+  echo "sshd" >>~/.zshrc
   read -p "结束，按回车键继续…" key
 }
 
