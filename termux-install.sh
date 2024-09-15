@@ -28,6 +28,7 @@ install_update() {
   pkg i root-repo x11-repo -y
   pkg i rxfetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
   pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
+  pkg i ncmpcpp mpd cmus mpg123 tizonia man
   curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
   wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
   su -c pm install termux-api.apk termux-styling.apk
@@ -35,6 +36,9 @@ install_update() {
   #npm install mapscii -g
   #cargo install clock-tui bk
   #pip install epr-reader
+  #tidal-dl
+  #pkg install python clang libjpeg-turbo ffmpeg zlib -y
+  #pip3 install --upgrade tidal-dl
 
   passwd
   whoami
