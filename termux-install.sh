@@ -62,19 +62,16 @@ install_update() {
 
 install_ohmyzsh() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-  #git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
   git clone https://github.com/LazyVim/starter ~/.config/nvim
-  #echo "neofetch" >>~/.zshrc
   cat <<EOF >>~/.zshrc
+#neofetch
 rxfetch
 sshd
-EOF
-  cat <<EOF >>./aliases
 alias nv="nvim"
 alias ra="ranger"
 alias gitacp="git add . ; git commit -m "1" ;git push origin main"
 EOF
-  source ~/.zshrc ~/.aliases
+  source ~/.zshrc
   read -p "结束，按回车键继续…" key
 }
 
