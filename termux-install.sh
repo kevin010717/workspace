@@ -94,12 +94,13 @@ EOF
   echo "1.download it" 
   echo "2.listen to it"  
   read choice 
-  case $choice in 
-    1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" $1;; 
-    2) mpv --no-video -v $1;;
-    *) mpv --no-video -v $1;;
+  case \$choice in 
+    1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" \$1;; 
+    2) mpv --no-video -v \$1;;
+    *) mpv --no-video -v \$1;;
   esac
 EOF
+ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
   read -p "结束，按回车键继续…" key
 }
 
