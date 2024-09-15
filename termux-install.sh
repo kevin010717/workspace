@@ -62,11 +62,15 @@ install_ohmyzsh() {
   #git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   #echo "neofetch" >>~/.zshrc
-  echo "rxfetch" >>~/.zshrc
-  echo "sshd" >>~/.zshrc
-  echo 'alias nv="nvim"' >>~/.aliases
-  echo 'alias ra="ranger"' >>~/.aliases
-  echo 'alias gitacp="git add . ; git commit -m "1" ;git push origin main"' >>~/.aliases
+  cat <<EOF >>~/.zshrc
+rxfetch
+sshd
+EOF
+  cat <<EOF >>./aliases
+alias nv="nvim"
+alias ra="ranger"
+alias gitacp="git add . ; git commit -m "1" ;git push origin main"
+EOF
   source ~/.zshrc ~/.aliases
   read -p "结束，按回车键继续…" key
 }
@@ -80,18 +84,22 @@ install_mpv_termux_url_opener() {
   pip install youtube-dl yt-dlp you-get PySocks
   #配置mpv
   cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/
-  echo "volume-max=200" >>~/.config/mpv/mpv.conf
-  echo "script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp" >>~/.config/mpv/mpv.conf
+  cat <<EOF >>~/.config/mpv/mpv.conf
+volume-max=200
+script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
+EOF
   #配置termux-url-opener
   mkdir -p ~/bin
-  echo 'echo "1.download it" 
+  cat <<EOF >>~/bin/termux-url-opener
+  echo "1.download it" 
   echo "2.listen to it"  
   read choice 
   case $choice in 
-  1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" $1;; 
-  2) mpv --no-video -v $1;;
-  *) mpv --no-video -v $1;;
-esac' >~/bin/termux-url-opener
+    1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" $1;; 
+    2) mpv --no-video -v $1;;
+    *) mpv --no-video -v $1;;
+  esac
+EOF
   read -p "结束，按回车键继续…" key
 }
 
@@ -167,15 +175,16 @@ install_node_server() {
   cd nodeserver
   npm init
   npm install express --save
-
-  echo "const express = require('express');
+  cat <<EOF >>server.js
+const express = require('express');
 const app = express();
 app.get('/', (req, res) => {
    res.send('Hello World!');
 });
 app.listen(3000, () => {
    console.log('Server is running at http://localhost:3000');
-});" >server.js
+});
+EOF
 
   node server.js
 }
@@ -459,12 +468,12 @@ cheetsheet_nvim() {
   *) break ;;
   esac
 }
-#cheetsheet_tmux() {
-#  cat <<EOF >"~/.tmux.conf"
-#  set -g status off
-#  bind-key -n C-a send-prefix
-#  EOF
-#}
+cheetsheet_tmux() {
+  cat <<EOF >>~/.tmux.conf
+  set -g status off
+  bind-key -n C-a send-prefix
+EOF
+}
 cheetsheet_termux() {
   termux-battery-status
   termux-camera-info
