@@ -38,12 +38,15 @@ install_update() {
 
   passwd
   whoami
-  ssh-keygen -t rsa
+  #ssh-keygen -t rsa
   #cd .ssh
   #ssh-copy-id -i id_rsa.pub kevin@10.147.17.140
   #del "C:\Users\admin\.ssh\known_hosts"
   #ssh u0_a589@192.168.1.12 -p 8022
 
+  ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com”
+  cat ~/.ssh/id_rsa.pub
+  ssh -T git@github.com
   git config --global user.email "k511153362@gmail.com"
   git config --global user.name "kevin010717"
   gh auth login
@@ -100,7 +103,7 @@ EOF
     *) mpv --no-video -v \$1;;
   esac
 EOF
-ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
+  ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
   read -p "结束，按回车键继续…" key
 }
 
