@@ -82,6 +82,8 @@ install_ohmyzsh() {
   alias g="glow ~/termux-install/todo.md"
   alias n="nvim"
   alias y="yazi"
+  alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
+  #shell screen -d cmus
   alias gitacp="git add . ; git commit -m "1" ;git push origin main"
 EOF
   source ~/.zshrc
@@ -103,7 +105,7 @@ EOF
   volume-keys = volume
   bell-character = ignore"
   extra-keys = [[ \
-  {key: ESC, popup: {macro: "CTRL f d", display: "tmux exit"}}, \
+  {key: ESC, popup: {macro: "clear\n", display: "tmux exit"}}, \
   {key: CTRL, popup: {macro: "CTRL f BKSP", display: "tmux ←"}}, \
   {key: ALT, popup: {macro: "CTRL f TAB", display: "tmux →"}}, \
   {key: TAB, popup: {macro: "ALT a", display: A-a}}, \

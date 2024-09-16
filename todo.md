@@ -13,23 +13,13 @@
 
 * [ ] An uncompleted task
   * [ ] A subtask
-  <details>
-    <summary>Title 1</summary>
-    <p>Content 1 Content 1 Content 1 Content 1 Content 1</p>
-  </details>
 
-* [ ] 浇花 
+<details>
+  <summary>Title 1</summary>
+  <p>Content 1 Content 1 Content 1 Content 1 Content 1</p>
+</details>
+
 * [ ] yazi.toml
-
----
-sidebar_position: 2
-description: A quick guide on the basic usage of Yazi.
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-
-# 1
-# 2
-# 3
+* [ ] cmus后台运行
+* [ ] 工控机换网卡 改ip
+* [ ] 浇花 
