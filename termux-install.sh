@@ -18,17 +18,36 @@ RES='\e[0m'
 #termux-api
 #zerotier
 #termux代理软件：v2ray singbox mihomo(clash.meta) dae crashshell 目前用magisk模块
+#nnn.vim
+#nnn filebrowser
+#termux key config
 
 install_update() {
-  echo "bell-character = ignore" >>~/.termux/termux.properties
+  cat <<EOF >>~/.termux/termux.properties
+  volume-keys = volume
+  bell-character = ignore"
+extra-keys = [[ \
+  {key: ESC, popup: {macro: "CTRL f d", display: "tmux exit"}}, \
+  {key: CTRL, popup: {macro: "CTRL f BKSP", display: "tmux ←"}}, \
+  {key: ALT, popup: {macro: "CTRL f TAB", display: "tmux →"}}, \
+  {key: TAB, popup: {macro: "ALT a", display: A-a}}, \
+  {key: LEFT, popup: HOME}, \
+  {key: DOWN, popup: PGDN}, \
+  {key: UP, popup: PGUP}, \
+  {key: RIGHT, popup: END}, \
+  {key: "/", popup: "~"}, \
+  {key: KEYBOARD, popup: {macro: "CTRL d", display: exit}} \
+]]
+EOF
   termux-reload-settings
   termux-setup-storage
   termux-change-repo
   pkg update && pkg upgrade -y
   pkg i root-repo x11-repo -y
-  pkg i rxfetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs mc ranger nnn htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
+  pkg i rxfetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
   pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
-  pkg i ncmpcpp mpd cmus mpg123 tizonia man
+  pkg i ncmpcpp mpd cmus mpg123 tizonia man -y
+  pkg i nnn ranger yazi mc -y
   curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
   wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
   su -c pm install termux-api.apk termux-styling.apk
