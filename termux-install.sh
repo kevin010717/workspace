@@ -20,25 +20,9 @@ RES='\e[0m'
 #termux代理软件：v2ray singbox mihomo(clash.meta) dae crashshell 目前用magisk模块
 #nnn.vim
 #nnn filebrowser
-#termux key config
+#tmux常用cli aliases
 
 install_update() {
-  cat <<EOF >>~/.termux/termux.properties
-  volume-keys = volume
-  bell-character = ignore"
-extra-keys = [[ \
-  {key: ESC, popup: {macro: "CTRL f d", display: "tmux exit"}}, \
-  {key: CTRL, popup: {macro: "CTRL f BKSP", display: "tmux ←"}}, \
-  {key: ALT, popup: {macro: "CTRL f TAB", display: "tmux →"}}, \
-  {key: TAB, popup: {macro: "ALT a", display: A-a}}, \
-  {key: LEFT, popup: HOME}, \
-  {key: DOWN, popup: PGDN}, \
-  {key: UP, popup: PGUP}, \
-  {key: RIGHT, popup: END}, \
-  {key: "/", popup: "~"}, \
-  {key: KEYBOARD, popup: {macro: "CTRL d", display: exit}} \
-]]
-EOF
   termux-reload-settings
   termux-setup-storage
   termux-change-repo
@@ -87,14 +71,44 @@ install_ohmyzsh() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   cat <<EOF >>~/.zshrc
-#neofetch
-rxfetch
-sshd
-alias nv="nvim"
-alias ra="ranger"
-alias gitacp="git add . ; git commit -m "1" ;git push origin main"
+  #neofetch
+  rxfetch
+  sshd
+  alias nv="nvim"
+  alias ra="ranger"
+  alias gitacp="git add . ; git commit -m "1" ;git push origin main"
 EOF
   source ~/.zshrc
+  cat <<EOF >>~/.config/yazi/yazi.toml
+[opener]
+browser = [
+	{ run = 'am start -a android.intent.action.VIEW -d "http://127.0.0.1:18650${1#*/com.termux}" && echo $1 ', orphan = true, for = "unix" },
+	{ run = 'mpv --force-window %*', orphan = true, for = "windows" },
+	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
+] 
+[open]
+rules = [
+	# Media
+  #{ mime = "{audio,video}/*", use = [ "play", "reveal" ] },
+	{ mime = "{audio,video}/*", use = [ "browser" ] },
+]
+EOF
+  cat <<EOF >>~/.termux/termux.properties
+  volume-keys = volume
+  bell-character = ignore"
+  extra-keys = [[ \
+  {key: ESC, popup: {macro: "CTRL f d", display: "tmux exit"}}, \
+  {key: CTRL, popup: {macro: "CTRL f BKSP", display: "tmux ←"}}, \
+  {key: ALT, popup: {macro: "CTRL f TAB", display: "tmux →"}}, \
+  {key: TAB, popup: {macro: "ALT a", display: A-a}}, \
+  {key: LEFT, popup: HOME}, \
+  {key: DOWN, popup: PGDN}, \
+  {key: UP, popup: PGUP}, \
+  {key: RIGHT, popup: END}, \
+  {key: "/", popup: "~"}, \
+  {key: KEYBOARD, popup: {macro: "CTRL d", display: exit}} \
+]]
+EOF
   read -p "结束，按回车键继续…" key
 }
 
