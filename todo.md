@@ -20,6 +20,6 @@
 </details>
 
 * [ ] yazi.toml
-* [ ] cmus后台运行
+* [x] cmus后台运行
 * [ ] 工控机换网卡 改ip
 * [ ] 浇花 
