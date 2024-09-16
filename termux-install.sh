@@ -75,8 +75,13 @@ install_ohmyzsh() {
   #neofetch
   rxfetch
   sshd
-  alias nv="nvim"
-  alias ra="ranger"
+  if [ -f ~/termux-install/todo.md ]; then
+    glow ~/termux-install/todo.md
+  fi
+  alias s="slides ~/termux-install/dairy.md"
+  alias g="glow ~/termux-install/todo.md"
+  alias n="nvim"
+  alias y="yazi"
   alias gitacp="git add . ; git commit -m "1" ;git push origin main"
 EOF
   source ~/.zshrc
