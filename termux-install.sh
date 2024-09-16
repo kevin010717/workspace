@@ -84,7 +84,7 @@ install_ohmyzsh() {
   alias y="yazi"
   alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
   #shell screen -d cmus
-  alias gitacp="git add . ; git commit -m "1" ;git push origin main"
+  alias gacp="git add . ; git commit -m "1" ;git push origin main"
 EOF
   source ~/.zshrc
   cat <<EOF >>~/.config/yazi/yazi.toml
