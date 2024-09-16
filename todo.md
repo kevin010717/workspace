@@ -19,7 +19,7 @@
   <p>Content 1 Content 1 Content 1 Content 1 Content 1</p>
 </details>
 
-* [ ] yazi.toml
+* [x] yazi.toml
 * [x] cmus后台运行
 * [ ] 工控机换网卡 改ip
 * [ ] 浇花 

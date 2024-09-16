@@ -110,9 +110,9 @@ EOF
   {key: ALT, popup: {macro: "CTRL f TAB", display: "tmux →"}}, \
   {key: TAB, popup: {macro: "ALT a", display: A-a}}, \
   {key: LEFT, popup: HOME}, \
-  {key: DOWN, popup: PGDN}, \
-  {key: UP, popup: PGUP}, \
   {key: RIGHT, popup: END}, \
+  {key: UP, popup: PGUP}, \
+  {key: DOWN, popup: PGDN}, \
   {key: "/", popup: "~"}, \
   {key: KEYBOARD, popup: {macro: "CTRL d", display: exit}} \
 ]]
