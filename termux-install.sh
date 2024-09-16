@@ -32,6 +32,7 @@ install_update() {
   pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
   pkg i ncmpcpp mpd cmus mpg123 tizonia man -y
   pkg i nnn ranger yazi mc -y
+  pkg i ripgrep -y
   curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
   wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
   su -c pm install termux-api.apk termux-styling.apk
