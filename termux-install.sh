@@ -68,39 +68,23 @@ install_update() {
   read -p "结束，按回车键继续…" key
 }
 
-install_ohmyzsh() {
+install_config() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   cat <<EOF >>~/.zshrc
   #neofetch
   rxfetch
   sshd
-  if [ -f ~/termux-install/todo.md ]; then
-    glow ~/termux-install/todo.md
-  fi
-  alias s="slides ~/termux-install/dairy.md"
+  alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
   alias g="glow ~/termux-install/todo.md"
   alias n="nvim"
+  alias s="slides ~/termux-install/dairy.md"
+  alias t="~/termux-install/termux-install.sh"
   alias y="yazi"
-  alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
   #shell screen -d cmus
   alias gacp="git add . ; git commit -m "1" ;git push origin main"
 EOF
   source ~/.zshrc
-  cat <<EOF >>~/.config/yazi/yazi.toml
-[opener]
-browser = [
-	{ run = 'am start -a android.intent.action.VIEW -d "http://127.0.0.1:18650${1#*/com.termux}" && echo $1 ', orphan = true, for = "unix" },
-	{ run = 'mpv --force-window %*', orphan = true, for = "windows" },
-	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
-] 
-[open]
-rules = [
-	# Media
-  #{ mime = "{audio,video}/*", use = [ "play", "reveal" ] },
-	{ mime = "{audio,video}/*", use = [ "browser" ] },
-]
-EOF
   cat <<EOF >>~/.termux/termux.properties
   volume-keys = volume
   bell-character = ignore"
@@ -117,6 +101,7 @@ EOF
   {key: KEYBOARD, popup: {macro: "CTRL d", display: exit}} \
 ]]
 EOF
+  termux-reload-settings
   read -p "结束，按回车键继续…" key
 }
 
@@ -245,7 +230,7 @@ install_leetcode_cli() {
 install() {
   while true; do
     echo -e "${GREEN_COLOR}1.update${RES}"
-    echo -e "${GREEN_COLOR}2.ohmyzsh${RES}"
+    echo -e "${GREEN_COLOR}2.config${RES}"
     echo -e "${GREEN_COLOR}3.clouddrive2${RES}"
     echo -e "${GREEN_COLOR}4.mpv-termux-url-opener${RES}"
     echo -e "${GREEN_COLOR}5.samba${RES}"
@@ -260,7 +245,7 @@ install() {
     read choice
     case $choice in
     1) install_update ;;
-    2) install_ohmyzsh ;;
+    2) install_config ;;
     3) install_clouddrive2 ;;
     4) install_mpv_termux_url_opener ;;
     5) install_samba ;;
