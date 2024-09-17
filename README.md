@@ -3,7 +3,7 @@ bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/
 ```
 
 ```
-bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/ubuntu-install/blob/main/ubuntu-install.sh)"
+bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/termux-install/blob/main/ubuntu-install.sh)"
 ```
 
 # Heading 1 #
