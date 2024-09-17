@@ -82,6 +82,7 @@ install_config() {
   fortune $PREFIX/share/games/fortunes/tang300
   fortune $PREFIX/share/games/fortunes/song100
   alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
+  alias f="sl;cmatrix;nyancat"
   alias g="glow ~/termux-install/todo.md"
   alias n="nvim"
   alias s="slides ~/termux-install/dairy.md"
