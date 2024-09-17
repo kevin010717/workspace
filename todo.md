@@ -1,9 +1,6 @@
 * [ ] 
-* [ ] calibre-web vercel
-* [ ] 升降桌
-* [ ] github page
 * [ ] 工控机换网卡 改ip
-* [ ] 浇花 
+* [x] github page
 * [x] 合并ubuntu-install和termux-install
 * [x] chatgpt on vercel
 * [x] git仓库合并 验证多端维护 不方便 取消

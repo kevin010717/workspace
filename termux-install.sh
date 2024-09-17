@@ -71,10 +71,16 @@ install_update() {
 install_config() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
+  git clone git@github.com:ruanyf/fortunes.github && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
   cat <<EOF >>~/.zshrc
   #neofetch
   rxfetch
   sshd
+  figlet Hello,world!
+  fortune $PREFIX/share/games/fortunes/fortunes
+  fortune $PREFIX/share/games/fortunes/chinese
+  fortune $PREFIX/share/games/fortunes/tang300
+  fortune $PREFIX/share/games/fortunes/song100
   alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
   alias g="glow ~/termux-install/todo.md"
   alias n="nvim"
