@@ -86,6 +86,7 @@ install_config() {
   alias g="glow ~/termux-install/todo.md"
   alias n="nvim"
   alias s="slides ~/termux-install/dairy.md"
+  alias sc="source ~/.zshrc"
   alias t="~/termux-install/termux-install.sh"
   alias y="yazi"
   #shell screen -d cmus
