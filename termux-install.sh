@@ -122,7 +122,8 @@ install_mpv_termux_url_opener() {
   #配置mpv
   cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/
   cat <<EOF >>~/.config/mpv/mpv.conf
-volume-max=200
+volume-max=1000
+volume=200
 script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
 EOF
   #配置termux-url-opener
