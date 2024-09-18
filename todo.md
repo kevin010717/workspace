@@ -1,4 +1,6 @@
 * [ ] 
+* [ ] ubuntu配置ros 
+* [ ] matlab控制算法的repo example
 * [ ] 工控机换网卡 改ip
 * [x] github page
 * [x] 合并ubuntu-install和termux-install
