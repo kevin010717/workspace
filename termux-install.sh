@@ -97,16 +97,17 @@ EOF
   volume-keys = volume
   bell-character = ignore"
   extra-keys = [[ \
-  {key: ESC, popup: {macro: "clear\n", display: "tmux exit"}}, \
-  {key: CTRL, popup: {macro: "CTRL f BKSP", display: "tmux ←"}}, \
-  {key: ALT, popup: {macro: "CTRL f TAB", display: "tmux →"}}, \
-  {key: TAB, popup: {macro: "ALT a", display: A-a}}, \
+  {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
+  {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
+  {macro: "CTRL b", display: B, popup: {macro: "", display: A}}, \
+  {macro: ":clear\n", display: C, popup: {macro: "", display: A}}, \
+  {key: ESC, popup: {macro: "", display: A}}, \
+  {key: CTRL, popup: {macro: "", display: A}}, \
   {key: LEFT, popup: HOME}, \
   {key: RIGHT, popup: END}, \
   {key: UP, popup: PGUP}, \
   {key: DOWN, popup: PGDN}, \
-  {key: "/", popup: "~"}, \
-  {key: KEYBOARD, popup: {macro: "CTRL d", display: exit}} \
+  {key: KEYBOARD, popup: {macro: "clear\n", display:clear }} \
 ]]
 EOF
   termux-reload-settings
