@@ -100,9 +100,10 @@ EOF
   {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
   {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
   {macro: "CTRL b", display: B, popup: {macro: "", display: A}}, \
-  {macro: ":clear\n", display: C, popup: {macro: "", display: A}}, \
+  {macro: "clear\n", display: C, popup: {macro: "", display: A}}, \
   {key: ESC, popup: {macro: "", display: A}}, \
   {key: CTRL, popup: {macro: "", display: A}}, \
+  {key: TAB, popup: {macro: "", display: A}}, \
   {key: LEFT, popup: HOME}, \
   {key: RIGHT, popup: END}, \
   {key: UP, popup: PGUP}, \
