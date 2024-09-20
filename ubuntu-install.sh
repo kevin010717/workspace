@@ -32,7 +32,7 @@ install-linuxbrew() {
 }
 
 install-samba() {
-  cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
+  sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
   cat >>/etc/samba/smb.conf <<EOF
   [sambashare]
   comment = Samba on ubuntu
@@ -40,7 +40,10 @@ install-samba() {
   read only = no
   browsable = yes
 EOF
+  sudo smbpasswd -a kevin
   sudo service smbd restart
+  sudo systemctl restart smbd
+  sudo systemctl enable smbd
 }
 install-filebrowser() {
   curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
