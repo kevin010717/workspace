@@ -7,8 +7,8 @@
 * [x] 台风115服务器崩溃 cd2重新部署
 * [x] ubuntu配置ros 
 * [x] 工控机换网卡 改ip
+* [ ] git cmake cpp python rust
 * [ ] matlab repo example
-* [ ] git branch
-* [ ] ros.sh 
 * [ ] slam
+* [ ] ros.sh 
 * [ ] 
