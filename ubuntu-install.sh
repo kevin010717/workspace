@@ -200,6 +200,7 @@ install-update() {
   sudo snap install slides glow lazygit
   rustup update stable && rustup show && rustup default
   cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
+  echo "export PATH="$HOME/.cargo/bin:$PATH"" >>~/.zshrc
   #pipx install tomato-clock
   #pipx run --spec tomato-clock tomato
   #npm install -g percollate #web pages to epub
