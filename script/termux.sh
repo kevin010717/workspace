@@ -84,11 +84,10 @@ install_config() {
   fortune $PREFIX/share/games/fortunes/song100
   alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
   alias f="sl;nyancat -f 50 -n;cmatrix;"
-  alias g="glow ~/termux-install/todo.md"
+  alias g="glow ~/termux-install/README.md"
   alias n="nvim"
-  alias s="slides ~/termux-install/dairy.md"
   alias sc="source ~/.zshrc"
-  alias t="~/termux-install/termux-install.sh"
+  alias t="~/termux-install/script/termux.sh"
   alias y="yazi"
   #shell screen -d cmus
   alias gacp="git add . ; git commit -m "1" ;git push origin main"
