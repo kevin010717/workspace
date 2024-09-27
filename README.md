@@ -13,8 +13,8 @@ bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/
 * [x] 台风115服务器崩溃 cd2重新部署
 * [x] ubuntu配置ros 
 * [x] 工控机换网卡 改ip
+* [x] ros.sh 
 * [ ] git cmake cpp python rust
 * [ ] matlab repo example
 * [ ] slam
-* [ ] ros.sh 
 * [ ] 
