@@ -85,6 +85,7 @@ install_config() {
   alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
   alias f="sl;nyancat -f 50 -n;cmatrix;"
   alias g="glow ~/workspace/README.md"
+  alias h="htop"
   alias n="nvim"
   alias sc="source ~/.zshrc"
   alias t="~/workspace/script/termux.sh"
