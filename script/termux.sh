@@ -91,6 +91,12 @@ install_config() {
   alias y="yazi"
   #shell screen -d cmus
   alias gacp="git add . ; git commit -m "1" ;git push origin main"
+  if ! pgrep -f "clouddrive" > /dev/null; then
+    sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
+  fi
+  if ! pgrep -f "filebrowser" > /dev/null; then
+    sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
+  fi
 EOF
   source ~/.zshrc
   cat <<EOF >>~/.termux/termux.properties
@@ -360,11 +366,9 @@ start() {
     read choice
     case $choice in
     1)
-      sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
       am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
       ;;
     2)
-      sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
       am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
       ;;
       #nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files > /dev/null 2>&1 &;;
