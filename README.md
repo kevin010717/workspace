@@ -14,6 +14,7 @@ bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/
 * [x] ubuntu配置ros 
 * [x] 工控机换网卡 改ip
 * [x] ros.sh 
+* [x] cmus
 * [ ] git cmake cpp python rust
 * [ ] matlab repo example
 * [ ] slam

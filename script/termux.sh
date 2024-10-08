@@ -38,6 +38,7 @@ install_update() {
   wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
   su -c pm install termux-api.apk termux-styling.apk
   rm termux-api.apk termux-styling.apk
+  pip install youtube-dl yt-dlp you-get PySocks
   #npm install mapscii -g
   #cargo install clock-tui bk
   #pip install epr-reader
@@ -82,7 +83,7 @@ install_config() {
   fortune $PREFIX/share/games/fortunes/chinese
   fortune $PREFIX/share/games/fortunes/tang300
   fortune $PREFIX/share/games/fortunes/song100
-  alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'
+  alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)'
   alias f="sl;nyancat -f 50 -n;cmatrix;"
   alias g="glow ~/workspace/README.md"
   alias h="htop"
@@ -119,6 +120,24 @@ EOF
 ]]
 EOF
   termux-reload-settings
+
+  cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
+  volume-max=1000
+  volume=200
+  script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
+EOF
+  mkdir -p ~/bin && cat <<EOF >>~/bin/termux-url-opener
+  pip install -U yt-dlp
+  echo "1.download it" 
+  echo "2.listen to it"  
+  read choice 
+  case \$choice in 
+    1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" \$1;; 
+    2) mpv --no-video -v \$1;;
+    *) mpv --no-video -v \$1;;
+  esac
+EOF
+  ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
   read -p "结束，按回车键继续…" key
 }
 
@@ -130,15 +149,14 @@ install_clouddrive2() {
 install_mpv_termux_url_opener() {
   pip install youtube-dl yt-dlp you-get PySocks
   #配置mpv
-  cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/
-  cat <<EOF >>~/.config/mpv/mpv.conf
+  cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
 volume-max=1000
 volume=200
 script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
 EOF
   #配置termux-url-opener
-  mkdir -p ~/bin
-  cat <<EOF >>~/bin/termux-url-opener
+  mkdir -p ~/bin && cat <<EOF >>~/bin/termux-url-opener
+  pip install -U yt-dlp
   echo "1.download it" 
   echo "2.listen to it"  
   read choice 
