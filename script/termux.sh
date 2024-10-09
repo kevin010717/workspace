@@ -181,7 +181,7 @@ install_update() {
     code-server
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
     ;;
-  *) break ;;
+  *) ;;
   esac
 
   read -p "nodeserver?(y/n):" choice
@@ -205,7 +205,7 @@ EOF
     node server.js
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
     ;;
-  *) break ;;
+  *) ;;
   esac
 
   read -p "leetcode-cli?(y/n):" choice
@@ -213,7 +213,7 @@ EOF
   y)
     npm install -g leetcode-cli
     ;;
-  *) break ;;
+  *) ;;
   esac
 
   #bash -c "$(curl -L l.tmoe.me)"
