@@ -24,7 +24,7 @@ RES='\e[0m'
 
 install_update() {
   termux-reload-settings
-  termux-setup-storage
+  #termux-setup-storage
   termux-change-repo
   pkg update && pkg upgrade -y
   pkg i root-repo x11-repo -y
@@ -39,6 +39,7 @@ install_update() {
   su -c pm install termux-api.apk termux-styling.apk
   rm termux-api.apk termux-styling.apk
   pip install youtube-dl yt-dlp you-get PySocks
+  pip install lolcat
   #npm install mapscii -g
   #cargo install clock-tui bk
   #pip install epr-reader
@@ -48,26 +49,175 @@ install_update() {
 
   passwd
   whoami
-  #ssh-keygen -t rsa
-  #cd .ssh
-  #ssh-copy-id -i id_rsa.pub kevin@10.147.17.140
-  #del "C:\Users\admin\.ssh\known_hosts"
-  #ssh u0_a589@192.168.1.12 -p 8022
+  #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
 
-  ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com”
-  cat ~/.ssh/id_rsa.pub
-  ssh -T git@github.com
+  ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
+  read -p "更新github ssh keys" key && am start -a android.intent.action.VIEW -d https://github.com && ssh -T git@github.com
   git config --global user.email "k511153362@gmail.com"
   git config --global user.name "kevin010717"
   gh auth login
 
-  ranger --copy-config=all
-  export RANGER_LOAD_DEFAULT_RC=FALSE
-  #mime ^text,  label editor = nvim -- "$@"
+  read -p "clouddrive?(y/n):" choice
+  case $choice in
+  y)
+    curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
+    ;;
+  *) ;;
+  esac
+
+  read -p "filebrowser?(y/n):" choice
+  case $choice in
+  y)
+    mkdir .filebrowser
+    wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
+    tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
+    chmod +x .filebrowser/filebrowser
+    sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
+    ;;
+  *) ;;
+  esac
+
+  read -p "calibreweb?(y/n):" choice
+  case $choice in
+  y)
+    pip install --user -U calibreweb
+    pip install tzdata
+    nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
+    ;;
+  *) ;;
+  esac
+
+  read -p "qbittorrent?(y/n):" choice
+  case $choice in
+  y)
+    wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
+    mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
+    chmod +x qbittorrent
+    sudo qbittorrent
+    ;;
+  *) ;;
+  esac
+
+  read -p "samba?(y/n):" choice
+  case $choice in
+  y)
+    mkdir $PREFIX/etc/samba
+    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' /data/data/com.termux/files/usr/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
+    pdbedit -a -u admin
+    smbd
+    smbclient -p 445 //127.0.0.1/internal -U admin
+    ;;
+  *) ;;
+  esac
+
+  read -p "biliup?(y/n):" choice
+  case $choice in
+  y)
+    mkdir builds
+    cd builds/
+    git clone https://github.com/saghul/pycares
+    pip install setuptools
+    python setup.py install
+    cd ~
+    rm -r builds -y
+
+    pip install --user -U streamlink biliup
+    echo “export PATH="${HOME}/.local/bin:${PATH}"” >.bashrc && source .bashrc && echo $PATH
+    mkdir .biliup && cd .biliup && biliup start
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
+    ;;
+  *) ;;
+  esac
+
+  read -p "aria2?(y/n):" choice
+  case $choice in
+  y)
+    pkg install aria2
+    # aria2c --enable-rpc --rpc-listen-all
+    pkg install git nodejs
+    git clone https://github.com/ziahamza/webui-aria2.git
+    mv webui-aria2 .webui-aria2
+    nohup node ~/.webui-aria2/node-server.js >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
+    echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
+    ;;
+  *) ;;
+  esac
+
+  read -p "chfs?(y/n):" choice
+  case $choice in
+  y)
+    wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
+    unzip chfs-linux-arm64-3.1.zip
+    mv chfs-linux-arm64-3.1 chfs
+    mv chfs /data/data/com.termux/files/usr/bin/
+    rm chfs-linux-arm64-3.1.zip
+    nohup sudo chfs --port=1234 >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
+    ;;
+  *) ;;
+  esac
+
+  read -p "http-server?(y/n):" choice
+  case $choice in
+  y)
+    pkg install nodejs
+    npm install -g http-server
+    http-server -a 127.0.0.1 -p 8090
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
+    ;;
+  *) ;;
+  esac
+
+  read -p "code-server?(y/n):" choice
+  case $choice in
+  y)
+    apt install tur-repo                  #安装软件源
+    apt install code-server               #安装
+    cat ~/.config/code-server/config.yaml #查看密码
+    code-server
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
+    ;;
+  *) break ;;
+  esac
+
+  read -p "nodeserver?(y/n):" choice
+  case $choice in
+  y)
+    mkdir nodeserver
+    cd nodeserver
+    npm init
+    npm install express --save
+    cat <<EOF >>server.js
+const express = require('express');
+const app = express();
+app.get('/', (req, res) => {
+   res.send('Hello World!');
+});
+app.listen(3000, () => {
+   console.log('Server is running at http://localhost:3000');
+});
+EOF
+
+    node server.js
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
+    ;;
+  *) break ;;
+  esac
+
+  read -p "leetcode-cli?(y/n):" choice
+  case $choice in
+  y)
+    npm install -g leetcode-cli
+    ;;
+  *) break ;;
+  esac
 
   #bash -c "$(curl -L l.tmoe.me)"
   #mytermux.git
-  read -p "结束，按回车键继续…" key
 }
 
 install_config() {
@@ -78,26 +228,34 @@ install_config() {
   #neofetch
   rxfetch
   sshd
-  figlet Hello,world!
-  fortune $PREFIX/share/games/fortunes/fortunes
-  fortune $PREFIX/share/games/fortunes/chinese
-  fortune $PREFIX/share/games/fortunes/tang300
-  fortune $PREFIX/share/games/fortunes/song100
+  figlet Hello,world! | lolcat
+  fortune $PREFIX/share/games/fortunes/fortunes | lolcat
+  fortune $PREFIX/share/games/fortunes/chinese | lolcat
+  fortune $PREFIX/share/games/fortunes/tang300 | lolcat
+  fortune $PREFIX/share/games/fortunes/song100 | lolcat
+  cowsay -r what | lolcat
+  cal | lolcat
+  date | lolcat
   alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)'
+  #shell screen -d cmus
+  alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
   alias f="sl;nyancat -f 50 -n;cmatrix;"
+  alias rainbow='yes "$(seq 231 -1 16)" | while read -r i; do printf "\x1b[48;5;${i}m\n" && sleep 0.02; done'
   alias g="glow ~/workspace/README.md"
   alias h="htop"
   alias n="nvim"
   alias sc="source ~/.zshrc"
-  alias t="~/workspace/script/termux.sh"
+  alias t="~/workspace/script/termux.sh | lolcat"
   alias y="yazi"
-  #shell screen -d cmus
   alias gacp="git add . ; git commit -m "1" ;git push origin main"
   if ! pgrep -f "clouddrive" > /dev/null; then
     sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
   fi
   if ! pgrep -f "filebrowser" > /dev/null; then
     sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
+  fi
+  if ! pgrep -f "calibreweb" > /dev/null; then
+    nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
   fi
 EOF
   source ~/.zshrc
@@ -130,171 +288,17 @@ EOF
   pip install -U yt-dlp
   echo "1.download it" 
   echo "2.listen to it"  
+  echo "3.generate QRcode"
   read choice 
   case \$choice in 
     1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" \$1;; 
     2) mpv --no-video -v \$1;;
+    3) echo \$1 | curl -F-=\<- qrenco.de;;
     *) mpv --no-video -v \$1;;
   esac
 EOF
   ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
   read -p "结束，按回车键继续…" key
-}
-
-install_clouddrive2() {
-  curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
-  read -p "结束，按回车键继续…" key
-}
-
-install_mpv_termux_url_opener() {
-  pip install youtube-dl yt-dlp you-get PySocks
-  #配置mpv
-  cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
-volume-max=1000
-volume=200
-script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
-EOF
-  #配置termux-url-opener
-  mkdir -p ~/bin && cat <<EOF >>~/bin/termux-url-opener
-  pip install -U yt-dlp
-  echo "1.download it" 
-  echo "2.listen to it"  
-  read choice 
-  case \$choice in 
-    1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" \$1;; 
-    2) mpv --no-video -v \$1;;
-    *) mpv --no-video -v \$1;;
-  esac
-EOF
-  ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
-  read -p "结束，按回车键继续…" key
-}
-
-install_samba() {
-  mkdir $PREFIX/etc/samba
-  sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' /data/data/com.termux/files/usr/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
-  pdbedit -a -u admin
-  read -p "结束，按回车键继续…" key
-}
-
-install_streamlink_biliup() {
-  mkdir builds
-  cd builds/
-  git clone https://github.com/saghul/pycares
-  pip install setuptools
-  python setup.py install
-  cd ~
-  rm -r builds -y
-
-  pip install --user -U streamlink biliup
-  echo “export PATH="${HOME}/.local/bin:${PATH}"” >.bashrc && source .bashrc && echo $PATH
-  read -p "结束，按回车键继续…" key
-}
-
-install_filebrowser() {
-  mkdir .filebrowser
-  wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
-  tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
-  chmod +x .filebrowser/filebrowser
-  read -p "结束，按回车键继续…" key
-}
-
-install_aria2() {
-  pkg install aria2
-  # aria2c --enable-rpc --rpc-listen-all
-  pkg install git nodejs
-  git clone https://github.com/ziahamza/webui-aria2.git
-  mv webui-aria2 .webui-aria2
-  echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
-  read -p "结束，按回车键继续…" key
-}
-
-install_chfs() {
-  wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
-  unzip chfs-linux-arm64-3.1.zip
-  mv chfs-linux-arm64-3.1 chfs
-  mv chfs /data/data/com.termux/files/usr/bin/
-  rm chfs-linux-arm64-3.1.zip
-  read -p "结束，按回车键继续…" key
-}
-
-install_http_server() {
-  pkg install nodejs
-  npm install -g http-server
-  read -p "结束，按回车键继续…" key
-}
-
-install_qbittorrent() {
-  wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
-  mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
-  chmod +x qbittorrent
-  read -p "结束，按回车键继续…" key
-}
-
-install_code_server() {
-  apt install tur-repo    #安装软件源
-  apt install code-server #安装
-  read -p "结束，按回车键继续…" key
-}
-
-install_node_server() {
-  mkdir nodeserver
-  cd nodeserver
-  npm init
-  npm install express --save
-  cat <<EOF >>server.js
-const express = require('express');
-const app = express();
-app.get('/', (req, res) => {
-   res.send('Hello World!');
-});
-app.listen(3000, () => {
-   console.log('Server is running at http://localhost:3000');
-});
-EOF
-
-  node server.js
-}
-
-install_calibreweb() {
-  pip install --user -U calibreweb
-}
-
-install_leetcode_cli() {
-  npm install -g leetcode-cli
-}
-install() {
-  while true; do
-    echo -e "${GREEN_COLOR}1.update${RES}"
-    echo -e "${GREEN_COLOR}2.config${RES}"
-    echo -e "${GREEN_COLOR}3.clouddrive2${RES}"
-    echo -e "${GREEN_COLOR}4.mpv-termux-url-opener${RES}"
-    echo -e "${GREEN_COLOR}5.samba${RES}"
-    echo -e "${GREEN_COLOR}7.streamlink biliup${RES}"
-    echo -e "${GREEN_COLOR}8.filebrowser${RES}"
-    echo -e "${GREEN_COLOR}9.aria2${RES}"
-    echo -e "${GREEN_COLOR}10.chfs${RES}"
-    echo -e "${GREEN_COLOR}11.http-sever${RES}"
-    echo -e "${GREEN_COLOR}12.qbittorrent${RES}"
-    echo -e "${GREEN_COLOR}13.code-server${RES}"
-    echo -e "${GREEN_COLOR}15.all${RES}"
-    read choice
-    case $choice in
-    1) install_update ;;
-    2) install_config ;;
-    3) install_clouddrive2 ;;
-    4) install_mpv_termux_url_opener ;;
-    5) install_samba ;;
-    7) install_streamlink_biliup ;;
-    8) install_filebrowser ;;
-    9) install_aria2 ;;
-    10) install_chfs ;;
-    11) install_http_server ;;
-    12) install_qbittorrent ;;
-    13) install_code_server ;;
-    *) break ;;
-    esac
-  done
 }
 
 start_obs() {
@@ -348,114 +352,46 @@ start_gif() {
   done <file1.txt
   rm -r file1.txt img
 }
+
 start_thumbnails() {
-  start_generate_thumbnail() {
-    local video_file="$1"
-    local thumbnail_file="${video_file%.*}.png"
-
-    sudo ffmpeg -hide_banner -loglevel panic -y -i "$video_file" -frames 1 -vf "thumbnail,scale=1080:-1,tile=1X5:padding=10:color=white" "$thumbnail_file"
-  }
-
+  # 遍历当前目录下的所有 .mp4 和 .mkv 文件
   for video_file in *.mp4 *.mkv; do
     # 忽略非文件类型的东西（如目录）
     [[ -f "$video_file" ]] || continue
 
+    local thumbnail_file="${video_file%.*}.png" # 生成缩略图文件名
     echo "正在处理视频文件：$video_file"
-    start_generate_thumbnail "$video_file"
-  done
-}
-start() {
-  while true; do
-    echo -e "${GREEN_COLOR}1.clouddrive2${RES}"
-    echo -e "${GREEN_COLOR}2.filebrowser${RES}"
-    echo -e "${GREEN_COLOR}3.yacd${RES}"
-    echo -e "${GREEN_COLOR}4.aria2${RES}"
-    echo -e "${GREEN_COLOR}5.qbittorrent${RES}"
-    echo -e "${GREEN_COLOR}6.samba${RES}"
-    echo -e "${GREEN_COLOR}7.termux-url-opener${RES}"
-    echo -e "${GREEN_COLOR}9.chfs${RES}"
-    echo -e "${GREEN_COLOR}10.code-server${RES}"
-    echo -e "${GREEN_COLOR}11.http-sever${RES}"
-    echo -e "${GREEN_COLOR}12.biliup${RES}"
-    echo -e "${GREEN_COLOR}13.calibreweb${RES}"
-    echo -e "${GREEN_COLOR}14.obs${RES}"
-    echo -e "${GREEN_COLOR}15.gif${RES}"
-    echo -e "${GREEN_COLOR}16.thumnails${RES}"
 
-    read choice
-    case $choice in
-    1)
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
-      ;;
-    2)
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
-      ;;
-      #nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files > /dev/null 2>&1 &;;
-    3)
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:9090/ui
-      ;;
-    4)
-      nohup node ~/.webui-aria2/node-server.js >/dev/null 2>&1 &
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
-      ;;
-    5)
-      sudo qbittorrent
-      ;;
-    6)
-      smbclient -p 445 //127.0.0.1/internal -U admin
-      ;;
-    7)
-      ~/bin/termux-url-opener
-      ;;
-    9)
-      nohup sudo chfs --port=1234 >/dev/null 2>&1 &
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
-      ;;
-    10)
-      cat ~/.config/code-server/config.yaml #查看密码
-      code-server
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
-      ;;
-    11)
-      http-server -a 127.0.0.1 -p 8090
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
-      ;;
-    12)
-      start_biliup
-      mkdir .biliup && cd .biliup && biliup start
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
-      ;;
-    13)
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
-      ;;
-    14)
-      start_obs
-      ;;
-    15)
-      start_gif
-      ;;
-    16)
-      start_thumbnails
-      ;;
-    *) break ;;
-    esac
+    # 使用 ffmpeg 生成缩略图
+    sudo ffmpeg -hide_banner -loglevel panic -y \
+      -i "$video_file" \
+      -frames 1 \
+      -vf "thumbnail,scale=1080:-1,tile=1X5:padding=10:color=white" \
+      "$thumbnail_file"
   done
 }
+
 while true; do
-  echo -e "${GREEN_COLOR}1.install${RES}"
-  echo -e "${GREEN_COLOR}2.start${RES}"
+  echo -e "1.install_update"
+  echo -e "2.install_config"
+  echo -e "3.start_obs"
+  echo -e "4.start_gif"
+  echo -e "5.start_thumbnails"
   read choice
   case $choice in
-  1) time install ;;
-  2) time start ;;
+  1) time install_update ;;
+  2) time install_config ;;
+  3) time start_obs ;;
+  4) time start_gif ;;
+  5) time start_thumbnails ;;
   *) break ;;
   esac
 done
 cheetsheet_nvim() {
-  echo -e "${GREEN_COLOR}1.astronvim${RES}"
-  echo -e "${GREEN_COLOR}2.lazyvim${RES}"
-  echo -e "${GREEN_COLOR}3.lunarvim${RES}"
-  echo -e "${GREEN_COLOR}4.nvchad${RES}"
+  echo -e "1.astronvim"
+  echo -e "2.lazyvim"
+  echo -e "3.lunarvim"
+  echo -e "4.nvchad"
   read choice
   case $choice in
   1)
