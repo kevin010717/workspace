@@ -31,6 +31,9 @@ install_update() {
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
   passwd
+  sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+  git clone https://github.com/LazyVim/starter ~/.config/nvim
+  git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #npm install mapscii -g
   #cargo install clock-tui bk
@@ -42,15 +45,15 @@ install_update() {
   read -p "git config?(y/n):" choice
   case $choice in
   y)
-  ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
-  am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
-  git config --global user.email "k511153362@gmail.com"
-  git config --global user.name "kevin010717"
-  gh auth login
+    ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
+    am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
+    git config --global user.email "k511153362@gmail.com"
+    git config --global user.name "kevin010717"
+    gh auth login
     ;;
   *) ;;
   esac
-  
+
   read -p "clouddrive?(y/n):" choice
   case $choice in
   y)
@@ -216,9 +219,6 @@ EOF
 }
 
 install_config() {
-  sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-  git clone https://github.com/LazyVim/starter ~/.config/nvim
-  git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
   cat <<EOF >>~/.zshrc
   #neofetch
   rxfetch
