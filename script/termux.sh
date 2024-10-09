@@ -50,6 +50,8 @@ install_update() {
     git config --global user.email "k511153362@gmail.com"
     git config --global user.name "kevin010717"
     gh auth login
+    git clone https://github.com/kevin010717/workspace.git
+    cp -r ~/workspace/.config/yazi/ ~/.config/yazi/
     ;;
   *) ;;
   esac
@@ -235,10 +237,11 @@ install_config() {
   #shell screen -d cmus
   alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
   alias f="sl;nyancat -f 50 -n;cmatrix;"
-  alias rainbow='yes "$(seq 231 -1 16)" | while read -r i; do printf "\x1b[48;5;${i}m\n" && sleep 0.02; done'
   alias g="glow ~/workspace/README.md"
   alias h="htop"
   alias n="nvim"
+  alias ls="ls | lolcat"
+  alias cat="cat | lolcat"
   alias sc="source ~/.zshrc"
   alias t="~/workspace/script/termux.sh | lolcat"
   alias y="yazi"
