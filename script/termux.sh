@@ -2,16 +2,7 @@
 #set -x
 chmod +x "$0"
 
-RED_COLOR='\e[1;31m'
-GREEN_COLOR='\e[1;32m'
-YELLOW_COLOR='\e[1;33m'
-BLUE_COLOR='\e[1;34m'
-PINK_COLOR='\e[1;35m'
-SHAN='\e[1;33;5m'
-RES='\e[0m'
-
 #todo
-#calibre-web
 #markdown-web
 #gitbook
 #chatgpt
@@ -20,7 +11,6 @@ RES='\e[0m'
 #termux代理软件：v2ray singbox mihomo(clash.meta) dae crashshell 目前用magisk模块
 #nnn.vim
 #nnn filebrowser
-#tmux常用cli aliases
 
 install_update() {
   termux-reload-settings
