@@ -218,7 +218,7 @@ EOF
 install_config() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
-  git clone git@github.com:ruanyf/fortunes.github && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
+  git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
   cat <<EOF >>~/.zshrc
   #neofetch
   rxfetch
