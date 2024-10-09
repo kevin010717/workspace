@@ -35,7 +35,7 @@ install_update() {
   pkg i ripgrep -y
   pkg i iperf3 -y
   curl -o termux-api.apk https://f-droid.org/repo/com.termux.api_51.apk
-  wget -O termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
+  curl -o termux-styling.apk https://f-droid.org/repo/com.termux.styling_1000.apk
   su -c pm install termux-api.apk termux-styling.apk
   rm termux-api.apk termux-styling.apk
   pip install youtube-dl yt-dlp you-get PySocks
