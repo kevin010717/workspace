@@ -65,6 +65,7 @@ install_update() {
   case $choice in
   y)
     curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
+    sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
     ;;
   *) ;;
