@@ -216,11 +216,9 @@ EOF
   *) ;;
   esac
 
-  #bash -c "$(curl -L l.tmoe.me)"
-  #mytermux.git
-}
-
-install_config() {
+  read -p "config?(y/n):" choice
+  case $choice in
+  y)
   cat <<EOF >>~/.zshrc
   #neofetch
   rxfetch
@@ -263,8 +261,6 @@ EOF
   extra-keys = [[ \
   {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
   {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
-  {macro: "CTRL b", display: B, popup: {macro: "", display: A}}, \
-  {macro: "clear\n", display: C, popup: {macro: "", display: A}}, \
   {key: ESC, popup: {macro: "", display: A}}, \
   {key: CTRL, popup: {macro: "", display: A}}, \
   {key: TAB, popup: {macro: "", display: A}}, \
@@ -296,7 +292,11 @@ EOF
   esac
 EOF
   ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
-  read -p "结束，按回车键继续…" key
+  *) ;;
+  esac
+
+  #bash -c "$(curl -L l.tmoe.me)"
+  #mytermux.git
 }
 
 start_obs() {
@@ -371,17 +371,15 @@ start_thumbnails() {
 
 while true; do
   echo -e "1.install_update"
-  echo -e "2.install_config"
-  echo -e "3.start_obs"
-  echo -e "4.start_gif"
-  echo -e "5.start_thumbnails"
+  echo -e "2.start_obs"
+  echo -e "3.start_gif"
+  echo -e "4.start_thumbnails"
   read choice
   case $choice in
   1) time install_update ;;
-  2) time install_config ;;
-  3) time start_obs ;;
-  4) time start_gif ;;
-  5) time start_thumbnails ;;
+  2) time start_obs ;;
+  3) time start_gif ;;
+  4) time start_thumbnails ;;
   *) break ;;
   esac
 done
