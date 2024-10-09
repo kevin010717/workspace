@@ -40,6 +40,8 @@ install_update() {
   rm termux-api.apk termux-styling.apk
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
+  passwd
+  #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #npm install mapscii -g
   #cargo install clock-tui bk
   #pip install epr-reader
@@ -47,16 +49,18 @@ install_update() {
   #pkg install python clang libjpeg-turbo ffmpeg zlib -y
   #pip3 install --upgrade tidal-dl
 
-  passwd
-  whoami
-  #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
-
+  read -p "git config?(y/n):" choice
+  case $choice in
+  y)
   ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
-  read -p "更新github ssh keys" key && am start -a android.intent.action.VIEW -d https://github.com && ssh -T git@github.com
+  am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
   git config --global user.email "k511153362@gmail.com"
   git config --global user.name "kevin010717"
   gh auth login
-
+    ;;
+  *) ;;
+  esac
+  
   read -p "clouddrive?(y/n):" choice
   case $choice in
   y)
