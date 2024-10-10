@@ -13,7 +13,7 @@ chmod +x "$0"
 #nnn filebrowser
 #kali
 
-install_update() {
+update() {
   #termux-reload-settings
   #termux-setup-storage
   #termux-change-repo
@@ -26,12 +26,14 @@ install_update() {
   pkg i ripgrep -y
   pkg i iperf3 -y
   pkg i termux-api -y
+  apt install tur-repo #安装软件源
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
   echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
+  #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #npm install mapscii -g
   #cargo install clock-tui bk
@@ -109,33 +111,17 @@ install_update() {
     ;;
   esac
 
-  read -p "biliup?(y/n):" choice
-  case $choice in
-  y)
-    mkdir builds
-    cd builds/
-    git clone https://github.com/saghul/pycares
-    pip install setuptools
-    python setup.py install
-    cd ~
-    rm -r builds -y
-
-    pip install --user -U streamlink biliup
-    echo “export PATH="${HOME}/.local/bin:${PATH}"” >.bashrc && source .bashrc && echo $PATH
-    mkdir .biliup && cd .biliup && biliup start
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
-    ;;
-  esac
-
   read -p "aria2?(y/n):" choice
   case $choice in
   y)
     pkg install aria2
-    # aria2c --enable-rpc --rpc-listen-all
+    sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
     pkg install git nodejs
     git clone https://github.com/ziahamza/webui-aria2.git
     mv webui-aria2 .webui-aria2
-    nohup node ~/.webui-aria2/node-server.js >/dev/null 2>&1 &
+    cd ~/.webui-aria2/
+    sudo nohup node node-server.js >/dev/null 2>&1 &
+    cd ~
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
     echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
     ;;
@@ -146,10 +132,10 @@ install_update() {
   y)
     wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
     unzip chfs-linux-arm64-3.1.zip
-    mv chfs-linux-arm64-3.1 chfs
-    mv chfs /data/data/com.termux/files/usr/bin/
+    chmod +x chfs-linux-arm64-3.1
+    mv chfs-linux-arm64-3.1 /data/data/com.termux/files/usr/bin/chfs
     rm chfs-linux-arm64-3.1.zip
-    nohup sudo chfs --port=1234 >/dev/null 2>&1 &
+    sudo nohup chfs --port=1234 >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
     ;;
   esac
@@ -159,7 +145,7 @@ install_update() {
   y)
     pkg install nodejs
     npm install -g http-server
-    http-server -a 127.0.0.1 -p 8090
+    sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
     ;;
   esac
@@ -167,10 +153,10 @@ install_update() {
   read -p "code-server?(y/n):" choice
   case $choice in
   y)
-    apt install tur-repo                  #安装软件源
-    apt install code-server               #安装
-    cat ~/.config/code-server/config.yaml #查看密码
-    code-server
+    apt install tur-repo                          #安装软件源
+    apt install code-server                       #安装
+    cat ~/.suroot/.config/code-server/config.yaml #查看密码
+    sudo nohup code-server >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
     ;;
   esac
@@ -192,8 +178,25 @@ app.listen(3000, () => {
    console.log('Server is running at http://localhost:3000');
 });
 EOF
+    sudo nohup node server.js >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
+    ;;
+  esac
 
-    node server.js
+  read -p "biliup?(y/n):" choice
+  case $choice in
+  y)
+    mkdir builds
+    cd builds/
+    git clone https://github.com/saghul/pycares
+    pip install setuptools
+    python setup.py install
+    cd ~
+    rm -r builds -y
+
+    pip install --user -U streamlink biliup
+    echo “export PATH="${HOME}/.local/bin:${PATH}"” >.bashrc && source .bashrc && echo $PATH
+    mkdir .biliup && cd .biliup && biliup start
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
     ;;
   esac
@@ -202,6 +205,7 @@ EOF
   case $choice in
   y)
     npm install -g leetcode-cli
+    cargo install leetcode-cli
     ;;
   esac
 
@@ -209,6 +213,7 @@ EOF
   case $choice in
   y)
     cat <<EOF >>~/.zshrc
+  export PATH="$HOME/.cargo/bin:$PATH"
   #neofetch
   rxfetch
   sshd
@@ -247,6 +252,21 @@ EOF
   fi
   if ! pgrep -f "smbd" > /dev/null; then
     smbd
+  fi
+  if ! pgrep -f "aria2" > /dev/null; then
+    cd .webui-aria2
+    sudo nohup aria2c --enable-rpc --rpc-listen-all --rpc-listen-port=6801 --rpc-secret=your_secret >/dev/null 2>&1 &
+    sudo nohup node node-server.js >/dev/null 2>&1 &
+    cd ~
+  fi
+  if ! pgrep -f "chfs" > /dev/null; then
+    nohup sudo chfs --port=1234 >/dev/null 2>&1 &
+  fi
+  if ! pgrep -f "http-server" > /dev/null; then
+    sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
+  fi
+  if ! pgrep -f "http-server" > /dev/null; then
+    sudo nohup code-server >/dev/null 2>&1 &
   fi
 EOF
     source ~/.zshrc
@@ -294,7 +314,7 @@ EOF
   #mytermux.git
 }
 
-start_obs() {
+obs() {
   folder="/data/data/com.termux/files/home/video/"
   read -p "请输入您的推流地址和推流码(rtmp协议):" rtmp
   while true; do
@@ -308,7 +328,7 @@ start_obs() {
   done
 }
 
-start_gif() {
+gif() {
   find . -type f \( -iname \*.mp4 -o -iname \*.mkv \) >file1.txt
   mkdir -p img
   while IFS= read -r file; do
@@ -346,7 +366,7 @@ start_gif() {
   rm -r file1.txt img
 }
 
-start_thumbnails() {
+thumbnails() {
   # 遍历当前目录下的所有 .mp4 和 .mkv 文件
   for video_file in *.mp4 *.mkv; do
     # 忽略非文件类型的东西（如目录）
@@ -365,16 +385,16 @@ start_thumbnails() {
 }
 
 while true; do
-  echo -e "1.install_update"
-  echo -e "2.start_obs"
-  echo -e "3.start_gif"
-  echo -e "4.start_thumbnails"
+  echo -e "1.update"
+  echo -e "2.obs"
+  echo -e "3.gif"
+  echo -e "4.thumbnails"
   read choice
   case $choice in
-  1) time install_update ;;
-  2) time start_obs ;;
-  3) time start_gif ;;
-  4) time start_thumbnails ;;
+  1) time update ;;
+  2) time obs ;;
+  3) time gif ;;
+  4) time thumbnails ;;
   *) break ;;
   esac
 done
