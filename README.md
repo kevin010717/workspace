@@ -15,10 +15,10 @@ bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/
 * [x] 工控机换网卡 改ip
 * [x] ros.sh 
 * [x] cmus
+* [x] kill install
 * [ ] git cmake cpp python rust
 * [ ] matlab repo example
 * [ ] slam
 * [ ] chatgpt-on-wechat
-* [ ] kill install
 * [ ] 买鞋
 * [ ] 

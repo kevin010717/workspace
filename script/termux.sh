@@ -87,30 +87,6 @@ update() {
     ;;
   esac
 
-  read -p "qbittorrent?(y/n):" choice
-  case $choice in
-  y)
-    wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
-    mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
-    chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
-    sudo nohup qbittorrent >/dev/null 2>&1 &
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
-    ;;
-  esac
-
-  read -p "samba?(y/n):" choice
-  case $choice in
-  y)
-    sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
-    sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
-    mkdir $PREFIX/etc/samba
-    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
-    echo "type samba passwd:" && pdbedit -a -u admin
-    smbd
-    smbclient -p 445 //127.0.0.1/internal -U admin
-    ;;
-  esac
-
   read -p "aria2?(y/n):" choice
   case $choice in
   y)
@@ -124,6 +100,17 @@ update() {
     cd ~
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
     echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
+    ;;
+  esac
+
+  read -p "qbittorrent?(y/n):" choice
+  case $choice in
+  y)
+    wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
+    mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
+    chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
+    sudo nohup qbittorrent >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
     ;;
   esac
 
@@ -164,10 +151,7 @@ update() {
   read -p "nodeserver?(y/n):" choice
   case $choice in
   y)
-    mkdir nodeserver
-    cd nodeserver
-    npm init
-    npm install express --save
+    mkdir .nodeserver && cd .nodeserver && npm init && npm install express --save
     cat <<EOF >>server.js
 const express = require('express');
 const app = express();
@@ -180,6 +164,19 @@ app.listen(3000, () => {
 EOF
     sudo nohup node server.js >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
+    ;;
+  esac
+
+  read -p "samba?(y/n):" choice
+  case $choice in
+  y)
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
+    sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
+    mkdir $PREFIX/etc/samba
+    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
+    echo "type samba passwd:" && pdbedit -a -u admin
+    smbd
+    smbclient -p 445 //127.0.0.1/internal -U admin
     ;;
   esac
 
