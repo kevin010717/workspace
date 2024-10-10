@@ -11,11 +11,12 @@ chmod +x "$0"
 #termux代理软件：v2ray singbox mihomo(clash.meta) dae crashshell 目前用magisk模块
 #nnn.vim
 #nnn filebrowser
+#kali
 
 install_update() {
-  termux-reload-settings
+  #termux-reload-settings
   #termux-setup-storage
-  termux-change-repo
+  #termux-change-repo
   pkg update && pkg upgrade -y
   pkg i root-repo x11-repo -y
   pkg i rxfetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
@@ -50,7 +51,6 @@ install_update() {
     git clone https://github.com/kevin010717/workspace.git
     cp -r ~/workspace/.config/yazi/ ~/.config/yazi/
     ;;
-  *) ;;
   esac
 
   read -p "clouddrive?(y/n):" choice
@@ -60,7 +60,6 @@ install_update() {
     sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
     ;;
-  *) ;;
   esac
 
   read -p "filebrowser?(y/n):" choice
@@ -73,18 +72,17 @@ install_update() {
     sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
     ;;
-  *) ;;
   esac
 
   read -p "calibreweb?(y/n):" choice
   case $choice in
   y)
-    pip install --user -U calibreweb
     pip install tzdata
+    pkg i libxml2 libxslt -y
+    pip install --user -U calibreweb
     nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
     ;;
-  *) ;;
   esac
 
   read -p "qbittorrent?(y/n):" choice
@@ -92,10 +90,10 @@ install_update() {
   y)
     wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
     mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
-    chmod +x qbittorrent
-    sudo qbittorrent
+    chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
+    sudo nohup qbittorrent >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
     ;;
-  *) ;;
   esac
 
   read -p "samba?(y/n):" choice
@@ -107,7 +105,6 @@ install_update() {
     smbd
     smbclient -p 445 //127.0.0.1/internal -U admin
     ;;
-  *) ;;
   esac
 
   read -p "biliup?(y/n):" choice
@@ -126,7 +123,6 @@ install_update() {
     mkdir .biliup && cd .biliup && biliup start
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
     ;;
-  *) ;;
   esac
 
   read -p "aria2?(y/n):" choice
@@ -141,7 +137,6 @@ install_update() {
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
     echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
     ;;
-  *) ;;
   esac
 
   read -p "chfs?(y/n):" choice
@@ -155,7 +150,6 @@ install_update() {
     nohup sudo chfs --port=1234 >/dev/null 2>&1 &
     am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
     ;;
-  *) ;;
   esac
 
   read -p "http-server?(y/n):" choice
@@ -166,7 +160,6 @@ install_update() {
     http-server -a 127.0.0.1 -p 8090
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
     ;;
-  *) ;;
   esac
 
   read -p "code-server?(y/n):" choice
@@ -178,7 +171,6 @@ install_update() {
     code-server
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
     ;;
-  *) ;;
   esac
 
   read -p "nodeserver?(y/n):" choice
@@ -202,7 +194,6 @@ EOF
     node server.js
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
     ;;
-  *) ;;
   esac
 
   read -p "leetcode-cli?(y/n):" choice
@@ -210,13 +201,12 @@ EOF
   y)
     npm install -g leetcode-cli
     ;;
-  *) ;;
   esac
 
   read -p "config?(y/n):" choice
   case $choice in
   y)
-  cat <<EOF >>~/.zshrc
+    cat <<EOF >>~/.zshrc
   #neofetch
   rxfetch
   sshd
@@ -250,9 +240,12 @@ EOF
   if ! pgrep -f "calibreweb" > /dev/null; then
     nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
   fi
+  if ! pgrep -f "qbittorrent" > /dev/null; then
+    sudo nohup qbittorrent >/dev/null 2>&1 &
+  fi
 EOF
-  source ~/.zshrc
-  cat <<EOF >>~/.termux/termux.properties
+    source ~/.zshrc
+    cat <<EOF >>~/.termux/termux.properties
   volume-keys = volume
   bell-character = ignore"
   extra-keys = [[ \
@@ -268,14 +261,14 @@ EOF
   {key: KEYBOARD, popup: {macro: "clear\n", display:clear }} \
 ]]
 EOF
-  termux-reload-settings
+    termux-reload-settings
 
-  cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
+    cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
   volume-max=1000
   volume=200
   script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
 EOF
-  mkdir -p ~/bin && cat <<EOF >>~/bin/termux-url-opener
+    mkdir -p ~/bin && cat <<EOF >>~/bin/termux-url-opener
   pip install -U yt-dlp
   echo "1.download it" 
   echo "2.listen to it"  
@@ -288,7 +281,8 @@ EOF
     *) mpv --no-video -v \$1;;
   esac
 EOF
-  ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor;;
+    ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
+    ;;
   esac
 
   #bash -c "$(curl -L l.tmoe.me)"
