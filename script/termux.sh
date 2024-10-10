@@ -292,7 +292,6 @@ EOF
   esac
 EOF
   ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor;;
-  *) ;;
   esac
 
   #bash -c "$(curl -L l.tmoe.me)"
