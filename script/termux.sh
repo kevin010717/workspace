@@ -28,7 +28,7 @@ install_update() {
   pkg i termux-api -y
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
-  passwd
+  echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
@@ -99,9 +99,11 @@ install_update() {
   read -p "samba?(y/n):" choice
   case $choice in
   y)
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
+    sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
     mkdir $PREFIX/etc/samba
-    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' /data/data/com.termux/files/usr/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
-    pdbedit -a -u admin
+    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
+    echo "type samba passwd:" && pdbedit -a -u admin
     smbd
     smbclient -p 445 //127.0.0.1/internal -U admin
     ;;
@@ -243,6 +245,9 @@ EOF
   if ! pgrep -f "qbittorrent" > /dev/null; then
     sudo nohup qbittorrent >/dev/null 2>&1 &
   fi
+  if ! pgrep -f "smbd" > /dev/null; then
+    smbd
+  fi
 EOF
     source ~/.zshrc
     cat <<EOF >>~/.termux/termux.properties
@@ -258,7 +263,7 @@ EOF
   {key: RIGHT, popup: END}, \
   {key: UP, popup: PGUP}, \
   {key: DOWN, popup: PGDN}, \
-  {key: KEYBOARD, popup: {macro: "clear\n", display:clear }} \
+  {key: KEYBOARD, popup: {macro: "CTRL l", display:A}} \
 ]]
 EOF
     termux-reload-settings
