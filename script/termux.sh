@@ -291,7 +291,7 @@ EOF
     *) mpv --no-video -v \$1;;
   esac
 EOF
-  ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
+  ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor;;
   *) ;;
   esac
 
