@@ -26,21 +26,28 @@ update() {
   pkg i ripgrep -y
   pkg i iperf3 -y
   pkg i termux-api -y
+  pkg i jq bc -y
+  pkg i whiptail -y
+  pkg i termimage -y
   apt install tur-repo #安装软件源
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
+  npm install mapscii -g
   echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
+  git clone https://github.com/kevin010717/workspace.git
+  git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
+  cp -r ~/workspace/.config/yazi/ ~/.config/yazi/
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
-  #npm install mapscii -g
   #cargo install clock-tui bk
   #pip install epr-reader
   #tidal-dl
   #pkg install python clang libjpeg-turbo ffmpeg zlib -y
   #pip3 install --upgrade tidal-dl
+  #mytermux.git
 
   read -p "git config?(y/n):" choice
   case $choice in
@@ -50,8 +57,6 @@ update() {
     git config --global user.email "k511153362@gmail.com"
     git config --global user.name "kevin010717"
     gh auth login
-    git clone https://github.com/kevin010717/workspace.git
-    cp -r ~/workspace/.config/yazi/ ~/.config/yazi/
     ;;
   esac
 
@@ -167,6 +172,16 @@ EOF
     ;;
   esac
 
+  read -p "tmoe?(y/n):" choice
+  case $choice in
+  y)
+    curl -LO l.tmoe.me/tinor.deb
+    apt install ./tinor.deb
+    apt update
+    bash -c "$(curl -L l.tmoe.me)"
+    ;;
+  esac
+
   read -p "samba?(y/n):" choice
   case $choice in
   y)
@@ -220,9 +235,15 @@ EOF
   fortune $PREFIX/share/games/fortunes/tang300 | lolcat
   fortune $PREFIX/share/games/fortunes/song100 | lolcat
   cowsay -r what | lolcat
+  curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
+  curl -s "wttr.in/~fujin?lang=zh" | lolcat
+  ~/.ansiweather/ansiweather -f 5 -l fujin
   cal | lolcat
   date | lolcat
   alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)'
+  alias cc='mpv --no-video -v "$(termux-clipboard-get)"'
+  alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
+  alias qq='echo "$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
   #shell screen -d cmus
   alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
   alias f="sl;nyancat -f 50 -n;cmatrix;"
@@ -235,6 +256,7 @@ EOF
   alias t="~/workspace/script/termux.sh | lolcat"
   alias y="yazi"
   alias gacp="git add . ; git commit -m "1" ;git push origin main"
+  alias map="telnet mapscii.me"
   if ! pgrep -f "clouddrive" > /dev/null; then
     sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
   fi
@@ -268,20 +290,28 @@ EOF
 EOF
     source ~/.zshrc
     cat <<EOF >>~/.termux/termux.properties
-  volume-keys = volume
-  bell-character = ignore"
-  extra-keys = [[ \
-  {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
-  {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
-  {key: ESC, popup: {macro: "", display: A}}, \
-  {key: CTRL, popup: {macro: "", display: A}}, \
-  {key: TAB, popup: {macro: "", display: A}}, \
-  {key: LEFT, popup: HOME}, \
-  {key: RIGHT, popup: END}, \
-  {key: UP, popup: PGUP}, \
-  {key: DOWN, popup: PGDN}, \
-  {key: KEYBOARD, popup: {macro: "CTRL l", display:A}} \
-]]
+    volume-keys = volume
+    bell-character = ignore"
+    shortcut.create-session = ctrl + t
+    shortcut.next-session = ctrl + 2
+    shortcut.previous-session = ctrl + 1
+    shortcut.rename-session = ctrl + n
+    terminal-transcript-rows = 2000
+    #hide-soft-keyboard-on-startup = true
+    disable-terminal-session-change-toast = true
+    default-working-directory = /data/data/com.termux/files/home
+    extra-keys = [[ \
+      {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
+        {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
+          {key: ESC, popup: {macro: "", display: A}}, \
+            {key: CTRL, popup: {macro: "", display: A}}, \
+              {key: TAB, popup: {macro: "", display: A}}, \
+                {key: LEFT, popup: HOME}, \
+                  {key: RIGHT, popup: END}, \
+                    {key: UP, popup: PGUP}, \
+                      {key: DOWN, popup: PGDN}, \
+                        {key: KEYBOARD, popup: {macro: "CTRL l", display:A}} \
+                          ]]
 EOF
     termux-reload-settings
 
@@ -290,25 +320,8 @@ EOF
   volume=200
   script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
 EOF
-    mkdir -p ~/bin && cat <<EOF >>~/bin/termux-url-opener
-  pip install -U yt-dlp
-  echo "1.download it" 
-  echo "2.listen to it"  
-  echo "3.generate QRcode"
-  read choice 
-  case \$choice in 
-    1) yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" \$1;; 
-    2) mpv --no-video -v \$1;;
-    3) echo \$1 | curl -F-=\<- qrenco.de;;
-    *) mpv --no-video -v \$1;;
-  esac
-EOF
-    ln -s $PREFIX/bin/nvim ~/bin/termux-file-editor
     ;;
   esac
-
-  #bash -c "$(curl -L l.tmoe.me)"
-  #mytermux.git
 }
 
 obs() {
