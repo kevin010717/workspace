@@ -241,7 +241,7 @@ EOF
   cal | lolcat
   date | lolcat
   alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)'
-  alias cc='mpv --no-video -v "$(termux-clipboard-get)"'
+  alias mm='mpv --no-video -v "$(termux-clipboard-get)"'
   alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
   alias qq='echo "$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
   #shell screen -d cmus
@@ -289,6 +289,7 @@ EOF
   fi
 EOF
     source ~/.zshrc
+
     cat <<EOF >>~/.termux/termux.properties
     volume-keys = volume
     bell-character = ignore"
