@@ -19,7 +19,7 @@ update() {
   #termux-change-repo
   pkg update && pkg upgrade -y
   pkg i root-repo x11-repo -y
-  pkg i rxfetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
+  pkg i rxfetch cpufetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
   pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
   pkg i ncmpcpp mpd cmus mpg123 tizonia man -y
   pkg i nnn ranger yazi mc -y
@@ -28,11 +28,20 @@ update() {
   pkg i termux-api -y
   pkg i jq bc -y
   pkg i whiptail -y
-  pkg i termimage -y
+  pkg i termimage imagemagick -y
+  pkg i gdu -y
+  pkg i speedtest-go -y
+  pkg i cointop -y
+  pkg i hollywood no-more-secrets -y
+  pkg i cloneit -y
+  pkg i gitui -y
   apt install tur-repo #安装软件源
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
+  pip install bpython
   npm install mapscii -g
+  go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
+  go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
   echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
@@ -228,6 +237,7 @@ EOF
   export PATH="$HOME/.cargo/bin:$PATH"
   #neofetch
   rxfetch
+  cpufetch
   sshd
   figlet Hello,world! | lolcat
   fortune $PREFIX/share/games/fortunes/fortunes | lolcat
@@ -236,10 +246,11 @@ EOF
   fortune $PREFIX/share/games/fortunes/song100 | lolcat
   cowsay -r what | lolcat
   curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
-  curl -s "wttr.in/~fujin?lang=zh" | lolcat
-  ~/.ansiweather/ansiweather -f 5 -l fujin
-  cal | lolcat
-  date | lolcat
+  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
+  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
+  #~/.ansiweather/ansiweather -f 1 -l fujin 
+  cal
+  date
   alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)'
   alias mm='mpv --no-video -v "$(termux-clipboard-get)"'
   alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
@@ -292,7 +303,7 @@ EOF
 
     cat <<EOF >>~/.termux/termux.properties
     volume-keys = volume
-    bell-character = ignore"
+    bell-character = ignore
     shortcut.create-session = ctrl + t
     shortcut.next-session = ctrl + 2
     shortcut.previous-session = ctrl + 1
@@ -300,7 +311,7 @@ EOF
     terminal-transcript-rows = 2000
     #hide-soft-keyboard-on-startup = true
     disable-terminal-session-change-toast = true
-    default-working-directory = /data/data/com.termux/files/home
+    default-working-directory = /data/data/com.termux/files/home/
     extra-keys = [[ \
       {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
         {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \

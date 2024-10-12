@@ -16,9 +16,9 @@ bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/
 * [x] ros.sh 
 * [x] cmus
 * [x] kill install
+* [x] termux-clipboard-get
 * [ ] git cmake cpp python rust
 * [ ] matlab repo example
 * [ ] slam
 * [ ] 买鞋
-* [ ] termux-clipboard-get
 * [ ] 
