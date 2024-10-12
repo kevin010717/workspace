@@ -48,7 +48,7 @@ update() {
   git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
   git clone https://github.com/kevin010717/workspace.git
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
-  cp -r ~/workspace/.config/yazi/ ~/.config/yazi/
+  cp -rf ~/workspace/.config/ ~/.config/
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #cargo install clock-tui bk
