@@ -45,7 +45,7 @@ update() {
   echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
-  git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/fortunes/data/* $PREFIX/share/games/fortunes/
+  git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
   git clone https://github.com/kevin010717/workspace.git
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
   git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
