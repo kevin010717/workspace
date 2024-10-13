@@ -45,9 +45,10 @@ update() {
   echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
-  git clone https://github.com/ruanyf/fortunes.git && mv ~/fortunes/data/* $PREFIX/share/games/fortunes/ && rm -rf ~/fortunes
+  git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/fortunes/data/* $PREFIX/share/games/fortunes/
   git clone https://github.com/kevin010717/workspace.git
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
+  git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
   cp -rf ~/workspace/.config/ ~/.config/
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
@@ -113,7 +114,7 @@ update() {
     sudo nohup node node-server.js >/dev/null 2>&1 &
     cd ~
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
-    echo "访问https://zsxwz.com/go/?url=https://github.com/ngosang/trackerslist添加tracker"
+    echo "访问https://github.com/ngosang/trackerslist添加tracker"
     ;;
   esac
 
@@ -285,7 +286,7 @@ EOF
   fi
   if ! pgrep -f "aria2" > /dev/null; then
     cd .webui-aria2
-    sudo nohup aria2c --enable-rpc --rpc-listen-all --rpc-listen-port=6801 --rpc-secret=your_secret >/dev/null 2>&1 &
+    sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
     sudo nohup node node-server.js >/dev/null 2>&1 &
     cd ~
   fi
