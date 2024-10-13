@@ -46,10 +46,10 @@ update() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
-  git clone https://github.com/kevin010717/workspace.git
+  git clone https://github.com/kevin010717/workspace.git ~/workspace/.workspace
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
   git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
-  cp -rf ~/workspace/.config/ ~/.config/
+  cp -rf ~/.workspace/.config/ ~/.config/
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #cargo install clock-tui bk
@@ -124,8 +124,8 @@ update() {
     wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
     mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
     chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
-    sudo nohup qbittorrent >/dev/null 2>&1 &
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
+    sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8088
     ;;
   esac
 
@@ -265,7 +265,8 @@ EOF
   alias ls="ls | lolcat"
   alias cat="cat | lolcat"
   alias sc="source ~/.zshrc"
-  alias t="~/workspace/script/termux.sh | lolcat"
+  alias t="~/.workspace/script/termux.sh | lolcat"
+  alias ip="ifconfig | lolcat"
   alias y="yazi"
   alias gacp="git add . ; git commit -m "1" ;git push origin main"
   alias map="telnet mapscii.me"
@@ -279,7 +280,7 @@ EOF
     nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
   fi
   if ! pgrep -f "qbittorrent" > /dev/null; then
-    sudo nohup qbittorrent >/dev/null 2>&1 &
+    sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
   fi
   if ! pgrep -f "smbd" > /dev/null; then
     smbd
