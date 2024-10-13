@@ -334,6 +334,11 @@ EOF
   volume=200
   script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
 EOF
+
+    cat <<EOF >>~/.tmux.conf
+  set -g status off
+  bind-key -n C-a send-prefix
+EOF
     ;;
   esac
 }
@@ -504,12 +509,7 @@ cheetsheet_nvim() {
   *) break ;;
   esac
 }
-cheetsheet_tmux() {
-  cat <<EOF >>~/.tmux.conf
-  set -g status off
-  bind-key -n C-a send-prefix
-EOF
-}
+
 cheetsheet_termux() {
   termux-battery-status
   termux-camera-info
