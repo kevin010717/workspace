@@ -35,11 +35,12 @@ update() {
   pkg i hollywood no-more-secrets -y
   pkg i cloneit -y
   pkg i gitui -y
+  pkg i xmake -y
   apt install tur-repo #安装软件源
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
   pip install bpython
-  npm install mapscii -g
+  npm install mapscii cordova -g
   go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
   go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
   echo "type openssh passwd:" && passwd
@@ -49,7 +50,7 @@ update() {
   git clone https://github.com/kevin010717/workspace.git ~/workspace/.workspace
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
   git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
-  cp -rf ~/.workspace/.config/ ~/.config/
+  cp -rf ~/.workspace/.config/ ~/
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #cargo install clock-tui bk
