@@ -36,10 +36,12 @@ update() {
   pkg i cloneit -y
   pkg i gitui -y
   pkg i xmake -y
+  pkg i fzf -y
   apt install tur-repo #安装软件源
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
   pip install bpython
+  pip install tldr
   npm install mapscii cordova -g
   go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
   go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
