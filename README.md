@@ -22,4 +22,5 @@ bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/
 * [ ] slam ros
 * [ ] 买鞋
 * [ ] aria2 calibreweb 
+* [ ] termux gradle
 * [ ] 

@@ -22,14 +22,15 @@ update() {
   pkg i rxfetch cpufetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
   pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
   pkg i ncmpcpp mpd cmus mpg123 tizonia man -y
-  pkg i nnn ranger yazi mc -y
+  pkg i nnn ranger yazi mc lsd -y
+  pkg i fastfetch -y
   pkg i ripgrep -y
   pkg i iperf3 -y
   pkg i termux-api -y
   pkg i jq bc -y
   pkg i whiptail -y
   pkg i termimage imagemagick -y
-  pkg i gdu -y
+  pkg i gdu dust -y
   pkg i speedtest-go -y
   pkg i cointop -y
   pkg i hollywood no-more-secrets -y
@@ -37,11 +38,14 @@ update() {
   pkg i gitui -y
   pkg i xmake -y
   pkg i fzf -y
+  pkg i git-delta eza zoxide -y
+  pkg i atuin chezmoi -y
   apt install tur-repo #安装软件源
   pip install youtube-dl yt-dlp you-get PySocks
   pip install lolcat
   pip install bpython
   pip install tldr
+  cargo install tlrc
   npm install mapscii cordova -g
   go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
   go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
@@ -240,7 +244,8 @@ EOF
     cat <<EOF >>~/.zshrc
   export PATH="$HOME/.cargo/bin:$PATH"
   #neofetch
-  rxfetch
+  #rxfetch
+  fastfetch
   cpufetch
   sshd
   figlet Hello,world! | lolcat
