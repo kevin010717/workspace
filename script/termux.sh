@@ -323,10 +323,10 @@ EOF
   #cowsay -r what | lolcat
   #curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
   #curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
-  #curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
+  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
   #~/.ansiweather/ansiweather -f 1 -l fujin 
-  #cal
-  #date
+  cal
+  date
 EOF
     source ~/.zshrc
 
