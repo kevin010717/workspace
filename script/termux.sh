@@ -172,9 +172,9 @@ EOF
     mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
     chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
     cat <<EOF >>~/.zshrc
-  if ! pgrep -f "qbittorrent" > /dev/null; then
-    sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
-  fi
+    if ! pgrep -f "qbittorrent" > /dev/null; then
+      sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
+    fi
 EOF
     source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8088
