@@ -245,28 +245,12 @@ EOF
   y)
     cat <<EOF >>~/.zshrc
   export PATH="$HOME/.cargo/bin:$PATH"
-  #neofetch
-  #rxfetch
-  fastfetch
-  cpufetch
   sshd
-  figlet Hello,world! | lolcat
-  fortune $PREFIX/share/games/fortunes/fortunes | lolcat
-  fortune $PREFIX/share/games/fortunes/chinese | lolcat
-  fortune $PREFIX/share/games/fortunes/tang300 | lolcat
-  fortune $PREFIX/share/games/fortunes/song100 | lolcat
-  cowsay -r what | lolcat
-  curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
-  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
-  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
-  #~/.ansiweather/ansiweather -f 1 -l fujin 
-  cal
-  date
   alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)'
+  #shell screen -d cmus
   alias mm='mpv --no-video -v "$(termux-clipboard-get)"'
   alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
   alias qq='echo "$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
-  #shell screen -d cmus
   alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
   alias f="sl;nyancat -f 50 -n;cmatrix;"
   alias g="glow ~/workspace/README.md"
@@ -310,6 +294,22 @@ EOF
   if ! pgrep -f "http-server" > /dev/null; then
     sudo nohup code-server >/dev/null 2>&1 &
   fi
+  #neofetch
+  #rxfetch
+  #fastfetch
+  #cpufetch
+  #figlet Hello,world! | lolcat
+  #fortune $PREFIX/share/games/fortunes/fortunes | lolcat
+  #fortune $PREFIX/share/games/fortunes/chinese | lolcat
+  #fortune $PREFIX/share/games/fortunes/tang300 | lolcat
+  #fortune $PREFIX/share/games/fortunes/song100 | lolcat
+  #cowsay -r what | lolcat
+  #curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
+  #curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
+  #curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
+  #~/.ansiweather/ansiweather -f 1 -l fujin 
+  #cal
+  #date
 EOF
     source ~/.zshrc
 
