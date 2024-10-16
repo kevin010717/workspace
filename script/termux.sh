@@ -83,7 +83,12 @@ update() {
   case $choice in
   y)
     curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
-    sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "clouddrive" > /dev/null; then
+      sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
+    fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
     ;;
   esac
@@ -95,8 +100,31 @@ update() {
     wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
     tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
     chmod +x .filebrowser/filebrowser
-    sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "filebrowser" > /dev/null; then
+      sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
+    fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
+    ;;
+  esac
+
+  read -p "samba?(y/n):" choice
+  case $choice in
+  y)
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
+    sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
+    mkdir $PREFIX/etc/samba
+    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
+    echo "type samba passwd:" && pdbedit -a -u admin
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "smbd" > /dev/null; then
+      smbd
+    fi
+EOF
+    source ~/.zshrc
+    smbclient -p 445 //127.0.0.1/internal -U admin
     ;;
   esac
 
@@ -106,7 +134,12 @@ update() {
     pip install tzdata
     pkg i libxml2 libxslt -y
     pip install --user -U calibreweb
-    nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "calibreweb" > /dev/null; then
+      nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
+    fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
     ;;
   esac
@@ -115,13 +148,18 @@ update() {
   case $choice in
   y)
     pkg install aria2
-    sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
     pkg install git nodejs
     git clone https://github.com/ziahamza/webui-aria2.git
     mv webui-aria2 .webui-aria2
-    cd ~/.webui-aria2/
-    sudo nohup node node-server.js >/dev/null 2>&1 &
-    cd ~
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "aria2" > /dev/null; then
+      cd .webui-aria2
+      sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
+      sudo nohup node node-server.js >/dev/null 2>&1 &
+      cd ~
+    fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
     echo "访问https://github.com/ngosang/trackerslist添加tracker"
     ;;
@@ -133,7 +171,12 @@ update() {
     wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
     mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
     chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
+    cat <<EOF >>~/.zshrc
+  if ! pgrep -f "qbittorrent" > /dev/null; then
     sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
+  fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8088
     ;;
   esac
@@ -146,7 +189,12 @@ update() {
     chmod +x chfs-linux-arm64-3.1
     mv chfs-linux-arm64-3.1 /data/data/com.termux/files/usr/bin/chfs
     rm chfs-linux-arm64-3.1.zip
-    sudo nohup chfs --port=1234 >/dev/null 2>&1 &
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "chfs" > /dev/null; then
+      nohup sudo chfs --port=1234 >/dev/null 2>&1 &
+    fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
     ;;
   esac
@@ -156,7 +204,12 @@ update() {
   y)
     pkg install nodejs
     npm install -g http-server
-    sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "http-server" > /dev/null; then
+      sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
+    fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
     ;;
   esac
@@ -167,7 +220,12 @@ update() {
     apt install tur-repo                          #安装软件源
     apt install code-server                       #安装
     cat ~/.suroot/.config/code-server/config.yaml #查看密码
-    sudo nohup code-server >/dev/null 2>&1 &
+    cat <<EOF >>~/.zshrc
+    if ! pgrep -f "code-server" > /dev/null; then
+      sudo nohup code-server >/dev/null 2>&1 &
+    fi
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
     ;;
   esac
@@ -177,16 +235,19 @@ update() {
   y)
     mkdir .nodeserver && cd .nodeserver && npm init && npm install express --save
     cat <<EOF >>server.js
-const express = require('express');
-const app = express();
-app.get('/', (req, res) => {
-   res.send('Hello World!');
-});
-app.listen(3000, () => {
-   console.log('Server is running at http://localhost:3000');
+    const express = require('express');
+    const app = express();
+    app.get('/', (req, res) => {
+    res.send('Hello World!');
+  });
+  app.listen(3000, () => {
+  console.log('Server is running at http://localhost:3000');
 });
 EOF
+    cat <<EOF >>~/.zshrc
     sudo nohup node server.js >/dev/null 2>&1 &
+EOF
+    source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
     ;;
   esac
@@ -198,19 +259,6 @@ EOF
     apt install ./tinor.deb
     apt update
     bash -c "$(curl -L l.tmoe.me)"
-    ;;
-  esac
-
-  read -p "samba?(y/n):" choice
-  case $choice in
-  y)
-    sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
-    sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
-    mkdir $PREFIX/etc/samba
-    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
-    echo "type samba passwd:" && pdbedit -a -u admin
-    smbd
-    smbclient -p 445 //127.0.0.1/internal -U admin
     ;;
   esac
 
@@ -263,36 +311,6 @@ EOF
   alias y="yazi"
   alias gacp="git add . ; git commit -m "1" ;git push origin main"
   alias map="telnet mapscii.me"
-  if ! pgrep -f "clouddrive" > /dev/null; then
-    sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
-  fi
-  if ! pgrep -f "filebrowser" > /dev/null; then
-    sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
-  fi
-  if ! pgrep -f "calibreweb" > /dev/null; then
-    nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
-  fi
-  if ! pgrep -f "qbittorrent" > /dev/null; then
-    sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
-  fi
-  if ! pgrep -f "smbd" > /dev/null; then
-    smbd
-  fi
-  if ! pgrep -f "aria2" > /dev/null; then
-    cd .webui-aria2
-    sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
-    sudo nohup node node-server.js >/dev/null 2>&1 &
-    cd ~
-  fi
-  if ! pgrep -f "chfs" > /dev/null; then
-    nohup sudo chfs --port=1234 >/dev/null 2>&1 &
-  fi
-  if ! pgrep -f "http-server" > /dev/null; then
-    sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
-  fi
-  if ! pgrep -f "http-server" > /dev/null; then
-    sudo nohup code-server >/dev/null 2>&1 &
-  fi
   #neofetch
   #rxfetch
   #fastfetch
