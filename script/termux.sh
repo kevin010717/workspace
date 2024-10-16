@@ -55,7 +55,7 @@ update() {
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
-  git clone https://github.com/kevin010717/workspace.git ~/workspace/.workspace
+  git clone https://github.com/kevin010717/workspace.git ~/.workspace
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
   git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
   cp -rf ~/.workspace/.config/ ~/
@@ -246,8 +246,7 @@ EOF
     cat <<EOF >>~/.zshrc
   export PATH="$HOME/.cargo/bin:$PATH"
   sshd
-  alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)'
-  #shell screen -d cmus
+  alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
   alias mm='mpv --no-video -v "$(termux-clipboard-get)"'
   alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
   alias qq='echo "$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
