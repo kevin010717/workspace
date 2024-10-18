@@ -47,6 +47,7 @@ update() {
   pip install bpython
   pip install tldr
   cargo install tlrc
+  npm config set registry https://mirrors.tuna.tsinghua.edu.cn/npm/
   npm install mapscii cordova -g
   npm i docsify-cli -g
   go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
