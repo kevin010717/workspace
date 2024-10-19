@@ -40,6 +40,7 @@ update() {
   pkg i fzf -y
   pkg i git-delta eza zoxide -y
   pkg i atuin chezmoi -y
+  pkg i golang -y
   apt install tur-repo #安装软件源
   pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
   pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
