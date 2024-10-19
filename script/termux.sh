@@ -22,19 +22,17 @@ update() {
   apt install tur-repo #安装软件源
   pkg i termux-services termux-api tsu -y
   pkg i openssh wget ffmpeg mpv iptables samba man iperf3 -y
-  pkg i rust golang android-tools python-pip nodejs bk lux -y
+  pkg i rust golang android-tools python-pip nodejs -y
   pkg i fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git lazygit neovim slides glow -y
-  pkg i cpeaclock tty-clock matrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
+  pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
   pkg i ncmpcpp mpd cmus mpg123 tizonia -y
-  pkg i nnn ranger yazi mc lsd fzf -y
+  pkg i nnn ranger yazi mc lsd fzf gdu dust tree -y
   pkg i ripgrep -y
-  pkg i jq bc -y
+  pkg i jq bc bk lux -y
   pkg i whiptail -y
   pkg i termimage imagemagick -y
-  pkg i gdu dust tree -y
   pkg i speedtest-go -y
   pkg i cointop -y
-  pkg i hollywood no-more-secrets -y
   pkg i cloneit -y
   pkg i gitui -y
   pkg i xmake -y
