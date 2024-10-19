@@ -19,29 +19,27 @@ update() {
   #termux-change-repo
   pkg update && pkg upgrade -y
   pkg i root-repo x11-repo -y
-  pkg i rxfetch cpufetch rust lazygit peaclock tty-clock android-tools openssh wget nethogs htop screen tmux ffmpeg tsu lux zsh gh git lazygit python-pip mpv iptables samba termux-services neovim nodejs bk slides glow tree neofetch -y
-  pkg i cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
-  pkg i ncmpcpp mpd cmus mpg123 tizonia man -y
-  pkg i nnn ranger yazi mc lsd -y
-  pkg i fastfetch -y
+  apt install tur-repo #安装软件源
+  pkg i termux-services termux-api tsu -y
+  pkg i openssh wget ffmpeg mpv iptables samba man iperf3 -y
+  pkg i rust golang android-tools python-pip nodejs bk lux -y
+  pkg i fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git lazygit neovim slides glow -y
+  pkg i cpeaclock tty-clock matrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
+  pkg i ncmpcpp mpd cmus mpg123 tizonia -y
+  pkg i nnn ranger yazi mc lsd fzf -y
   pkg i ripgrep -y
-  pkg i iperf3 -y
-  pkg i termux-api -y
   pkg i jq bc -y
   pkg i whiptail -y
   pkg i termimage imagemagick -y
-  pkg i gdu dust -y
+  pkg i gdu dust tree -y
   pkg i speedtest-go -y
   pkg i cointop -y
   pkg i hollywood no-more-secrets -y
   pkg i cloneit -y
   pkg i gitui -y
   pkg i xmake -y
-  pkg i fzf -y
   pkg i git-delta eza zoxide -y
   pkg i atuin chezmoi -y
-  pkg i golang -y
-  apt install tur-repo #安装软件源
   pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
   pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
   cargo install tlrc
