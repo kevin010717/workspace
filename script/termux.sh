@@ -42,16 +42,13 @@ update() {
   pkg i atuin chezmoi -y
   apt install tur-repo #安装软件源
   pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-  pip install youtube-dl yt-dlp you-get PySocks
-  pip install lolcat
-  pip install bpython
-  pip install tldr
+  pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
   cargo install tlrc
-  npm config set registry https://mirrors.tuna.tsinghua.edu.cn/npm/
+  npm config set registry https://registry.npmmirror.com
   npm i docsify-cli mapscii cordova -g
+  echo "type openssh passwd:" && passwd
   go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
   go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
-  echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
