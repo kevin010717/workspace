@@ -21,23 +21,13 @@ update() {
   pkg i root-repo x11-repo -y
   apt install tur-repo #安装软件源
   pkg i termux-services termux-api tsu -y
-  pkg i openssh wget ffmpeg mpv iptables samba man iperf3 -y
-  pkg i rust golang android-tools python-pip nodejs -y
-  pkg i fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git lazygit neovim slides glow -y
+  pkg i openssh wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
+  pkg i rust golang android-tools python-pip nodejs xmake -y
+  pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
   pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
   pkg i ncmpcpp mpd cmus mpg123 tizonia -y
-  pkg i nnn ranger yazi mc lsd fzf gdu dust tree -y
-  pkg i ripgrep -y
-  pkg i jq bc bk lux -y
-  pkg i whiptail -y
-  pkg i termimage imagemagick -y
-  pkg i speedtest-go -y
-  pkg i cointop -y
-  pkg i cloneit -y
-  pkg i gitui -y
-  pkg i xmake -y
-  pkg i git-delta eza zoxide -y
-  pkg i atuin chezmoi -y
+  pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
+  pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
   pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
   pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
   cargo install tlrc
