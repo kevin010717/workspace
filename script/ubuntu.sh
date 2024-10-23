@@ -23,10 +23,9 @@ update() {
 	sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 	git clone https://github.com/LazyVim/starter ~/.config/nvim
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-	sudo apt install docker.io docker-compose
-	sudo systemctl start docker
-	sudo systemctl enable docker
 	sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+	sudo apt install docker.io docker-compose
+	sudo systemctl start docker && sudo systemctl enable docker
 	#pipx install tomato-clock
 	#pipx run --spec tomato-clock tomato
 	#npm install -g percollate #web pages to epub
