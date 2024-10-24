@@ -16,7 +16,7 @@ update() {
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
 	sudo apt update && sudo apt install gnome-shell-extension-manager bsdmainutils cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
-        #rustup update stable && rustup show && rustup default 
+  #rustup update stable && rustup show && rustup default 
 	cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
 	sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 	git clone https://github.com/LazyVim/starter ~/.config/nvim
@@ -29,11 +29,8 @@ update() {
 	read -p "git config?(y/n):" choice
 	case $choice in
 	y)
-		ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
-		read -p "更新github ssh keys" key && ssh -T git@github.com
-		git config --global user.email "k511153362@gmail.com"
-		git config --global user.name "kevin010717"
-		gh auth login
+		ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub && read -p "更新github ssh keys" key && ssh -T git@github.com
+		git config --global user.email "k511153362@gmail.com" && git config --global user.name "kevin010717" && gh auth login
 		;;
 	esac
 
