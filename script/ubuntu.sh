@@ -14,7 +14,7 @@
 update() {
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse"
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-	sudo apt update && sudo apt install gnome-shell-extension-manager bsdmainutils cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
+	sudo apt update && sudo apt install gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
   #rustup update stable && rustup show && rustup default 
 	cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
@@ -130,9 +130,14 @@ alias n="nvim"
 alias y="yazi"
 alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'#shell screen -d cmus
 alias gacp="git add . ; git commit -m "1" ;git push origin main"
-cal
+alias h="htop"
+alias sc="source ~/.zshrc"
+alias ip="ifconfig | lolcat"
+alias map="telnet mapscii.me"
 date
+curl -s 'wttr.in/{shanghai,fujin}?format=4'
 EOF
+    source ~/.zshrc
 		#合盖不休眠
 		sudo sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=ignore/' /etc/systemd/logind.conf
 		sudo sed -i 's/#HandleLidSwitchExternalPower=suspend/HandleLidSwitchExternalPower=ignore/' /etc/systemd/logind.conf
