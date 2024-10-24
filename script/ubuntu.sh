@@ -14,9 +14,9 @@ chmod +x "$0"
 update() {
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse"
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-	sudo apt update && sudo apt install cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv cargo tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
+	sudo apt update && sudo apt install cmus screen docker.io docker-compose cargo curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
- 	rustup update stable && rustup show && rustup default && cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
+ 	sudo apt install rustup && rustup update stable && rustup show && rustup default && cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
 	sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 	git clone https://github.com/LazyVim/starter ~/.config/nvim
 	git clone https://github.com/kevin010717/workspace.git ~/.workspace
