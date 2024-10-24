@@ -1,6 +1,6 @@
 #!/bin/bash
 #set -x
-chmod +x "$0"
+#chmod +x "$0"
 
 #
 #
