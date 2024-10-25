@@ -34,6 +34,63 @@ update() {
 		;;
 	esac
 
+	read -p "VirtManager?(y/n):" choice
+	case $choice in
+	y)
+    #VirtManager
+   sudo grep -E -c '(vmx|svm)' /proc/cpuinfo
+   sudo apt install cpu-checker && kvm-ok
+   sudo apt update
+   sudo apt install qemu-system libguestfs-tools libvirt-clients libvirt-daemon-system bridge-utils virt-manager ovmf swtpm
+   sudo usermod -a -G libvirt $USER
+   sudo usermod -a -G kvm $USER
+   sudo usermod -a -G input $USER
+   sudo systemctl enable libvirtd
+   sudo systemctl start libvirtd
+   sudo virsh net-start default
+   sudo virsh net-autostart default
+   #spice
+   sudo apt install spice-vdagent qemu-guest-agent
+   sudo systemctl enable --now spice-vdagent
+   sudo systemctl enable --now qemu-guest-agent
+   #iommu
+   sudo sed -i 's|^GRUB_CMDLINE_LINUX_DEFAULT=".*"|GRUB_CMDLINE_LINUX_DEFAULT="quiet splash intel_iommu=on iommu=pt"|' /etc/default/grub
+   sudo update-grub
+   sudo reboot
+   #ban nvgpu
+   #sudo apt purge nvidia-driver-535
+   #sudo apt install xserver-xorg-video-nouveau
+   #band gpu with vfio
+   sudo mv /lib/udev/rules.d/71-nvidia.rules /lib/udev/rules.d/71-nvidia.rules.bak
+   sudo systemctl disable nvidia-persistenced
+   sudo lspci -nnk
+   echo "vfio vfio_iommu_type1 vfio_virqfd vfio_pci ids=10de:28a1,10de:22be" | sudo tee -a /etc/initramfs-tools/modules
+   echo "options vfio-pci ids=10de:28a1,10de:22be" | sudo tee -a /etc/modprobe.d/vfio.conf
+   #discrete gpu
+   sudo bash -c 'cat <<EOF >>/etc/modprobe.d/nvidia.conf
+   softdep nouveau pre: vfio-pci
+   softdep nvidia pre: vfio-pci
+   softdep nvidia* pre: vfio-pci
+EOF'
+   echo "options kvm ignore_msrs=1" | sudo tee -a /etc/modprobe.d/kvm.conf
+   sudo update-initramfs -u -k all
+   sudo update-grub
+   sudo reboot
+   sudo lspci -nnk
+   #looking glass
+   sudo apt install looking-glass-client
+   #<devices>
+   #  <shmem name='looking-glass'>
+   #    <model type='ivshmem-plain'/>
+   #    <size unit='M'>32</size>
+   #  </shmem>
+   #</devices>
+   echo "f /dev/shm/looking-glass 0660 kevin kvm - " | sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf
+   sudo systemd-tmpfiles --create /etc/tmpfiles.d/10-looking-glass.conf
+   #win11安装virtio-win-gt-x64.msi VC_redist.x64.exe Looking Glass Client vdd
+		;;
+	esac
+
 	read -p "filebrowser?(y/n):" choice
 	case $choice in
 	y)
@@ -134,6 +191,7 @@ alias h="htop"
 alias sc="source ~/.zshrc"
 alias ip="ifconfig | lolcat"
 alias map="telnet mapscii.me"
+alias win="nohup looking-glass-client -F -k egl:vsync >/dev/null 2>&1 &"
 date
 curl -s 'wttr.in/{shanghai,fujin}?format=4'
 EOF
@@ -145,13 +203,13 @@ EOF
 		echo '%kevin     ALL=(ALL) NOPASSWD: ALL' | sudo tee -a /etc/sudoers
 		#docker
 		sudo systemctl start docker && sudo systemctl enable docker
-#chrome
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install -y ./google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
-#clash
-wget https://github.com/clash-verge-rev/clash-verge-rev/releases/download/dependencies/libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb https://github.com/clash-verge-rev/clash-verge-rev/releases/download/dependencies/libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.7.7/clash-verge_1.7.7_amd64.deb
-sudo apt install ./libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb ./libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb ./clash-verge_1.7.7_amd64.deb
-#font
-mkdir -p ~/.local/share/fonts && cp ~/.workspace/.config/0xProtoNerdFont-Regular.ttf ~/.local/share/fonts/ && fc-cache -fv
+    #chrome
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install -y ./google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
+    #clash
+    wget https://github.com/clash-verge-rev/clash-verge-rev/releases/download/dependencies/libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb https://github.com/clash-verge-rev/clash-verge-rev/releases/download/dependencies/libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.7.7/clash-verge_1.7.7_amd64.deb
+    sudo apt install ./libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb ./libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb ./clash-verge_1.7.7_amd64.deb
+    #font
+    mkdir -p ~/.local/share/fonts && cp ~/.workspace/.config/0xProtoNerdFont-Regular.ttf ~/.local/share/fonts/ && fc-cache -fv
 ;;
 	esac
 }
