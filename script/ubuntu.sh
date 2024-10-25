@@ -14,7 +14,7 @@
 update() {
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse"
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-	sudo apt update && sudo apt install gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
+	sudo apt update && sudo apt install bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
   #rustup update stable && rustup show && rustup default 
 	cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
@@ -191,7 +191,18 @@ alias h="htop"
 alias sc="source ~/.zshrc"
 alias ip="ifconfig | lolcat"
 alias map="telnet mapscii.me"
-alias win="nohup looking-glass-client -F -k egl:vsync >/dev/null 2>&1 &"
+alias vmwin='if sudo virsh domstate win11 | grep -q "shut off"; then \
+    sudo nohup virsh start win11 >/dev/null 2>&1; \
+fi && \
+echo "f /dev/shm/looking-glass 0660 kevin kvm - " | sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf && \
+sudo systemd-tmpfiles --create /etc/tmpfiles.d/10-looking-glass.conf && \
+nohup looking-glass-client -F egl:vsync >/dev/null 2>&1 &'
+alias vmubuntu='if sudo virsh domstate ubuntu24.04 | grep -q "shut off"; then sudo nohup virsh start ubuntu24.04 >/dev/null 2>&1; fi && sudo nohup virt-viewer -f -w ubuntu24.04 >/dev/null 2>&1 &'
+alias vmshutdown="sudo virsh list --name | xargs -r -I {} sudo virsh shutdown {} "
+alias vmpoweroff="sudo virsh list --name | xargs -r -I {} sudo virsh destroy {} "
+alias vmlist="sudo virsh list --all"
+alias vmubuntusnapshot="sudo virsh snapshot-create-as ubuntu24.04 --name snapshot_name --description "快照描述""
+alias vmwinsnapshot="sudo virsh snapshot-create-as win11 --name snapshot_name --description "快照描述""
 date
 curl -s 'wttr.in/{shanghai,fujin}?format=4'
 EOF
