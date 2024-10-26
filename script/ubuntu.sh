@@ -196,7 +196,7 @@ alias n="nvim"
 alias y="yazi"
 alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'#shell screen -d cmus
 alias gacp="git add . ; git commit -m "1" ;git push origin main"
-alias h="htop"
+alias h="bpytop"
 alias sc="source ~/.zshrc"
 alias ip="ifconfig | lolcat"
 alias map="telnet mapscii.me"
@@ -229,7 +229,7 @@ EOF
     wget https://github.com/clash-verge-rev/clash-verge-rev/releases/download/dependencies/libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb https://github.com/clash-verge-rev/clash-verge-rev/releases/download/dependencies/libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.7.7/clash-verge_1.7.7_amd64.deb
     sudo apt install ./libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb ./libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb ./clash-verge_1.7.7_amd64.deb
     #font
-    mkdir -p ~/.local/share/fonts && cp ~/.workspace/.config/0xProtoNerdFont-Regular.ttf ~/.local/share/fonts/ && fc-cache -fv
+    sudo mkdir -p ~/.local/share/fonts && sudo cp ~/.workspace/.config/0xProtoNerdFont-Regular.ttf ~/.local/share/fonts/ && fc-cache -fv
     #autostart
     cp -rf ~/.workspace/.config/autostart/ ~/.config/
 ;;
