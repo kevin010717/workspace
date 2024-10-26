@@ -14,10 +14,9 @@
 update() {
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse"
 	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-	sudo apt update && sudo apt install bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
+	sudo apt update && sudo apt install wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
-  #rustup update stable && rustup show && rustup default 
-	cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
+  rustup update stable && rustup show && rustup default && cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
 	sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 	git clone https://github.com/LazyVim/starter ~/.config/nvim
 	git clone https://github.com/kevin010717/workspace.git ~/.workspace
@@ -37,7 +36,7 @@ update() {
 	read -p "VirtManager?(y/n):" choice
 	case $choice in
 	y)
-    #VirtManager
+   #VirtManager
    sudo grep -E -c '(vmx|svm)' /proc/cpuinfo
    sudo apt install cpu-checker && kvm-ok
    sudo apt update
@@ -79,15 +78,23 @@ EOF'
    sudo lspci -nnk
    #looking glass
    sudo apt install looking-glass-client
+   #win11安装virtio-win-gt-x64.msi VC_redist.x64.exe Looking Glass Client vdd
    #<devices>
    #  <shmem name='looking-glass'>
    #    <model type='ivshmem-plain'/>
    #    <size unit='M'>32</size>
    #  </shmem>
    #</devices>
-   echo "f /dev/shm/looking-glass 0660 kevin kvm - " | sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf
-   sudo systemd-tmpfiles --create /etc/tmpfiles.d/10-looking-glass.conf
-   #win11安装virtio-win-gt-x64.msi VC_redist.x64.exe Looking Glass Client vdd
+   #Hugepage
+   sudo bash -c 'cat <<EOF >> /etc/sysctl.d/99-sysctl.conf
+   vm.nr_hugepages=4096
+   vm.hugetlb_shm_group=48
+EOF'
+#<memory unit="KiB">8388608</memory>
+#<currentMemory unit="KiB">8388608</currentMemory>
+#<memoryBacking>
+#<hugepages/>
+#</memoryBacking>
 		;;
 	esac
 
@@ -221,6 +228,8 @@ EOF
     sudo apt install ./libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb ./libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb ./clash-verge_1.7.7_amd64.deb
     #font
     mkdir -p ~/.local/share/fonts && cp ~/.workspace/.config/0xProtoNerdFont-Regular.ttf ~/.local/share/fonts/ && fc-cache -fv
+    #autostart
+    cp -rf ~/.workspace/.config/autostart/ ~/.config/
 ;;
 	esac
 }
@@ -233,3 +242,73 @@ while true; do
 	*) break ;;
 	esac
 done
+
+createubuntu(){
+qemu-system-x86_64 \
+-machine q35 \
+-drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd \
+-drive if=pflash,format=raw,file=OVMF_VARS_4M.fd \
+-accel kvm \
+-cpu host \
+-smp sockets=1,cores=4,threads=1 \
+-m 4096 \
+-netdev user,id=n1 -device virtio-net,netdev=n1 \
+-vga std \
+-display gtk \
+-device intel-hda \
+-usbdevice tablet \
+-boot menu=on \
+-drive file=ubuntu.qcow2,if=virtio,format=qcow2 \
+#-cdrom ubuntu-24.04-desktop-amd64.iso
+
+: << 'EOF'
+这是一个多行注释，用于解释以下 QEMU 命令的配置。
+1. -machine q35: 使用 Q35 机器类型。
+2. -cpu host-passthrough: 直接使用主机的 CPU 特性。
+3. -m 8192: 分配 8GB 的内存。
+4. -smp 6: 设置 6 个虚拟 CPU。
+5. -accel kvm: 启用 KVM 加速。
+6. -bios: 指定 OVMF 固件文件。
+7. -drive: 硬盘配置，使用 Virtio 设备。
+8. -device: 网络、视频和音频设备配置。
+9. -boot menu=on: 启用启动菜单。
+10. -nographic: 如果不需要图形输出，可以启用此选项。
+11. -display spice: 使用 SPICE 显示。
+12. -memballoon: 启用内存气球设备。
+13. -rng: 使用随机数生成器设备。
+
+qemu-system-x86_64 \
+  -machine q35 \
+  -cpu host-passthrough \
+  -m 8192 \
+  -smp 6 \
+  -accel kvm \
+  -bios /usr/share/OVMF/OVMF_CODE_4M.secboot.fd \
+  -drive file=/var/lib/libvirt/images/ubuntu24.04.qcow2,if=virtio,format=qcow2 \
+  -device virtio-net,netdev=n1 \
+  -netdev user,id=n1 \
+  -device qxl,ram=65536,vram=65536,vgamem=16384,heads=1,primary=yes \
+  -device ich9-intel-hda \
+  -device usb-tablet \
+  -boot menu=on \
+  -nographic \
+  -display spice \
+  -soundhw ich9 \
+  -memballoon virtio \
+  -rng virtio,backend=model=random,filename=/dev/urandom \
+  -drive file=/usr/share/OVMF/OVMF_VARS_4M.fd,if=pflash \
+  -enable-kvm
+EOF
+}
+
+exportwin(){
+mkdir win11 
+sudo virsh dumpxml win11 > ~/win11/win11.xml  
+sudo cp /var/lib/libvirt/images/win11.qcow2 ~/win11/win11.qcow2
+sudo cp /var/lib/libvirt/qemu/nvram/win11_VARS.fd ~/win11/win11_VARS.fd
+sudo cp /usr/share/OVMF/OVMF_CODE_4M.secboot.fd ~/win11/OVMF_CODE_4M.secboot.fd
+
+cp ~/win11/win11.qcow2 /var/lib/libvirt/images/win11.qcow2
+cp ~/win11/win_VARS.fd /var/lib/libvirt/qemu/nvram/win11_VARS.fd
+virsh define --file ~/win11/windows11.xml
+}
