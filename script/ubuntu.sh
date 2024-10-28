@@ -12,10 +12,8 @@
 #
 
 update() {
-	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse"
-	#sudo add-apt-repository "deb https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
   sudo apt remove snapd
-	sudo apt update && sudo apt install wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
+	sudo apt update && sudo apt install wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server sshfs build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
   rustup update stable && rustup show && rustup default && cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
   cargo install tlrc
@@ -75,6 +73,7 @@ update() {
 EOF'
    echo "options kvm ignore_msrs=1" | sudo tee -a /etc/modprobe.d/kvm.conf
    sudo update-initramfs -u -k all
+sudo nano /etc/apt/sources.list
    sudo update-grub
    sudo reboot
    sudo lspci -nnk
@@ -92,11 +91,28 @@ EOF'
    vm.nr_hugepages=4096
    vm.hugetlb_shm_group=48
 EOF'
-#<memory unit="KiB">8388608</memory>
-#<currentMemory unit="KiB">8388608</currentMemory>
-#<memoryBacking>
-#<hugepages/>
-#</memoryBacking>
+   #wadroid
+   sudo apt install curl ca-certificates lzip python3 python3-pip
+   curl https://repo.waydro.id | sudo bash
+   sudo apt install waydroid
+   sudo bash -c 'cat <<EOF >>/etc/apt/sources.list
+   deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse
+   deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse
+   deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse
+   deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse
+EOF'
+   sudo waydroid init -s GAPPS -f
+   sudo systemctl start waydroid-container
+   sudo systemctl enable waydroid-container
+sudo waydroid shell
+#ANDROID_RUNTIME_ROOT=/apex/com.android.runtime ANDROID_DATA=/data ANDROID_TZDATA_ROOT=/apex/com.android.tzdata ANDROID_I18N_ROOT=/apex/com.android.i18n sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = \"android_id\";"
+	read -p "https://www.google.com/android/uncertified注册设备" choice
+sudo apt install lzip
+git clone https://github.com/casualsnek/waydroid_script ~/.waydroid_script
+cd ~/.waydroid_script
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt
+sudo venv/bin/python3 main.py 
 		;;
 	esac
 
@@ -105,6 +121,15 @@ EOF'
 	y)
 		curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 		sudo nohup filebrowser -a 0.0.0.0 -p 18650 -r / -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
+		;;
+	esac
+
+	read -p "filebrowser?(y/n):" choice
+	case $choice in
+	y)
+    wget https://github.com/LizardByte/Sunshine/releases/latest/download/sunshine-ubuntu-24.04-amd64.deb
+    sudo apt install ~/sunshine-ubuntu-24.04-amd64.deb
+
 		;;
 	esac
 
@@ -122,6 +147,32 @@ EOF
 		sudo smbpasswd -a kevin
 		sudo service smbd restart
 		sudo systemctl restart smbd && sudo systemctl enable smbd
+		;;
+	esac
+
+  read -p "docker?(y/n):" choice
+  case $choice in
+    y)
+      # 更新包列表
+      sudo apt update
+      # 安装必要的依赖包
+      sudo apt install apt-transport-https ca-certificates curl software-properties-common
+      # 添加 Docker 的官方 GPG 密钥
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      # 添加 Docker APT 仓库
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      # 更新包列表
+      sudo apt update
+      # 安装 Docker
+      sudo apt install docker-ce
+      # 启动 Docker 服务
+      sudo systemctl start docker
+      # 设置 Docker 开机自启
+      sudo systemctl enable docker
+      # 验证安装
+      sudo docker --version
+      # （可选）将当前用户添加到 Docker 用户组
+      sudo usermod -aG docker $USER
 		;;
 	esac
 
@@ -187,6 +238,7 @@ EOF
 	case $choice in
 	y)
 		cat <<EOF >>~/.zshrc && source ~/.zshrc
+if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
 export PATH="$HOME/.cargo/bin:$PATH"
 neofetch
 #rxfetch
@@ -212,6 +264,7 @@ alias vmpoweroff="sudo virsh list --name | xargs -r -I {} sudo virsh destroy {} 
 alias vmlist="sudo virsh list --all"
 alias vmubuntusnapshot="sudo virsh snapshot-create-as ubuntu24.04 --name snapshot_name --description "快照描述""
 alias vmwinsnapshot="sudo virsh snapshot-create-as win11 --name snapshot_name --description "快照描述""
+sudo systemctl start waydroid-container
 date
 curl -s 'wttr.in/{shanghai,fujin}?format=4'
 EOF

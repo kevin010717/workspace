@@ -29,5 +29,11 @@ Set-Content -Path $ohMyPoshConfigPath -Value $initContent -Force
 # 输出可用的主题
 Get-PoshThemes
 
-#win11激活
+# win11激活
 irm https://get.activated.win | iex
+
+# Chris Titus Tech Windows Utility
+irm https://christitus.com/win | iex
+
+#no login passwd
+netplwiz

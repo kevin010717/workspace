@@ -21,7 +21,7 @@ update() {
   pkg i root-repo x11-repo -y
   apt install tur-repo #安装软件源
   pkg i termux-services termux-api tsu -y
-  pkg i openssh wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
+  pkg i openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
   pkg i rust golang android-tools python-pip nodejs xmake -y
   pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
   pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
@@ -42,6 +42,7 @@ update() {
   git clone https://github.com/kevin010717/workspace.git ~/.workspace
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
   git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
+  git clone https://github.com/LinuxDroidMaster/Termux-Desktops.git ~/.Termux-Desktops
   cp -rf ~/.workspace/.config/ ~/
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
@@ -51,6 +52,27 @@ update() {
   #pkg install python clang libjpeg-turbo ffmpeg zlib -y
   #pip3 install --upgrade tidal-dl
   #mytermux.git
+
+  read -p "x11?(y/n):" choice
+  case $choice in
+  y)
+    #termux
+    wget https://github.com/termux/termux-x11/releases/download/nightly/app-arm64-v8a-debug.apk
+    sudo pm install app-arm64-v8a-debug.apk
+    pkg update && pkg upgrade
+    pkg install x11-repo
+    pkg install termux-x11-nightly
+    pkg install xfce gimp
+    termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
+    #proot-debian
+    pkg update
+    termux-setup-storage
+    pkg install proot-distro pulseaudio vim virglrenderer-android
+    proot-distro login debian --user root --shared-tmp
+    #chroot-ubuntu
+
+    ;;
+  esac
 
   read -p "git config?(y/n):" choice
   case $choice in
@@ -424,17 +446,42 @@ thumbnails() {
   done
 }
 
+debian(){
+
+# 中止所有舊行程
+killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
+
+# 啟動Termux X11
+am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
+XDG_RUNTIME_DIR=${TMPDIR}
+termux-x11 :0 -ac &
+sleep 3
+
+# 啟動PulseAudio
+pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
+pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+
+# 啟動GPU加速的virglserver
+virgl_test_server_android &
+
+# 登入proot Debian並啟動桌面環境
+proot-distro login debian --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session startxfce4"
+
+}
+
 while true; do
   echo -e "1.update"
   echo -e "2.obs"
   echo -e "3.gif"
   echo -e "4.thumbnails"
+  echo -e "5.debian"
   read choice
   case $choice in
   1) time update ;;
   2) time obs ;;
   3) time gif ;;
   4) time thumbnails ;;
+  5) time debian;;
   *) break ;;
   esac
 done

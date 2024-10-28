@@ -1,18 +1,21 @@
 #!/bin/bash
 
-# 等待一段时间确保系统启动完成
-sleep 2
-
-# 打开第一个全屏终端
+#terminal 
+sleep 1
 gnome-terminal --full-screen &
 
-# 等待一段时间以确保终端完全打开
+#switch workspace
 sleep 1
-
-# 切换到第二个桌面
 wmctrl -s 1
 
-# 打开第二个全屏终端并启动 Chrome
-#google-chrome-stable & sleep 2; wmctrl -r :ACTIVE: -b toggle,fullscreen
-google-chrome-stable
+#Chrome
+sleep 1
+nohup google-chrome-stable >/dev/null 2>&1 &
 
+#waydroid 
+#sleep 1
+#nohup waydroid show-full-ui >/dev/null 2>&1 &
+
+#sunshine 
+sleep 1
+nohup sunshine>/dev/null 2>&1 &
