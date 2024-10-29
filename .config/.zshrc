@@ -114,9 +114,7 @@ alias h="bpytop"
 alias sc="source ~/.zshrc"
 alias ip="ifconfig | lolcat"
 alias map="telnet mapscii.me"
-alias vmubuntusnapshot="sudo virsh snapshot-create-as ubuntu24.04 --name snapshot_name --description "快照描述""
 alias vmwinsnapshot="sudo virsh snapshot-create-as win11 --name snapshot_name --description "快照描述""
-alias vmubuntu='if sudo virsh domstate ubuntu24.04 | grep -q "shut off"; then sudo nohup virsh start ubuntu24.04 >/dev/null 2>&1; fi && sudo nohup virt-viewer -f -w ubuntu24.04 >/dev/null 2>&1 &'
 alias vmwin='if sudo virsh domstate win11 | grep -q "shut off"; then \
     sudo nohup virsh start win11 >/dev/null 2>&1; \
 fi && \
@@ -127,8 +125,12 @@ alias vmsuspend="sudo virsh list --name | xargs -r -I {} sudo virsh suspend {} "
 alias vmshutdown="sudo virsh list --name | xargs -r -I {} sudo virsh shutdown {} "
 alias vmdestroy="sudo virsh list --name | xargs -r -I {} sudo virsh destroy {} "
 alias vmlist="sudo virsh list --all"
+alias vl="sudo virsh list --all"
+alias vubuntusnapshot="sudo virsh snapshot-create-as ubuntu24.04 --name snapshot_name --description "快照描述""
+alias vmubuntu='if sudo virsh domstate ubuntu24.04 | grep -q "shut off"; then sudo nohup virsh start ubuntu24.04 >/dev/null 2>&1; fi && sudo nohup virt-viewer -f -w ubuntu24.04 >/dev/null 2>&1 &'
 alias vmubuntusave="sudo virsh save ubuntu24.04 /var/lib/libvirt/qemu/save/ubuntu24.04.save"
 alias vmubunturestore="sudo virsh restore /var/lib/libvirt/qemu/save/ubuntu24.04.save"
+alias vmubuntuedit="sudo virsh eidt ubuntu24.04"
 #neofetch
 #rxfetch
 #date

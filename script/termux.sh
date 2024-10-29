@@ -59,18 +59,29 @@ update() {
     #termux
     wget https://github.com/termux/termux-x11/releases/download/nightly/app-arm64-v8a-debug.apk
     sudo pm install app-arm64-v8a-debug.apk
-    pkg update && pkg upgrade
-    pkg install x11-repo
     pkg install termux-x11-nightly
     pkg install xfce gimp
-    termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
+    su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
+    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
+    
     #proot-debian
-    pkg update
     termux-setup-storage
-    pkg install proot-distro pulseaudio vim virglrenderer-android
-    proot-distro login debian --user root --shared-tmp
-    #chroot-ubuntu
+    pkg install proot-distro pulseaudio virglrenderer-android
+    proot-distro install debian
+    proot-distro login debian --user user --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
+    #prootdebian-start.sh
 
+    #chroot-ubuntu 需要magisk-busybox
+    pkg install pulseaudio busybox
+    mkdir chrootubuntu
+    cd chrootubuntu
+    wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
+    tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner
+    sudo mkdir sdcard
+    sudo mkdir dev/shm
+    cd ../
+    ~/.workspace/script/chrootubuntu-update.sh
+    #chrootubuntu-start
     ;;
   esac
 
@@ -298,6 +309,7 @@ EOF
   case $choice in
   y)
     cat <<EOF >>~/.zshrc
+  if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
   export PATH="$HOME/.cargo/bin:$PATH"
   sshd
   alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
@@ -366,11 +378,6 @@ EOF
   volume-max=1000
   volume=200
   script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
-EOF
-
-    cat <<EOF >>~/.tmux.conf
-  set -g status off
-  bind-key -n C-a send-prefix
 EOF
     ;;
   esac
@@ -445,8 +452,28 @@ thumbnails() {
       "$thumbnail_file"
   done
 }
-
-debian(){
+chrootubuntu-install(){
+    #chroot-ubuntu 需要magisk-busybox
+    pkg install pulseaudio busybox
+    mkdir chrootubuntu
+    cd chrootubuntu
+    wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
+    tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner
+    sudo mkdir sdcard
+    sudo mkdir dev/shm
+    cd ../
+    ~/.workspace/script/chrootubuntu-update.sh
+    #chrootubuntu-start
+}
+prootdebian-install(){
+    #proot-debian
+    termux-setup-storage
+    pkg install proot-distro pulseaudio virglrenderer-android
+    proot-distro install debian
+    proot-distro login debian --user user --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
+    #prootdebian-start.sh
+}
+prootdebian(){
 
 # 中止所有舊行程
 killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
@@ -474,14 +501,18 @@ while true; do
   echo -e "2.obs"
   echo -e "3.gif"
   echo -e "4.thumbnails"
-  echo -e "5.debian"
+  echo -e "5.prootdebian"
+  echo -e "6.prootdebian-install"
+  echo -e "7.chrootubuntu-install"
   read choice
   case $choice in
   1) time update ;;
   2) time obs ;;
   3) time gif ;;
   4) time thumbnails ;;
-  5) time debian;;
+  5) time prootdebian;;
+  6) time prootdebian-install;;
+  7) time chrootubuntu-install;;
   *) break ;;
   esac
 done
