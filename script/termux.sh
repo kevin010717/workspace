@@ -81,7 +81,7 @@ update() {
     sudo mkdir dev/shm
     cd ../
     ~/.workspace/script/chrootubuntu-update.sh
-    #chrootubuntu-start
+    #chrootubuntu-start.sh
     ;;
   esac
 
@@ -473,6 +473,15 @@ prootdebian-install(){
     proot-distro login debian --user user --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
     #prootdebian-start.sh
 }
+termuxx11-install(){
+    #termux
+    wget https://github.com/termux/termux-x11/releases/download/nightly/app-arm64-v8a-debug.apk
+    sudo pm install app-arm64-v8a-debug.apk
+    pkg install termux-x11-nightly
+    pkg install xfce gimp
+    su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
+    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
+}
 prootdebian(){
 
 # 中止所有舊行程
@@ -504,6 +513,7 @@ while true; do
   echo -e "5.prootdebian"
   echo -e "6.prootdebian-install"
   echo -e "7.chrootubuntu-install"
+  echo -e "8.termuxx11-install"
   read choice
   case $choice in
   1) time update ;;
@@ -513,6 +523,7 @@ while true; do
   5) time prootdebian;;
   6) time prootdebian-install;;
   7) time chrootubuntu-install;;
+  8) time termuxx11-install;;
   *) break ;;
   esac
 done
