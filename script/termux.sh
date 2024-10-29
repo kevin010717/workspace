@@ -16,7 +16,7 @@ chmod +x "$0"
 update() {
   #termux-reload-settings
   #termux-setup-storage
-  #termux-change-repo
+  termux-change-repo
   pkg update && pkg upgrade -y
   pkg i root-repo x11-repo -y
   apt install tur-repo #安装软件源
