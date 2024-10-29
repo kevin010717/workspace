@@ -43,13 +43,14 @@ busybox mount --bind /sdcard $UBUNTUPATH/sdcard
 
 # chroot至Ubuntu
 #busybox chroot $UBUNTUPATH /bin/su - root
-busybox chroot $UBUNTUPATH /bin/su - user -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startxfce4'
+#busybox chroot $UBUNTUPATH /bin/su - root -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startxfce4'
+busybox chroot $UBUNTUPATH /bin/su - root -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startplasma-x11'
 
 # 退出shell後取消掛載，因為後面要裝圖形環境所以這裡是註解狀態。若沒有要裝圖形環境再將以下指令取消註解。
-#busybox umount $UBUNTUPATH/dev/shm
-#busybox umount $UBUNTUPATH/dev/pts
-#busybox umount $UBUNTUPATH/dev
-#busybox umount $UBUNTUPATH/proc
-#busybox umount $UBUNTUPATH/sys
-#busybox umount $UBUNTUPATH/sdcard
+busybox umount $UBUNTUPATH/dev/shm
+busybox umount $UBUNTUPATH/dev/pts
+busybox umount $UBUNTUPATH/dev
+busybox umount $UBUNTUPATH/proc
+busybox umount $UBUNTUPATH/sys
+busybox umount $UBUNTUPATH/sdcard
 "

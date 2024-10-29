@@ -21,9 +21,9 @@ echo \"user ALL=(ALL:ALL) ALL\" | sudo tee -a /etc/sudoers
 su user
 #sudo apt install xubuntu-desktop
 #sudo update-alternatives --config x-terminal-emulator
-sudo apt install kubuntu-desktop
-sudo update-alternatives --config x-terminal-emulator
-sudo apt-get autopurge snapd
+apt install kubuntu-desktop
+update-alternatives --config x-terminal-emulator
+apt-get autopurge snapd
 cat <<EOF | sudo tee /etc/apt/preferences.d/nosnap.pref
 # To prevent repository packages from triggering the installation of Snap,
 # this file forbids snapd from being installed by APT.
@@ -32,10 +32,10 @@ Package: snapd
 Pin: release a=*
 Pin-Priority: -10
 EOF
-sudo apt install software-properties-common
-sudo add-apt-repository ppa:mozillateam/ppa
-sudo apt-get update
-sudo apt-get install firefox-esr
+apt install software-properties-common
+add-apt-repository ppa:mozillateam/ppa
+apt-get update
+apt-get install firefox-esr
 '"
 #su -c "busybox chroot /data/data/com.termux/files/home/chrootubuntu /bin/su - root -c 'apt update'"
 

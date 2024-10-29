@@ -34,8 +34,6 @@ update() {
   npm config set registry https://registry.npmmirror.com
   npm i docsify-cli mapscii cordova -g
   echo "type openssh passwd:" && passwd
-  go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
-  go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim
   git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
@@ -52,6 +50,85 @@ update() {
   #pkg install python clang libjpeg-turbo ffmpeg zlib -y
   #pip3 install --upgrade tidal-dl
   #mytermux.git
+  #go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
+  #go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
+
+  read -p "config?(y/n):" choice
+  case $choice in
+  y)
+    cat <<EOF >>~/.zshrc
+  if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
+  export PATH="$HOME/.cargo/bin:$PATH"
+  sshd
+  alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
+  alias mm='mpv --no-video -v "\$(termux-clipboard-get)"'
+  alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "\$(termux-clipboard-get)"'
+  alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
+  alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
+  alias f="sl;nyancat -f 50 -n;cmatrix;"
+  alias g="glow ~/workspace/README.md"
+  alias h="htop"
+  alias n="nvim"
+  alias ls="ls | lolcat"
+  alias cat="cat | lolcat"
+  alias sc="source ~/.zshrc"
+  alias t="~/.workspace/script/termux.sh | lolcat"
+  alias ip="ifconfig | lolcat"
+  alias y="yazi"
+  alias gacp="git add . ; git commit -m "1" ;git push origin main"
+  alias map="telnet mapscii.me"
+  #neofetch
+  #rxfetch
+  #fastfetch
+  #cpufetch
+  #figlet Hello,world! | lolcat
+  #fortune $PREFIX/share/games/fortunes/fortunes | lolcat
+  #fortune $PREFIX/share/games/fortunes/chinese | lolcat
+  #fortune $PREFIX/share/games/fortunes/tang300 | lolcat
+  #fortune $PREFIX/share/games/fortunes/song100 | lolcat
+  #cowsay -r what | lolcat
+  #curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
+  #curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
+  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
+  #~/.ansiweather/ansiweather -f 1 -l fujin 
+  cal
+  date
+EOF
+    source ~/.zshrc
+
+    cat <<EOF >>~/.termux/termux.properties
+    volume-keys = volume
+    bell-character = ignore
+    shortcut.create-session = ctrl + t
+    shortcut.next-session = ctrl + 2
+    shortcut.previous-session = ctrl + 1
+    shortcut.rename-session = ctrl + n
+    terminal-transcript-rows = 2000
+    #hide-soft-keyboard-on-startup = true
+    disable-terminal-session-change-toast = true
+    default-working-directory = /data/data/com.termux/files/home/
+    extra-keys = [[ \
+      {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
+        {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
+          {key: ESC, popup: {macro: "", display: A}}, \
+            {key: CTRL, popup: {macro: "", display: A}}, \
+              {key: TAB, popup: {macro: "", display: A}}, \
+                {key: LEFT, popup: HOME}, \
+                  {key: RIGHT, popup: END}, \
+                    {key: UP, popup: PGUP}, \
+                      {key: DOWN, popup: PGDN}, \
+                        {key: KEYBOARD, popup: {macro: "CTRL l", display:A}} \
+                          ]]
+EOF
+    termux-reload-settings
+
+    cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
+  volume-max=1000
+  volume=200
+  script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
+EOF
+    ;;
+  esac
 
   read -p "x11?(y/n):" choice
   case $choice in
@@ -68,7 +145,7 @@ update() {
     termux-setup-storage
     pkg install proot-distro pulseaudio virglrenderer-android
     proot-distro install debian
-    proot-distro login debian --user user --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
+    proot-distro login debian --user root --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
     #prootdebian-start.sh
 
     #chroot-ubuntu 需要magisk-busybox
@@ -304,83 +381,6 @@ EOF
     cargo install leetcode-cli
     ;;
   esac
-
-  read -p "config?(y/n):" choice
-  case $choice in
-  y)
-    cat <<EOF >>~/.zshrc
-  if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
-  export PATH="$HOME/.cargo/bin:$PATH"
-  sshd
-  alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
-  alias mm='mpv --no-video -v "\$(termux-clipboard-get)"'
-  alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "\$(termux-clipboard-get)"'
-  alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
-  alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
-  alias f="sl;nyancat -f 50 -n;cmatrix;"
-  alias g="glow ~/workspace/README.md"
-  alias h="htop"
-  alias n="nvim"
-  alias ls="ls | lolcat"
-  alias cat="cat | lolcat"
-  alias sc="source ~/.zshrc"
-  alias t="~/.workspace/script/termux.sh | lolcat"
-  alias ip="ifconfig | lolcat"
-  alias y="yazi"
-  alias gacp="git add . ; git commit -m "1" ;git push origin main"
-  alias map="telnet mapscii.me"
-  #neofetch
-  #rxfetch
-  #fastfetch
-  #cpufetch
-  #figlet Hello,world! | lolcat
-  #fortune $PREFIX/share/games/fortunes/fortunes | lolcat
-  #fortune $PREFIX/share/games/fortunes/chinese | lolcat
-  #fortune $PREFIX/share/games/fortunes/tang300 | lolcat
-  #fortune $PREFIX/share/games/fortunes/song100 | lolcat
-  #cowsay -r what | lolcat
-  #curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
-  #curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
-  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
-  #~/.ansiweather/ansiweather -f 1 -l fujin 
-  cal
-  date
-EOF
-    source ~/.zshrc
-
-    cat <<EOF >>~/.termux/termux.properties
-    volume-keys = volume
-    bell-character = ignore
-    shortcut.create-session = ctrl + t
-    shortcut.next-session = ctrl + 2
-    shortcut.previous-session = ctrl + 1
-    shortcut.rename-session = ctrl + n
-    terminal-transcript-rows = 2000
-    #hide-soft-keyboard-on-startup = true
-    disable-terminal-session-change-toast = true
-    default-working-directory = /data/data/com.termux/files/home/
-    extra-keys = [[ \
-      {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
-        {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
-          {key: ESC, popup: {macro: "", display: A}}, \
-            {key: CTRL, popup: {macro: "", display: A}}, \
-              {key: TAB, popup: {macro: "", display: A}}, \
-                {key: LEFT, popup: HOME}, \
-                  {key: RIGHT, popup: END}, \
-                    {key: UP, popup: PGUP}, \
-                      {key: DOWN, popup: PGDN}, \
-                        {key: KEYBOARD, popup: {macro: "CTRL l", display:A}} \
-                          ]]
-EOF
-    termux-reload-settings
-
-    cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
-  volume-max=1000
-  volume=200
-  script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
-EOF
-    ;;
-  esac
 }
 
 obs() {
@@ -452,6 +452,7 @@ thumbnails() {
       "$thumbnail_file"
   done
 }
+
 chrootubuntu-install(){
     #chroot-ubuntu 需要magisk-busybox
     pkg install pulseaudio busybox
@@ -465,44 +466,93 @@ chrootubuntu-install(){
     ~/.workspace/script/chrootubuntu-update.sh
     #chrootubuntu-start
 }
+chrootubuntu-start(){
+killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
+am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
+sudo busybox mount --bind $PREFIX/tmp $HOME/chrootubuntu/tmp
+XDG_RUNTIME_DIR=${TMPDIR} termux-x11 :0 -ac &
+sleep 3
+pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
+pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+virgl_test_server_android &
+export UBUNTUPATH='/data/data/com.termux/files/home/chrootubuntu'
+su -c "
+# Ubuntu檔案系統所在路徑
+export UBUNTUPATH='/data/data/com.termux/files/home/chrootubuntu'
+
+# 解決setuid問題
+busybox mount -o remount,dev,suid /data
+
+busybox mount --bind /dev $UBUNTUPATH/dev
+busybox mount --bind /sys $UBUNTUPATH/sys
+busybox mount --bind /proc $UBUNTUPATH/proc
+busybox mount -t devpts devpts $UBUNTUPATH/dev/pts
+
+# Electron APPS需要/dev/shm
+busybox mount -t tmpfs -o size=256M tmpfs $UBUNTUPATH/dev/shm
+
+# 掛載內部儲存空間
+busybox mount --bind /sdcard $UBUNTUPATH/sdcard
+
+# chroot至Ubuntu
+#busybox chroot $UBUNTUPATH /bin/su - root
+busybox chroot $UBUNTUPATH /bin/su - user -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startxfce4'
+busybox chroot $UBUNTUPATH /bin/su - user -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startplasma-x11'
+
+# 退出shell後取消掛載，因為後面要裝圖形環境所以這裡是註解狀態。若沒有要裝圖形環境再將以下指令取消註解。
+busybox umount $UBUNTUPATH/dev/shm
+busybox umount $UBUNTUPATH/dev/pts
+busybox umount $UBUNTUPATH/dev
+busybox umount $UBUNTUPATH/proc
+busybox umount $UBUNTUPATH/sys
+busybox umount $UBUNTUPATH/sdcard
+"
+}
+
 prootdebian-install(){
     #proot-debian
     termux-setup-storage
     pkg install proot-distro pulseaudio virglrenderer-android
     proot-distro install debian
-    proot-distro login debian --user user --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
+    proot-distro login debian --user root --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
     #prootdebian-start.sh
 }
+prootdebian-start(){
+    # 中止所有舊行程
+    killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
+    # 啟動Termux X11
+    am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
+    XDG_RUNTIME_DIR=${TMPDIR}
+    termux-x11 :0 -ac &
+    sleep 3
+    # 啟動PulseAudio
+    pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
+    pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+    # 啟動GPU加速的virglserver
+    virgl_test_server_android &
+    # 登入proot Debian並啟動桌面環境
+    #proot-distro login debian --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session startxfce4"
+    proot-distro login debian --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3"
+}
+
 termuxx11-install(){
     #termux
-    wget https://github.com/termux/termux-x11/releases/download/nightly/app-arm64-v8a-debug.apk
-    sudo pm install app-arm64-v8a-debug.apk
-    pkg install termux-x11-nightly
-    pkg install xfce gimp
+    pkg install termux-x11-nightly xfce gimp
     su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
+    #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
 }
-prootdebian(){
-
-# 中止所有舊行程
-killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
-
-# 啟動Termux X11
-am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
-XDG_RUNTIME_DIR=${TMPDIR}
-termux-x11 :0 -ac &
-sleep 3
-
-# 啟動PulseAudio
-pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
-pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-
-# 啟動GPU加速的virglserver
-virgl_test_server_android &
-
-# 登入proot Debian並啟動桌面環境
-proot-distro login debian --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session startxfce4"
-
+termuxx11-start(){
+    killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
+    am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
+    XDG_RUNTIME_DIR=${TMPDIR}
+    termux-x11 :0 -ac &
+    sleep 3
+    pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
+    pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+    virgl_test_server_android &
+    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
+    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session i3"
+    termux-x11 :0 -xstartup "dbus-launch --exit-with-session openbox-session"
 }
 
 while true; do
@@ -510,20 +560,24 @@ while true; do
   echo -e "2.obs"
   echo -e "3.gif"
   echo -e "4.thumbnails"
-  echo -e "5.prootdebian"
-  echo -e "6.prootdebian-install"
-  echo -e "7.chrootubuntu-install"
-  echo -e "8.termuxx11-install"
+  echo -e "5.termuxx11-install"
+  echo -e "6.termuxx11-start"
+  echo -e "7.prootdebian-install"
+  echo -e "8.prootdebian-start"
+  echo -e "9.chrootubuntu-install"
+  echo -e "10.chrootubuntu-start"
   read choice
   case $choice in
   1) time update ;;
   2) time obs ;;
   3) time gif ;;
   4) time thumbnails ;;
-  5) time prootdebian;;
-  6) time prootdebian-install;;
-  7) time chrootubuntu-install;;
-  8) time termuxx11-install;;
+  5) time termuxx11-install;;
+  6) time termuxx11-start;;
+  7) time prootdebian-install;;
+  8) time prootdebian-start;;
+  9) time chrootubuntu-install;;
+  10) time chrootubuntu-start;;
   *) break ;;
   esac
 done
