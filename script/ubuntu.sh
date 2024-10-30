@@ -31,7 +31,6 @@ update() {
     sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot
     sudo update-alternatives --config x-terminal-emulator
     git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
-
 		;;
 	esac
 

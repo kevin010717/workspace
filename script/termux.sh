@@ -53,6 +53,15 @@ update() {
   #go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
   #go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
 
+  read -p "i3wm?(y/n):" choice
+  case $choice in
+  y)
+    sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot
+    sudo update-alternatives --config x-terminal-emulator
+    git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
+    ;;
+  esac
+
   read -p "config?(y/n):" choice
   case $choice in
   y)
