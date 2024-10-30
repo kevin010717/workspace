@@ -35,7 +35,7 @@ update() {
   npm i docsify-cli mapscii cordova -g
   echo "type openssh passwd:" && passwd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-  git clone https://github.com/LazyVim/starter ~/.config/nvim
+  git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
   git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
   git clone https://github.com/kevin010717/workspace.git ~/.workspace
   git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
@@ -539,6 +539,7 @@ termuxx11-install(){
     #termux
     pkg install termux-x11-nightly xfce gimp
     su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
+    git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
     #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
 }
 termuxx11-start(){
@@ -551,8 +552,8 @@ termuxx11-start(){
     pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
     virgl_test_server_android &
     #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
-    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session i3"
-    termux-x11 :0 -xstartup "dbus-launch --exit-with-session openbox-session"
+    termux-x11 :0 -xstartup "dbus-launch --exit-with-session i3"
+    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session openbox-session"
 }
 
 while true; do

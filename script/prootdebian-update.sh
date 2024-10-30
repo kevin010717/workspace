@@ -10,6 +10,5 @@ passwd user
 echo "user ALL=(ALL:ALL) ALL" | sudo tee -a /etc/sudoers
 su user
 #apt install xfce4 xfce4-goodies dbus-x11
-apt install i3 dbus-x11
-
-
+apt install i3 dbus-x11 konsole gnome-terminal -y
+update-alternatives --config x-terminal-emulator
