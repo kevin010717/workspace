@@ -190,25 +190,20 @@ bar {
 }
 # Theme colors
 # <colorclass> <border> <background> <text> <indicator> <child_border>
-client.focused            #84FFFF      #5E81AC     #E5E9F0     #E5E9F0       #ECECEC
-client.focused_inactive   #4C556A      #84FFFF     #2E3440     #ECECEC       #ECECEC
-client.unfocused          #84FFFF      #84FFFF     #171717     #ECECEC       #ECECEC
-client.urgent             #BF616A      #BF616A     #ffffff     #268BD2
-client.placeholder        #84FFFF      #909090     #FFFFFF     #268BD2
-exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
 bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
 bindsym Control+$mod+l exec "i3lock -c 000000"
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 bindsym $mod+d exec --no-startup-id rofi -show drun
+bindsym $mod+Shift+s exec --no-startup-id flameshot gui # 设置火焰截图
+bindsym XF86MonBrightnessUp exec xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
 exec_always --no-startup-id picom -b --config /home/$USER/.config/i3/picom.conf
-exec_always feh --bg-scale $HOME/.workspace/.config/wallpapper.jpg
 exec_always --no-startup-id xset s off
 exec_always --no-startup-id xset s off -dpms
 exec_always --no-startup-id xset s noblank
 #exec_always --no-startup-id "$HOME/.config/polybar/launch.sh --blocks"
 #bindsym $mod+p exec --no-startup-id polybar-msg cmd toggle # 设置快捷键来显示隐藏 polybar
-bindsym $mod+Shift+s exec --no-startup-id flameshot gui # 设置火焰截图
 exec_always --no-startup-id fcitx5 -d
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+exec feh --no-fehbg --bg-scale "$HOME/wallpapper.jpg" &

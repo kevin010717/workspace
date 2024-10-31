@@ -102,7 +102,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
+
+#if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
 export PATH="$HOME/.cargo/bin:$PATH"
 alias s="slides ~/termux-install/dairy.md"
 alias g="glow ~/termux-install/todo.md"
@@ -120,7 +121,7 @@ alias vmwin='if sudo virsh domstate win11 | grep -q "shut off"; then \
 fi && \
 echo "f /dev/shm/looking-glass 0660 kevin kvm - " | sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf && \
 sudo systemd-tmpfiles --create /etc/tmpfiles.d/10-looking-glass.conf && \
-nohup looking-glass-client -F egl:vsync >/dev/null 2>&1 &'
+nohup looking-glass-client -F  -m KEY_ESC -m KEY_SCROLLLOCK egl:vsync >/dev/null 2>&1 &'
 alias vmsuspend="sudo virsh list --name | xargs -r -I {} sudo virsh suspend {} "
 alias vmshutdown="sudo virsh list --name | xargs -r -I {} sudo virsh shutdown {} "
 alias vmdestroy="sudo virsh list --name | xargs -r -I {} sudo virsh destroy {} "

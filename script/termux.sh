@@ -66,7 +66,6 @@ update() {
   case $choice in
   y)
     cat <<EOF >>~/.zshrc
-  if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
   export PATH="$HOME/.cargo/bin:$PATH"
   sshd
   alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
@@ -524,7 +523,6 @@ prootdebian-install(){
     pkg install proot-distro pulseaudio virglrenderer-android
     proot-distro install debian
     proot-distro login debian --user root --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
-    #prootdebian-start.sh
 }
 prootdebian-start(){
     # 中止所有舊行程
@@ -548,7 +546,7 @@ termuxx11-install(){
     #termux
     pkg install termux-x11-nightly xfce gimp
     su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-    git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
+    #git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
     #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
 }
 termuxx11-start(){

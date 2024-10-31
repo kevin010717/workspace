@@ -82,7 +82,7 @@ update() {
 EOF'
    echo "options kvm ignore_msrs=1" | sudo tee -a /etc/modprobe.d/kvm.conf
    sudo update-initramfs -u -k all
-sudo nano /etc/apt/sources.list
+   sudo nano /etc/apt/sources.list
    sudo update-grub
    sudo reboot
    sudo lspci -nnk
