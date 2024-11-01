@@ -406,8 +406,8 @@ busybox mount --bind /sdcard $UBUNTUPATH/sdcard
 
 # chroot至Ubuntu
 #busybox chroot $UBUNTUPATH /bin/su - root
+#busybox chroot $UBUNTUPATH /bin/su - user -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startplasma-x11'
 busybox chroot $UBUNTUPATH /bin/su - user -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startxfce4'
-busybox chroot $UBUNTUPATH /bin/su - user -c 'export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1:4713 && dbus-launch --exit-with-session startplasma-x11'
 
 # 退出shell後取消掛載，因為後面要裝圖形環境所以這裡是註解狀態。若沒有要裝圖形環境再將以下指令取消註解。
 busybox umount $UBUNTUPATH/dev/shm
@@ -428,7 +428,7 @@ prootubuntu-start(){
     pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
     pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
     virgl_test_server_android &
-    proot-distro login ubuntu --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3"
+    proot-distro login ubuntu --user root --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3"
     #proot-distro login debian --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session startxfce4"
 }
 
