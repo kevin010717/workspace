@@ -38,7 +38,7 @@ update() {
   git clone https://github.com/kevin010717/workspace.git ~/.workspace 
   cp -rf ~/.workspace/.config/ ~/ 
   cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
-  cp -f ~/.config/.zshrc ~/.zshrc
+  cp -f ~/.workspace/.zshrc ~/.zshrc
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #cargo install clock-tui bk
@@ -451,22 +451,18 @@ while true; do
   echo -e "2.obs"
   echo -e "3.gif"
   echo -e "4.thumbnails"
-  echo -e "6.termuxx11-start"
-  echo -e "7.prootdebian-install"
-  echo -e "8.prootdebian-start"
-  echo -e "9.chrootubuntu-install"
-  echo -e "10.chrootubuntu-start"
+  echo -e "5.termuxx11-start"
+  echo -e "6.prootubuntu-start"
+  echo -e "7.chrootubuntu-start"
   read choice
   case $choice in
   1) time update ;;
   2) time obs ;;
   3) time gif ;;
   4) time thumbnails ;;
-  6) time termuxx11-start;;
-  7) time prootdebian-install;;
-  8) time prootdebian-start;;
-  9) time chrootubuntu-install;;
-  10) time chrootubuntu-start;;
+  5) time termuxx11-start;;
+  6) time prootubuntu-start;;
+  7) time chrootubuntu-start;;
   *) break ;;
   esac
 done

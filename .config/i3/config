@@ -207,4 +207,4 @@ exec_always --no-startup-id xset s noblank
 #exec_always --no-startup-id "$HOME/.config/polybar/launch.sh --blocks"
 #bindsym $mod+p exec --no-startup-id polybar-msg cmd toggle # 设置快捷键来显示隐藏 polybar
 exec_always --no-startup-id fcitx5 -d
-exec feh --no-fehbg --bg-scale "$HOME/wallpapper.jpg" &
+exec feh --no-fehbg --bg-scale "$HOME/.workspace/.config/wallpapper.jpg" &
