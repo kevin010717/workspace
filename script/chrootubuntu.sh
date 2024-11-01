@@ -1,6 +1,6 @@
 #!/bin/sh
 export UBUNTUPATH="/data/data/com.termux/files/home/chrootubuntu"
-su -c "busybox chroot $UBUNTUPATH /bin/su - root -c '
+su -c "busybox chroot "/data/data/com.termux/files/home/chrootubuntu" /bin/su - root -c '
 echo \"nameserver 8.8.8.8\" > /etc/resolv.conf
 echo \"127.0.0.1 localhost\" > /etc/hosts
 groupadd -g 3003 aid_inet
@@ -20,7 +20,6 @@ passwd user
 echo \"user ALL=(ALL:ALL) ALL\" | sudo tee -a /etc/sudoers
 su user
 #sudo apt install xubuntu-desktop
-#sudo update-alternatives --config x-terminal-emulator
 apt install kubuntu-desktop
 update-alternatives --config x-terminal-emulator
 apt-get autopurge snapd
@@ -37,5 +36,3 @@ add-apt-repository ppa:mozillateam/ppa
 apt-get update
 apt-get install firefox-esr
 '"
-#su -c "busybox chroot /data/data/com.termux/files/home/chrootubuntu /bin/su - root -c 'apt update'"
-

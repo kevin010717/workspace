@@ -14,9 +14,10 @@
 update() {
   sudo apt remove snapd
 	sudo apt update && sudo apt install wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server sshfs build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
+  sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils xbacklight brightnessctl && sudo update-alternatives --config x-terminal-emulator -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
   rustup update stable && rustup show && rustup default
-  export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index" && cargo install --locked yazi-fm yazi-cli tlrc
+  cargo install --locked yazi-fm yazi-cli tlrc
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 	git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
 	git clone https://github.com/kevin010717/workspace.git ~/.workspace
@@ -24,16 +25,8 @@ update() {
 	#npm install -g percollate #web pages to epub
 	#pipx install tomato-clock
 	#pipx run --spec tomato-clock tomato
+  #git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
   
-	read -p "i3wm?(y/n):" choice
-	case $choice in
-	y)
-    sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils xbacklight brightnessctl
-    sudo update-alternatives --config x-terminal-emulator
-    git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
-		;;
-	esac
-
 	read -p "git config?(y/n):" choice
 	case $choice in
 	y)

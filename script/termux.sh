@@ -57,23 +57,6 @@ update() {
   #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
   #git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
 
-  read -p "x11?(y/n):" choice
-  case $choice in
-    y)
-      pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
-      pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
-      su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-    ;;
-  esac
-
-  read -p "prootubuntu?(y/n):" choice
-  case $choice in
-    y)
-      proot-distro install ubuntu
-      proot-distro login ubuntu --user root --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
-    ;;
-  esac
-
   read -p "chrootubuntu?(y/n):" choice
   case $choice in
     y)
