@@ -204,14 +204,15 @@ bindsym $mod+F2 exec amixer -D pulse sset Master 5%+
 bindsym $mod+F3 exec sudo brightnessctl set 10%-
 bindsym $mod+F4 exec sudo brightnessctl set +10%
 # wallpapper
-bindsym $mod+F5 exec feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
-bindsym $mod+F6 exec feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper_black.jpg" &
+bindsym $mod+F5 exec feh --no-startup-id --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
+bindsym $mod+F6 exec feh --no-startup-id --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper_black.jpg" &
 exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
 exec_always --no-startup-id picom -b --config /home/$USER/.config/i3/picom.conf
 exec_always --no-startup-id xset s off
 exec_always --no-startup-id xset s off -dpms
 exec_always --no-startup-id xset s noblank
 exec_always --no-startup-id fcitx5 -d
+exec --no-startup-id feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
 exec --no-startup-id sh -c "google-chrome & sleep 1; i3-msg 'move container to workspace 2'"
 exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Tapping Enabled" 1
 exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Natural Scrolling Enabled" 1
