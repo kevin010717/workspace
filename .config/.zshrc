@@ -103,25 +103,23 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
-export PATH="$HOME/.cargo/bin:$PATH"
-alias s="slides ~/termux-install/dairy.md"
-alias g="glow ~/termux-install/todo.md"
-alias n="nvim"
-alias y="yazi"
-alias c='screen -q -r -D cmus || screen -S cmus $(which --skip-alias cmus)'#shell screen -d cmus
-alias gacp="git add . ; git commit -m "1" ;git push origin main"
+alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
+alias mm='mpv --no-video -v "\$(termux-clipboard-get)"'
+alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "\$(termux-clipboard-get)"'
+alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
+alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
+alias f="sl;nyancat -f 50 -n;cmatrix;"
+alias g="glow ~/workspace/README.md"
 alias h="bpytop"
+alias n="nvim"
+alias ls="ls | lolcat"
+alias cat="cat | lolcat"
 alias sc="source ~/.zshrc"
+alias t="~/.workspace/script/termux.sh | lolcat"
 alias ip="ifconfig | lolcat"
+alias y="yazi"
+alias gacp="git add . ; git commit -m "1" ;git push origin main"
 alias map="telnet mapscii.me"
-alias vmwinsnapshot="sudo virsh snapshot-create-as win11 --name snapshot_name --description "快照描述""
-alias vmwin='if sudo virsh domstate win11 | grep -q "shut off"; then \
-    sudo nohup virsh start win11 >/dev/null 2>&1; \
-fi && \
-echo "f /dev/shm/looking-glass 0660 kevin kvm - " | sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf && \
-sudo systemd-tmpfiles --create /etc/tmpfiles.d/10-looking-glass.conf && \
-nohup looking-glass-client -F  -m KEY_ESC -m KEY_SCROLLLOCK egl:vsync >/dev/null 2>&1 &'
 alias vmsuspend="sudo virsh list --name | xargs -r -I {} sudo virsh suspend {} "
 alias vmshutdown="sudo virsh list --name | xargs -r -I {} sudo virsh shutdown {} "
 alias vmdestroy="sudo virsh list --name | xargs -r -I {} sudo virsh destroy {} "
@@ -132,7 +130,29 @@ alias vmubuntu='if sudo virsh domstate ubuntu24.04 | grep -q "shut off"; then su
 alias vmubuntusave="sudo virsh save ubuntu24.04 /var/lib/libvirt/qemu/save/ubuntu24.04.save"
 alias vmubunturestore="sudo virsh restore /var/lib/libvirt/qemu/save/ubuntu24.04.save"
 alias vmubuntuedit="sudo virsh eidt ubuntu24.04"
+alias vmwinsnapshot="sudo virsh snapshot-create-as win11 --name snapshot_name --description "快照描述""
+alias vmwin='if sudo virsh domstate win11 | grep -q "shut off"; then \
+  sudo nohup virsh start win11 >/dev/null 2>&1; \
+  fi && \
+  echo "f /dev/shm/looking-glass 0660 kevin kvm - " | sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf && \
+  sudo systemd-tmpfiles --create /etc/tmpfiles.d/10-looking-glass.conf && \
+  nohup looking-glass-client -F  -m KEY_ESC -m KEY_SCROLLLOCK egl:vsync >/dev/null 2>&1 &'
+export PATH="$HOME/.cargo/bin:$PATH"
+export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index"
+#if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
 #neofetch
 #rxfetch
+#fastfetch
+#cpufetch
+#figlet Hello,world! | lolcat
+#fortune $PREFIX/share/games/fortunes/fortunes | lolcat
+#fortune $PREFIX/share/games/fortunes/chinese | lolcat
+#fortune $PREFIX/share/games/fortunes/tang300 | lolcat
+#fortune $PREFIX/share/games/fortunes/song100 | lolcat
+#cowsay -r what | lolcat
+#curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
+#curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
+#curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
+#~/.ansiweather/ansiweather -f 1 -l fujin 
+#cal
 #date
-#curl -s 'wttr.in/{shanghai,fujin}?format=4'

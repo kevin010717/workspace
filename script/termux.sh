@@ -14,34 +14,31 @@ chmod +x "$0"
 #kali
 
 update() {
-  #termux-reload-settings
-  #termux-setup-storage
+  termux-setup-storage
   termux-change-repo
   pkg update && pkg upgrade -y
-  pkg i root-repo x11-repo -y
-  apt install tur-repo #安装软件源
+  pkg i root-repo x11-repo tur-repo -y
   pkg i termux-services termux-api tsu -y
-  pkg i openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
+  pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
   pkg i rust golang android-tools python-pip nodejs xmake -y
   pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
   pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
   pkg i ncmpcpp mpd cmus mpg123 tizonia -y
   pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
   pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
-  pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-  pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
+  pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
+  pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
+  su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
   cargo install tlrc
-  npm config set registry https://registry.npmmirror.com
-  npm i docsify-cli mapscii cordova -g
-  echo "type openssh passwd:" && passwd
+  pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
+  npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
+  echo "type openssh passwd:" && passwd && sv-enable sshd
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
   git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
-  git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
-  git clone https://github.com/kevin010717/workspace.git ~/.workspace
-  git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
-  git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
-  git clone https://github.com/LinuxDroidMaster/Termux-Desktops.git ~/.Termux-Desktops
-  cp -rf ~/.workspace/.config/ ~/
+  git clone https://github.com/kevin010717/workspace.git ~/.workspace 
+  cp -rf ~/.workspace/.config/ ~/ 
+  cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
+  cp -f ~/.config/.zshrc ~/.zshrc
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #cargo install clock-tui bk
@@ -52,124 +49,42 @@ update() {
   #mytermux.git
   #go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
   #go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
-
-  read -p "i3wm?(y/n):" choice
-  case $choice in
-  y)
-    sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot
-    sudo update-alternatives --config x-terminal-emulator
-    git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
-    ;;
-  esac
-
-  read -p "config?(y/n):" choice
-  case $choice in
-  y)
-    cat <<EOF >>~/.zshrc
-  export PATH="$HOME/.cargo/bin:$PATH"
-  sshd
-  alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
-  alias mm='mpv --no-video -v "\$(termux-clipboard-get)"'
-  alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "\$(termux-clipboard-get)"'
-  alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
-  alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
-  alias f="sl;nyancat -f 50 -n;cmatrix;"
-  alias g="glow ~/workspace/README.md"
-  alias h="htop"
-  alias n="nvim"
-  alias ls="ls | lolcat"
-  alias cat="cat | lolcat"
-  alias sc="source ~/.zshrc"
-  alias t="~/.workspace/script/termux.sh | lolcat"
-  alias ip="ifconfig | lolcat"
-  alias y="yazi"
-  alias gacp="git add . ; git commit -m "1" ;git push origin main"
-  alias map="telnet mapscii.me"
-  #neofetch
-  #rxfetch
-  #fastfetch
-  #cpufetch
-  #figlet Hello,world! | lolcat
-  #fortune $PREFIX/share/games/fortunes/fortunes | lolcat
-  #fortune $PREFIX/share/games/fortunes/chinese | lolcat
-  #fortune $PREFIX/share/games/fortunes/tang300 | lolcat
-  #fortune $PREFIX/share/games/fortunes/song100 | lolcat
-  #cowsay -r what | lolcat
-  #curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
-  #curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
-  curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
-  #~/.ansiweather/ansiweather -f 1 -l fujin 
-  cal
-  date
-EOF
-    source ~/.zshrc
-
-    cat <<EOF >>~/.termux/termux.properties
-    volume-keys = volume
-    bell-character = ignore
-    shortcut.create-session = ctrl + t
-    shortcut.next-session = ctrl + 2
-    shortcut.previous-session = ctrl + 1
-    shortcut.rename-session = ctrl + n
-    terminal-transcript-rows = 2000
-    #hide-soft-keyboard-on-startup = true
-    disable-terminal-session-change-toast = true
-    default-working-directory = /data/data/com.termux/files/home/
-    extra-keys = [[ \
-      {macro: ":w\n", display: W, popup: {macro: "", display: A}}, \
-        {macro: "CTRL /", display: T, popup: {macro: "", display: A}}, \
-          {key: ESC, popup: {macro: "", display: A}}, \
-            {key: CTRL, popup: {macro: "", display: A}}, \
-              {key: TAB, popup: {macro: "", display: A}}, \
-                {key: LEFT, popup: HOME}, \
-                  {key: RIGHT, popup: END}, \
-                    {key: UP, popup: PGUP}, \
-                      {key: DOWN, popup: PGDN}, \
-                        {key: KEYBOARD, popup: {macro: "CTRL l", display:A}} \
-                          ]]
-EOF
-    termux-reload-settings
-
-    cp -r /data/data/com.termux/files/usr/share/doc/mpv ~/.config/ && cat <<EOF >>~/.config/mpv/mpv.conf
-  volume-max=1000
-  volume=200
-  script-opts=ytdl_hook-ytdl_path=/data/data/com.termux/files/usr/bin/yt-dlp
-EOF
-    ;;
-  esac
+  #git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
+  #git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
+  #git clone https://github.com/LinuxDroidMaster/Termux-Desktops.git ~/.Termux-Desktops
+  #git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
+  #git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
+  #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
+  #git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
 
   read -p "x11?(y/n):" choice
   case $choice in
-  y)
-    #termux
-    wget https://github.com/termux/termux-x11/releases/download/nightly/app-arm64-v8a-debug.apk
-    sudo pm install app-arm64-v8a-debug.apk
-    pkg install termux-x11-nightly
-    pkg install xfce gimp
-    su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
-    
-    #proot-debian
-    termux-setup-storage
-    pkg install proot-distro pulseaudio virglrenderer-android
-    proot-distro install debian
-    proot-distro login debian --user root --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
-    #prootdebian-start.sh
-
-    #chroot-ubuntu 需要magisk-busybox
-    pkg install pulseaudio busybox
-    mkdir chrootubuntu
-    cd chrootubuntu
-    wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
-    tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner
-    sudo mkdir sdcard
-    sudo mkdir dev/shm
-    cd ../
-    ~/.workspace/script/chrootubuntu-update.sh
-    #chrootubuntu-start.sh
+    y)
+      pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
+      pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
+      su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
     ;;
   esac
 
+  read -p "prootubuntu?(y/n):" choice
+  case $choice in
+    y)
+      proot-distro install ubuntu
+      proot-distro login ubuntu --user root --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+    ;;
+  esac
+
+  read -p "chrootubuntu?(y/n):" choice
+  case $choice in
+    y)
+      #chroot-ubuntu 需要magisk-busybox
+      mkdir chrootubuntu && cd chrootubuntu
+      wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
+      tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner && sudo mkdir sdcard && sudo mkdir dev/shm
+      cd ~ && ~/.workspace/script/chrootubuntu.sh
+    ;;
+  esac
+  
   read -p "git config?(y/n):" choice
   case $choice in
   y)
@@ -461,19 +376,6 @@ thumbnails() {
   done
 }
 
-chrootubuntu-install(){
-    #chroot-ubuntu 需要magisk-busybox
-    pkg install pulseaudio busybox
-    mkdir chrootubuntu
-    cd chrootubuntu
-    wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
-    tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner
-    sudo mkdir sdcard
-    sudo mkdir dev/shm
-    cd ../
-    ~/.workspace/script/chrootubuntu-update.sh
-    #chrootubuntu-start
-}
 chrootubuntu-start(){
 killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
 am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
@@ -517,13 +419,6 @@ busybox umount $UBUNTUPATH/sdcard
 "
 }
 
-prootdebian-install(){
-    #proot-debian
-    termux-setup-storage
-    pkg install proot-distro pulseaudio virglrenderer-android
-    proot-distro install debian
-    proot-distro login debian --user root --shared-tmp -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootdebian-update.sh"
-}
 prootdebian-start(){
     # 中止所有舊行程
     killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
@@ -542,13 +437,6 @@ prootdebian-start(){
     proot-distro login debian --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3"
 }
 
-termuxx11-install(){
-    #termux
-    pkg install termux-x11-nightly xfce gimp
-    su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-    #git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
-    #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
-}
 termuxx11-start(){
     killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
     am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
@@ -568,7 +456,6 @@ while true; do
   echo -e "2.obs"
   echo -e "3.gif"
   echo -e "4.thumbnails"
-  echo -e "5.termuxx11-install"
   echo -e "6.termuxx11-start"
   echo -e "7.prootdebian-install"
   echo -e "8.prootdebian-start"
@@ -580,7 +467,6 @@ while true; do
   2) time obs ;;
   3) time gif ;;
   4) time thumbnails ;;
-  5) time termuxx11-install;;
   6) time termuxx11-start;;
   7) time prootdebian-install;;
   8) time prootdebian-start;;

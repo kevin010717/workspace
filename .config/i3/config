@@ -187,6 +187,7 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         status_command i3status
+          position top
 }
 # Theme colors
 # <colorclass> <border> <background> <text> <indicator> <child_border>
@@ -199,7 +200,7 @@ bindsym $mod+Shift+s exec --no-startup-id flameshot gui # 设置火焰截图
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5
 exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-exec_always --no-startup-id picom -b --config /home/$USER/.config/i3/picom.conf
+exec_always --no-startup-id picom 
 exec_always --no-startup-id xset s off
 exec_always --no-startup-id xset s off -dpms
 exec_always --no-startup-id xset s noblank

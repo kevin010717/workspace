@@ -15,10 +15,10 @@ update() {
   sudo apt remove snapd
 	sudo apt update && sudo apt install wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server sshfs build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
-  rustup update stable && rustup show && rustup default && cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm yazi-cli #yazi
-  cargo install tlrc
-	sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-	git clone https://github.com/LazyVim/starter ~/.config/nvim
+  rustup update stable && rustup show && rustup default
+  export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index" && cargo install --locked yazi-fm yazi-cli tlrc
+  sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+	git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
 	git clone https://github.com/kevin010717/workspace.git ~/.workspace
 	#sudo snap install slides glow lazygit
 	#npm install -g percollate #web pages to epub
@@ -28,7 +28,7 @@ update() {
 	read -p "i3wm?(y/n):" choice
 	case $choice in
 	y)
-    sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot
+    sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils xbacklight brightnessctl
     sudo update-alternatives --config x-terminal-emulator
     git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
 		;;
