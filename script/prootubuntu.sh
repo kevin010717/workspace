@@ -8,6 +8,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble main universe multi
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble-updates main universe multiverse
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble-security main universe multiverse
 EOF
+apt update
 apt install software-properties-common -y && add-apt-repository ppa:mozillateam/ppa && apt update && apt install firefox-esr
 apt install zsh -y && sh -c "$(curl -fsSL https://install.ohmyz.sh/)" && chsh -s $(which zsh)
 wget -O .yazi.zip https://github.com/sxyazi/yazi/releases/download/nightly/yazi-aarch64-unknown-linux-gnu.zip && unzip .yazi.zip -d /usr/bin/ && cp /usr/bin/yazi-aarch64-unknown-linux-gnu/yazi /usr/bin/yazi
