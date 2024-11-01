@@ -183,28 +183,36 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
 bar {
         status_command i3status
           position top
 }
-# Theme colors
-# <colorclass> <border> <background> <text> <indicator> <child_border>
-bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
+#exec_always --no-startup-id "$HOME/.config/polybar/launch.sh --blocks"
+#bindsym $mod+p exec --no-startup-id polybar-msg cmd toggle # 设置快捷键来显示隐藏 polybar
+#screenlock
 bindsym Control+$mod+l exec "i3lock -c 000000"
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 bindsym $mod+d exec --no-startup-id rofi -show drun
+#screenshot
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui # 设置火焰截图
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
+# 音量调节
+bindsym $mod+F1 exec amixer -D pulse sset Master 5%-
+bindsym $mod+F2 exec amixer -D pulse sset Master 5%+
+# 亮度调节
+bindsym $mod+F3 exec sudo brightnessctl set 10%-
+bindsym $mod+F4 exec sudo brightnessctl set +10%
+# wallpapper
+bindsym $mod+F5 exec feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
+bindsym $mod+F6 exec feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper_black.jpg" &
 exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-exec_always --no-startup-id picom 
+exec_always --no-startup-id picom -b --config /home/$USER/.config/i3/picom.conf
 exec_always --no-startup-id xset s off
 exec_always --no-startup-id xset s off -dpms
 exec_always --no-startup-id xset s noblank
-#exec_always --no-startup-id "$HOME/.config/polybar/launch.sh --blocks"
-#bindsym $mod+p exec --no-startup-id polybar-msg cmd toggle # 设置快捷键来显示隐藏 polybar
 exec_always --no-startup-id fcitx5 -d
-exec feh --no-fehbg --bg-scale "$HOME/.workspace/.config/wallpapper.jpg" &
+exec --no-startup-id sh -c "google-chrome & sleep 1; i3-msg 'move container to workspace 2'"
+exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Tapping Enabled" 1
+exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Natural Scrolling Enabled" 1
+
