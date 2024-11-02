@@ -102,7 +102,12 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
+virgl() {
+    GALLIUM_DRIVER=virpipe MESA_GL_VERSION_OVERRIDE=4.0 "$@"
+}
+zink() {
+    GALLIUM_DRIVER=zink MESA_GL_VERSION_OVERRIDE=4.0 "$@"
+}
 alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
 alias mm='mpv --no-video -v "\$(termux-clipboard-get)"'
 alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "\$(termux-clipboard-get)"'
