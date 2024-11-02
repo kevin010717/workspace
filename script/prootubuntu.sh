@@ -5,10 +5,10 @@
       apt update && apt install ca-certificates sudo vim software-properties-common -y
       mv /etc/apt/sources.list /etc/apt/sources.list.bak
       cat <<EOF >> /etc/apt/sources.list
-      deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble main universe multiverse
-      deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble-updates main universe multiverse
-      deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble-security main universe multiverse
-      EOF
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble main universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble-updates main universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble-security main universe multiverse
+EOF
       apt update
       passwd
       groupadd storage && groupadd wheel && groupadd video
