@@ -21,9 +21,9 @@ sudo chsh -s $(which zsh)
 sudo apt install vlc libreoffice glmark2 -y
 wget -O .yazi.zip https://github.com/sxyazi/yazi/releases/download/nightly/yazi-aarch64-unknown-linux-gnu.zip && unzip .yazi.zip -d /usr/bin/ && cp /usr/bin/yazi-aarch64-unknown-linux-gnu/yazi /usr/bin/yazi
 git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
-git clone https://github.com/kevin010717/workspace.git /root/.workspace
-cp -rf /root/.workspace/.config/ ~/ 
-cp -rf /root/.workspace/.config/.zshrc ~/.zshrc
+git clone https://github.com/kevin010717/workspace.git ~/.workspace
+cp -rf ~/.workspace/.config/ ~/ 
+cp -rf ~/.workspace/.config/.zshrc ~/.zshrc
 #apt install xubuntu-desktop
 #apt install kubuntu-desktop
 #apt install ubuntu-desktop
