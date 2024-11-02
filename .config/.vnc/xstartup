@@ -1,0 +1,9 @@
+#!/bin/bash
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADRESS
+
+# 啟動PulseAudio音效伺服器，音訊會從Termux傳出來
+export PULSE_SERVER=127.0.0.1 && pulseaudio --start --disable-shm=1 --exit-idle-time=-1
+
+# 執行桌面環境，此處為XFCE
+exec i3 # i3 startxfce4

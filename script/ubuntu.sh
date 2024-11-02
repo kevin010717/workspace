@@ -15,6 +15,7 @@ update() {
   sudo apt remove snapd
 	sudo apt update && sudo apt install wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server sshfs build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
   sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils xbacklight brightnessctl && sudo update-alternatives --config x-terminal-emulator -y
+  sudo apt-add-repository ppa:remmina-ppa-team/remmina-next && sudo apt update && sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
   rustup update stable && rustup show && rustup default
   cargo install --locked yazi-fm yazi-cli tlrc

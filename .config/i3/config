@@ -213,7 +213,7 @@ exec_always --no-startup-id xset s off -dpms
 exec_always --no-startup-id xset s noblank
 exec_always --no-startup-id fcitx5 -d
 exec --no-startup-id feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
-exec --no-startup-id sh -c "google-chrome & sleep 1; i3-msg 'move container to workspace 2'"
+exec --no-startup-id sh -c "i3-sensible-terminal & sleep 1; i3-msg 'focus'; i3-msg 'move container to workspace 1';google-chrome & sleep 1; i3-msg 'focus'; i3-msg 'move container to workspace 2'"
 exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Tapping Enabled" 1
 exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Natural Scrolling Enabled" 1
 

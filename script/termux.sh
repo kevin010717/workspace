@@ -13,7 +13,7 @@ chmod +x "$0"
 #nnn filebrowser
 #kali
 
-update() {
+function update() {
   termux-setup-storage
   termux-change-repo
   pkg update && pkg upgrade -y
@@ -359,7 +359,7 @@ thumbnails() {
   done
 }
 
-chrootubuntu-start(){
+chrootubuntu(){
 killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
 am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
 sudo busybox mount --bind $PREFIX/tmp $HOME/chrootubuntu/tmp
@@ -402,7 +402,7 @@ busybox umount $UBUNTUPATH/sdcard
 "
 }
 
-prootubuntu-start(){
+prootubuntu(){
     killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
     am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
     XDG_RUNTIME_DIR=${TMPDIR}
@@ -413,11 +413,10 @@ prootubuntu-start(){
     virgl_test_server_android &
     #MESA_NO_ERROR=1 MESA_GL_VERSION_OVERRIDE=4.3COMPAT MESA_GLES_VERSION_OVERRIDE=3.2 GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
     #MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
-    proot-distro login ubuntu --user root --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3"
-    #proot-distro login debian --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session startxfce4"
+    proot-distro login ubuntu --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3" # i3 startxfce4
 }
 
-termuxx11-start(){
+nativetermux(){
     killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
     am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
     XDG_RUNTIME_DIR=${TMPDIR}
@@ -431,26 +430,47 @@ termuxx11-start(){
     #termux-x11 :0 -xstartup "dbus-launch --exit-with-session openbox-session"
 }
 
-while true; do
-  echo -e "1.update"
-  echo -e "2.obs"
-  echo -e "3.gif"
-  echo -e "4.thumbnails"
-  echo -e "5.termuxx11-start"
-  echo -e "6.prootubuntu-start"
-  echo -e "7.chrootubuntu-start"
-  read choice
-  case $choice in
-  1) time update ;;
-  2) time obs ;;
-  3) time gif ;;
-  4) time thumbnails ;;
-  5) time termuxx11-start;;
-  6) time prootubuntu-start;;
-  7) time chrootubuntu-start;;
-  *) break ;;
-  esac
-done
+case "$1" in
+  update)
+    time update;;
+  obs)
+    time obs;;
+  gif)
+    time gif;;
+  thumbnails)
+    time thumbnails;;
+  nativetermux)
+    time nativetermux;;
+  prootubuntu)
+    time prootubuntu;;
+  chrootubuntu)
+    time chrootubuntu;;
+  *)
+    # 如果没有有效参数，则显示菜单
+    while true; do
+      echo -e "1. update"
+      echo -e "2. obs"
+      echo -e "3. gif"
+      echo -e "4. thumbnails"
+      echo -e "5. nativetermux"
+      echo -e "6. prootubuntu"
+      echo -e "7. chrootubuntu-start"
+      read -p "请选择一个选项 (或输入其他内容以退出): " choice
+      
+      case $choice in
+        1) time update ;;
+        2) time obs ;;
+        3) time gif ;;
+        4) time thumbnails ;;
+        5) time termuxx11-start ;;
+        6) time prootubuntu  ;;
+        7) time chrootubuntu ;;
+        *) echo "退出。" && break ;;
+      esac
+    done
+    ;;
+esac
+
 cheetsheet_nvim() {
   echo -e "1.astronvim"
   echo -e "2.lazyvim"
