@@ -102,12 +102,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-virgl() {
-    GALLIUM_DRIVER=virpipe MESA_GL_VERSION_OVERRIDE=4.0 "$@"
-}
-zink() {
-    GALLIUM_DRIVER=zink MESA_GL_VERSION_OVERRIDE=4.0 "$@"
-}
 alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
 alias mm='mpv --no-video -v "\$(termux-clipboard-get)"'
 alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "\$(termux-clipboard-get)"'
@@ -125,8 +119,7 @@ alias ip="ifconfig | lolcat"
 alias y="yazi"
 alias gacp="git add . ; git commit -m "1" ;git push origin main"
 alias map="telnet mapscii.me"
-alias vncstart="vncserver :1"
-alias vncstop="vncserver -kill :1"
+alias vncstart="vncserver -kill :1;vncserver :1;/usr/bin/noVNC/utils/novnc_proxy --vnc localhost:5901 --listen 6080"
 alias nativetermux="~/.workspace/script/termux.sh nativetermux"
 alias prootubuntu="~/.workspace/script/termux.sh prootubuntu"
 alias chrootubuntu="~/.workspace/script/termux.sh chrootubuntu"
@@ -147,8 +140,15 @@ alias vmwin='if sudo virsh domstate win11 | grep -q "shut off"; then \
   echo "f /dev/shm/looking-glass 0660 kevin kvm - " | sudo tee -a /etc/tmpfiles.d/10-looking-glass.conf && \
   sudo systemd-tmpfiles --create /etc/tmpfiles.d/10-looking-glass.conf && \
   nohup looking-glass-client -F  -m KEY_ESC -m KEY_SCROLLLOCK egl:vsync >/dev/null 2>&1 &'
+virgl() {
+    GALLIUM_DRIVER=virpipe MESA_GL_VERSION_OVERRIDE=4.0 "$@"
+}
+zink() {
+    GALLIUM_DRIVER=zink MESA_GL_VERSION_OVERRIDE=4.0 "$@"
+}
 export PATH="$HOME/.cargo/bin:$PATH"
 export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index"
+sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
 #if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
 #neofetch
 #rxfetch

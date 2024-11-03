@@ -29,6 +29,7 @@ EOF
       git clone https://github.com/kevin010717/workspace.git ~/.workspace
       cp -rf ~/.workspace/.config/ ~/ 
       cp -rf ~/.workspace/.config/.zshrc ~/.zshrc
+      cp -rf ~/.workspace/.config/.vnc/ ~/
       #apt install xubuntu-desktop
       #apt install kubuntu-desktop
       #apt install ubuntu-desktop
@@ -39,7 +40,7 @@ EOF
 
       sudo apt install tigervnc-standalone-server tigervnc-xorg-extension
       vncpasswd
-      cp -rf ~/.workspace/.config/.vnc/ ~/
+      sudo git clone https://github.com/novnc/noVNC.git /usr/bin/noVNC
       ;;
   esac
 
