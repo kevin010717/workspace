@@ -29,7 +29,7 @@ function update() {
   pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
   pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
   su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-  cargo install tlrc
+  cargo install tlrc mcfly
   pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
   npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
   echo "type openssh passwd:" && passwd && sv-enable sshd

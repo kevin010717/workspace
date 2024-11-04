@@ -111,11 +111,8 @@ alias f="sl;nyancat -f 50 -n;cmatrix;"
 alias g="glow ~/workspace/README.md"
 alias h="bpytop"
 alias n="nvim"
-alias ls="ls | lolcat"
-alias cat="cat | lolcat"
 alias sc="source ~/.zshrc"
-alias t="~/.workspace/script/termux.sh | lolcat"
-alias ip="ifconfig | lolcat"
+alias t="~/.workspace/script/termux.sh"
 alias y="yazi"
 alias gacp="git add . ; git commit -m "1" ;git push origin main"
 alias map="telnet mapscii.me"
@@ -149,6 +146,10 @@ zink() {
 export PATH="$HOME/.cargo/bin:$PATH"
 export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index"
 sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
+eval "$(mcfly init zsh)"
+#alias ls="ls | lolcat"
+#alias cat="cat | lolcat"
+#alias ip="ifconfig | lolcat"
 #if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
 #neofetch
 #rxfetch

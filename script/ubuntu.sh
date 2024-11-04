@@ -18,7 +18,7 @@ update() {
   sudo apt-add-repository ppa:remmina-ppa-team/remmina-next && sudo apt update && sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
 	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple	
   rustup update stable && rustup show && rustup default
-  cargo install --locked yazi-fm yazi-cli tlrc
+  cargo install --locked yazi-fm yazi-cli tlrc mcfly
   sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
 	git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
 	git clone https://github.com/kevin010717/workspace.git ~/.workspace
