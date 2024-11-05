@@ -1,5 +1,5 @@
 ```
-bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/workspace/blob/main/script/termux.sh update)"
+bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/workspace/blob/main/script/termux.sh)"
 ```
 # 流水账
 ## 20240922
