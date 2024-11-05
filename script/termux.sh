@@ -13,7 +13,7 @@ chmod +x "$0"
 #nnn filebrowser
 #kali
 
-function update() {
+update() {
   termux-setup-storage
   termux-change-repo
   pkg update && pkg upgrade -y
@@ -39,6 +39,10 @@ function update() {
   cp -rf ~/.workspace/.config/ ~/ 
   cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
   cp -f ~/.workspace/.zshrc ~/.zshrc
+  proot-distro install ubuntu
+  proot-distro login ubuntu --shared-tmp --termux-home -- bash -c "sh ~/.workspace/script/prootubuntu.sh" # i3 startxfce4
+  proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh ~/.workspace/script/prootubuntu.sh" # i3 startxfce4
+
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
   #cargo install clock-tui bk
@@ -56,17 +60,6 @@ function update() {
   #git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
   #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
   #git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
-
-  read -p "chrootubuntu?(y/n):" choice
-  case $choice in
-    y)
-      #chroot-ubuntu 需要magisk-busybox
-      mkdir chrootubuntu && cd chrootubuntu
-      wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
-      tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner && sudo mkdir sdcard && sudo mkdir dev/shm
-      cd ~ && ~/.workspace/script/chrootubuntu.sh
-    ;;
-  esac
   
   read -p "git config?(y/n):" choice
   case $choice in
@@ -289,6 +282,17 @@ EOF
   esac
 }
 
+  read -p "chrootubuntu?(y/n):" choice
+  case $choice in
+    y)
+      #chroot-ubuntu 需要magisk-busybox
+      mkdir chrootubuntu && cd chrootubuntu
+      wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
+      tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner && sudo mkdir sdcard && sudo mkdir dev/shm
+      cd ~ && ~/.workspace/script/chrootubuntu.sh
+    ;;
+  esac
+
 obs() {
   folder="/data/data/com.termux/files/home/video/"
   read -p "请输入您的推流地址和推流码(rtmp协议):" rtmp
@@ -413,7 +417,7 @@ prootubuntu(){
     virgl_test_server_android &
     #MESA_NO_ERROR=1 MESA_GL_VERSION_OVERRIDE=4.3COMPAT MESA_GLES_VERSION_OVERRIDE=3.2 GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
     #MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
-    proot-distro login ubuntu --user user --shared-tmp -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3" # i3 startxfce4
+    proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3" # i3 startxfce4
 }
 
 nativetermux(){
