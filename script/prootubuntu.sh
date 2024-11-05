@@ -2,7 +2,7 @@
   read -p "root?(y/n):" choice
   case $choice in
     y)
-      apt update && apt install ca-certificates sudo vim software-properties-common -y
+      apt update && apt install ca-certificates sudo vim curl software-properties-common -y
       mv /etc/apt/sources.list /etc/apt/sources.list.bak
       cat <<EOF >> /etc/apt/sources.list
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble main universe multiverse

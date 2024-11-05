@@ -76,7 +76,8 @@ update() {
   read -p "clouddrive?(y/n):" choice
   case $choice in
   y)
-    curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
+    #curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
+    /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root mirrot
     cat <<EOF >>~/.zshrc
     if ! pgrep -f "clouddrive" > /dev/null; then
       sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
