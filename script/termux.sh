@@ -281,7 +281,6 @@ EOF
     cargo install leetcode-cli
     ;;
   esac
-}
 
   read -p "chrootubuntu?(y/n):" choice
   case $choice in
@@ -293,6 +292,7 @@ EOF
       cd ~ && ~/.workspace/script/chrootubuntu.sh
     ;;
   esac
+}
 
 obs() {
   folder="/data/data/com.termux/files/home/video/"
