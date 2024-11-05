@@ -14,35 +14,35 @@ chmod +x "$0"
 #kali
 
 update() {
-  termux-setup-storage
-  termux-change-repo
-  pkg update && pkg upgrade -y
-  pkg i root-repo x11-repo tur-repo -y
-  pkg i termux-services termux-api tsu -y
-  pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
-  sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
-  pkg i rust golang android-tools python-pip nodejs xmake -y
-  pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
-  pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
-  pkg i ncmpcpp mpd cmus mpg123 tizonia -y
-  pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
-  pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
-  pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
-  pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
-  su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-  cargo install tlrc mcfly
-  pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
-  npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
-  echo "type openssh passwd:" && passwd && sv-enable sshd
-  sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-  git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
-  git clone https://github.com/kevin010717/workspace.git ~/.workspace 
-  cp -rf ~/.workspace/.config/ ~/ 
-  cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
-  cp -f ~/.workspace/.zshrc ~/.zshrc
-  proot-distro install ubuntu
-  proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
-  proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+  read -p "update?(y/n):" choice
+  case $choice in
+    y)
+      termux-setup-storage
+      termux-change-repo
+      pkg update && pkg upgrade -y
+      pkg i root-repo x11-repo tur-repo -y
+      pkg i termux-services termux-api tsu -y
+      pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
+      sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
+      pkg i rust golang android-tools python-pip nodejs xmake -y
+      pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
+      pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
+      pkg i ncmpcpp mpd cmus mpg123 tizonia -y
+      pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
+      pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
+      pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
+      pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
+      su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
+      cargo install tlrc mcfly
+      pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
+      npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
+      echo "type openssh passwd:" && passwd && sv-enable sshd
+      sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+      git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
+      git clone https://github.com/kevin010717/workspace.git ~/.workspace 
+      cp -rf ~/.workspace/.config/ ~/ 
+      cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
+      cp -f ~/.workspace/.zshrc ~/.zshrc
 
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
@@ -61,9 +61,20 @@ update() {
   #git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
   #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
   #git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
+  ;;
+esac
   
-  read -p "git config?(y/n):" choice
-  case $choice in
+read -p "prootubuntu?(y/n):" choice
+case $choice in
+  y)
+    proot-distro install ubuntu
+    proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+    proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+    ;;
+esac
+
+read -p "git config?(y/n):" choice
+case $choice in
   y)
     ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
     am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
@@ -71,25 +82,25 @@ update() {
     git config --global user.name "kevin010717"
     gh auth login
     ;;
-  esac
+esac
 
-  read -p "clouddrive?(y/n):" choice
-  case $choice in
+read -p "clouddrive?(y/n):" choice
+case $choice in
   y)
     #curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
-    /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root mirrot
+    /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root 
     cat <<EOF >>~/.zshrc
     if ! pgrep -f "clouddrive" > /dev/null; then
       sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
     fi
-EOF
+    EOF
     source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
     ;;
-  esac
+esac
 
-  read -p "filebrowser?(y/n):" choice
-  case $choice in
+read -p "filebrowser?(y/n):" choice
+case $choice in
   y)
     mkdir .filebrowser
     wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
@@ -99,14 +110,14 @@ EOF
     if ! pgrep -f "filebrowser" > /dev/null; then
       sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
     fi
-EOF
+    EOF
     source ~/.zshrc
     am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
     ;;
-  esac
+esac
 
-  read -p "samba?(y/n):" choice
-  case $choice in
+read -p "samba?(y/n):" choice
+case $choice in
   y)
     sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
     sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
@@ -117,11 +128,11 @@ EOF
     if ! pgrep -f "smbd" > /dev/null; then
       smbd
     fi
-EOF
+    EOF
     source ~/.zshrc
     smbclient -p 445 //127.0.0.1/internal -U admin
     ;;
-  esac
+esac
 
   read -p "calibreweb?(y/n):" choice
   case $choice in
