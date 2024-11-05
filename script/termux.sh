@@ -20,6 +20,7 @@ update() {
   pkg i root-repo x11-repo tur-repo -y
   pkg i termux-services termux-api tsu -y
   pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
+  sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
   pkg i rust golang android-tools python-pip nodejs xmake -y
   pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
   pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y

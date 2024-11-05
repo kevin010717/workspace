@@ -145,8 +145,7 @@ zink() {
 }
 export PATH="$HOME/.cargo/bin:$PATH"
 export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index"
-sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
-eval "$(mcfly init zsh)"
+#eval "$(mcfly init zsh)"
 #alias ls="ls | lolcat"
 #alias cat="cat | lolcat"
 #alias ip="ifconfig | lolcat"
