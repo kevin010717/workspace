@@ -14,6 +14,23 @@ chmod +x "$0"
 #kali
 
 update() {
+  #pkg i docker -y
+  #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
+  #cargo install clock-tui bk
+  #pip install epr-reader
+  #tidal-dl
+  #pkg install python clang libjpeg-turbo ffmpeg zlib -y
+  #pip3 install --upgrade tidal-dl
+  #mytermux.git
+  #go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
+  #go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
+  #git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
+  #git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
+  #git clone https://github.com/LinuxDroidMaster/Termux-Desktops.git ~/.Termux-Desktops
+  #git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
+  #git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
+  #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
+  #git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
   read -p "update?(y/n):" choice
   case $choice in
     y)
@@ -43,233 +60,215 @@ update() {
       cp -rf ~/.workspace/.config/ ~/ 
       cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
       cp -f ~/.workspace/.zshrc ~/.zshrc
+      ;;
+  esac
 
-  #pkg i docker -y
-  #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
-  #cargo install clock-tui bk
-  #pip install epr-reader
-  #tidal-dl
-  #pkg install python clang libjpeg-turbo ffmpeg zlib -y
-  #pip3 install --upgrade tidal-dl
-  #mytermux.git
-  #go install github.com/aandrew-me/tgpt/v2@latest && cp ~/go/bin/tgpt $PREFIX/bin/tgpt
-  #go install github.com/TheZoraiz/ascii-image-converter@latest && cp ~/go/bin/ascii-image-converter $PREFIX/bin/ascii-image-converter && rm -rf ~/go/
-  #git clone https://github.com/fcambus/ansiweather.git ~/.ansiweather
-  #git clone https://github.com/YashBansod/Robotics-Planning-Dynamics-and-Control.git ~/.Robotics-Planning-Dynamics-and-Control
-  #git clone https://github.com/LinuxDroidMaster/Termux-Desktops.git ~/.Termux-Desktops
-  #git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
-  #git clone --depth=1 https://github.com/Gorkido/termux-desktop-i3.git && cd termux-desktop-i3 && chmod +x setup.sh && ./setup.sh --install
-  #git clone --depth=1 https://github.com/adi1090x/termux-desktop.git && cd termux-desktop && chmod +x setup.sh && ./setup.sh --install
-  #git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
-  ;;
-esac
-  
-read -p "prootubuntu?(y/n):" choice
-case $choice in
-  y)
-    proot-distro install ubuntu
-    proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
-    proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
-    ;;
-esac
+  read -p "prootubuntu?(y/n):" choice
+  case $choice in
+    y)
+      proot-distro install ubuntu
+      proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+      proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+      ;;
+  esac
 
-read -p "git config?(y/n):" choice
-case $choice in
-  y)
-    ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
-    am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
-    git config --global user.email "k511153362@gmail.com"
-    git config --global user.name "kevin010717"
-    gh auth login
-    ;;
-esac
+  read -p "git config?(y/n):" choice
+  case $choice in
+    y)
+      ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
+      am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
+      git config --global user.email "k511153362@gmail.com"
+      git config --global user.name "kevin010717"
+      gh auth login
+      ;;
+  esac
 
-read -p "clouddrive?(y/n):" choice
-case $choice in
-  y)
-    #curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
-    /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root 
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "clouddrive" > /dev/null; then
-      sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
-    fi
-    EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
-    ;;
-esac
+  read -p "clouddrive?(y/n):" choice
+  case $choice in
+    y)
+      #curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
+      /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root 
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "clouddrive" > /dev/null; then
+        sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
+      fi
+EOF
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
+      ;;
+  esac
 
-read -p "filebrowser?(y/n):" choice
-case $choice in
-  y)
-    mkdir .filebrowser
-    wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
-    tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
-    chmod +x .filebrowser/filebrowser
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "filebrowser" > /dev/null; then
-      sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
-    fi
-    EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
-    ;;
-esac
+  read -p "filebrowser?(y/n):" choice
+  case $choice in
+    y)
+      mkdir .filebrowser
+      wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
+      tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
+      chmod +x .filebrowser/filebrowser
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "filebrowser" > /dev/null; then
+        sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
+      fi
+EOF
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
+      ;;
+  esac
 
-read -p "samba?(y/n):" choice
-case $choice in
-  y)
-    sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
-    sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
-    mkdir $PREFIX/etc/samba
-    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
-    echo "type samba passwd:" && pdbedit -a -u admin
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "smbd" > /dev/null; then
-      smbd
-    fi
-    EOF
-    source ~/.zshrc
-    smbclient -p 445 //127.0.0.1/internal -U admin
-    ;;
-esac
+  read -p "samba?(y/n):" choice
+  case $choice in
+    y)
+      sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
+      sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
+      mkdir $PREFIX/etc/samba
+      sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
+      echo "type samba passwd:" && pdbedit -a -u admin
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "smbd" > /dev/null; then
+        smbd
+      fi
+EOF
+      source ~/.zshrc
+      smbclient -p 445 //127.0.0.1/internal -U admin
+      ;;
+  esac
 
   read -p "calibreweb?(y/n):" choice
   case $choice in
-  y)
-    pip install tzdata
-    pkg i libxml2 libxslt -y
-    pip install --user -U calibreweb
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "calibreweb" > /dev/null; then
-      nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
-    fi
+    y)
+      pip install tzdata
+      pkg i libxml2 libxslt -y
+      pip install --user -U calibreweb
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "calibreweb" > /dev/null; then
+        nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
+      fi
 EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
-    ;;
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
+      ;;
   esac
 
   read -p "aria2?(y/n):" choice
   case $choice in
-  y)
-    pkg install aria2
-    pkg install git nodejs
-    git clone https://github.com/ziahamza/webui-aria2.git
-    mv webui-aria2 .webui-aria2
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "aria2" > /dev/null; then
-      cd .webui-aria2
-      sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
-      sudo nohup node node-server.js >/dev/null 2>&1 &
-      cd ~
-    fi
+    y)
+      pkg install aria2
+      pkg install git nodejs
+      git clone https://github.com/ziahamza/webui-aria2.git
+      mv webui-aria2 .webui-aria2
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "aria2" > /dev/null; then
+        cd .webui-aria2
+        sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
+        sudo nohup node node-server.js >/dev/null 2>&1 &
+        cd ~
+      fi
 EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
-    echo "访问https://github.com/ngosang/trackerslist添加tracker"
-    ;;
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
+      echo "访问https://github.com/ngosang/trackerslist添加tracker"
+      ;;
   esac
 
   read -p "qbittorrent?(y/n):" choice
   case $choice in
-  y)
-    wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
-    mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
-    chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "qbittorrent" > /dev/null; then
-      sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
-    fi
+    y)
+      wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
+      mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
+      chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "qbittorrent" > /dev/null; then
+        sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
+      fi
 EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:8088
-    ;;
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:8088
+      ;;
   esac
 
   read -p "chfs?(y/n):" choice
   case $choice in
-  y)
-    wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
-    unzip chfs-linux-arm64-3.1.zip
-    chmod +x chfs-linux-arm64-3.1
-    mv chfs-linux-arm64-3.1 /data/data/com.termux/files/usr/bin/chfs
-    rm chfs-linux-arm64-3.1.zip
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "chfs" > /dev/null; then
-      nohup sudo chfs --port=1234 >/dev/null 2>&1 &
-    fi
+    y)
+      wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
+      unzip chfs-linux-arm64-3.1.zip
+      chmod +x chfs-linux-arm64-3.1
+      mv chfs-linux-arm64-3.1 /data/data/com.termux/files/usr/bin/chfs
+      rm chfs-linux-arm64-3.1.zip
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "chfs" > /dev/null; then
+        nohup sudo chfs --port=1234 >/dev/null 2>&1 &
+      fi
 EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
-    ;;
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
+      ;;
   esac
 
   read -p "http-server?(y/n):" choice
   case $choice in
-  y)
-    pkg install nodejs
-    npm install -g http-server
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "http-server" > /dev/null; then
-      sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
-    fi
+    y)
+      pkg install nodejs
+      npm install -g http-server
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "http-server" > /dev/null; then
+        sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
+      fi
 EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
-    ;;
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
+      ;;
   esac
 
   read -p "code-server?(y/n):" choice
   case $choice in
-  y)
-    apt install tur-repo                          #安装软件源
-    apt install code-server                       #安装
-    cat ~/.suroot/.config/code-server/config.yaml #查看密码
-    cat <<EOF >>~/.zshrc
-    if ! pgrep -f "code-server" > /dev/null; then
-      sudo nohup code-server >/dev/null 2>&1 &
-    fi
+    y)
+      apt install tur-repo                          #安装软件源
+      apt install code-server                       #安装
+      cat ~/.suroot/.config/code-server/config.yaml #查看密码
+      cat <<EOF >>~/.zshrc
+      if ! pgrep -f "code-server" > /dev/null; then
+        sudo nohup code-server >/dev/null 2>&1 &
+      fi
 EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
-    ;;
+      source ~/.zshrc
+      am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
+      ;;
   esac
 
   read -p "nodeserver?(y/n):" choice
   case $choice in
-  y)
-    mkdir .nodeserver && cd .nodeserver && npm init && npm install express --save
-    cat <<EOF >>server.js
-    const express = require('express');
-    const app = express();
-    app.get('/', (req, res) => {
-    res.send('Hello World!');
+    y)
+      mkdir .nodeserver && cd .nodeserver && npm init && npm install express --save
+      cat <<EOF >>server.js
+      const express = require('express');
+      const app = express();
+      app.get('/', (req, res) => {
+      res.send('Hello World!');
+    });
+    app.listen(3000, () => {
+    console.log('Server is running at http://localhost:3000');
   });
-  app.listen(3000, () => {
-  console.log('Server is running at http://localhost:3000');
-});
 EOF
-    cat <<EOF >>~/.zshrc
-    sudo nohup node server.js >/dev/null 2>&1 &
-EOF
-    source ~/.zshrc
-    am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
-    ;;
-  esac
+  cat <<EOF >>~/.zshrc
+  sudo nohup node server.js >/dev/null 2>&1 &
+  EOF
+  source ~/.zshrc
+  am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
+  ;;
+esac
 
-  read -p "tmoe?(y/n):" choice
-  case $choice in
+read -p "tmoe?(y/n):" choice
+case $choice in
   y)
     curl -LO l.tmoe.me/tinor.deb
     apt install ./tinor.deb
     apt update
     bash -c "$(curl -L l.tmoe.me)"
     ;;
-  esac
+esac
 
-  read -p "biliup?(y/n):" choice
-  case $choice in
+read -p "biliup?(y/n):" choice
+case $choice in
   y)
     mkdir builds
     cd builds/
@@ -284,26 +283,26 @@ EOF
     mkdir .biliup && cd .biliup && biliup start
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
     ;;
-  esac
+esac
 
-  read -p "leetcode-cli?(y/n):" choice
-  case $choice in
+read -p "leetcode-cli?(y/n):" choice
+case $choice in
   y)
     npm install -g leetcode-cli
     cargo install leetcode-cli
     ;;
-  esac
+esac
 
-  read -p "chrootubuntu?(y/n):" choice
-  case $choice in
-    y)
-      #chroot-ubuntu 需要magisk-busybox
-      mkdir chrootubuntu && cd chrootubuntu
-      wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
-      tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner && sudo mkdir sdcard && sudo mkdir dev/shm
-      cd ~ && ~/.workspace/script/chrootubuntu.sh
+read -p "chrootubuntu?(y/n):" choice
+case $choice in
+  y)
+    #chroot-ubuntu 需要magisk-busybox
+    mkdir chrootubuntu && cd chrootubuntu
+    wget https://cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
+    tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner && sudo mkdir sdcard && sudo mkdir dev/shm
+    cd ~ && ~/.workspace/script/chrootubuntu.sh
     ;;
-  esac
+esac
 }
 
 obs() {
