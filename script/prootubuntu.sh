@@ -21,12 +21,12 @@ EOF
       cd ~
       sudo apt autopurge snapd
       sudo add-apt-repository ppa:mozillateam/ppa &&sudo  apt update &&sudo apt install firefox-esr -y
-      sudo apt install zsh -y && sh -c "$(curl -fsSL https://install.ohmyz.sh/)" 
-      chsh -s $(which zsh)
-      sudo apt install vlc libreoffice glmark2 -y
+      sudo apt install zsh vlc libreoffice glmark2 -y 
       wget -O ~/.yazi.zip https://github.com/sxyazi/yazi/releases/download/nightly/yazi-aarch64-unknown-linux-gnu.zip && unzip ~/.yazi.zip -d /usr/bin/ && cp /usr/bin/yazi-aarch64-unknown-linux-gnu/yazi /usr/bin/yazi
       git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
       git clone https://github.com/kevin010717/workspace.git ~/.workspace
+      sh -c "$(curl -fsSL https://install.ohmyz.sh/)" 
+      chsh -s $(which zsh)
       cp -rf ~/.workspace/.config/ ~/ 
       cp -rf ~/.workspace/.config/.zshrc ~/.zshrc
       cp -rf ~/.workspace/.config/.vnc/ ~/

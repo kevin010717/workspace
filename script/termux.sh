@@ -41,8 +41,8 @@ update() {
   cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
   cp -f ~/.workspace/.zshrc ~/.zshrc
   proot-distro install ubuntu
-  proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh" # i3 startxfce4
-  proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh" # i3 startxfce4
+  proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+  proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
 
   #pkg i docker -y
   #ssh-keygen -t rsa && ssh-copy-id -i ~/.ssh/id_rsa.pub kevin@10.147.17.140
