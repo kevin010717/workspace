@@ -251,7 +251,7 @@ EOF
 EOF
   cat <<EOF >>~/.zshrc
   sudo nohup node server.js >/dev/null 2>&1 &
- EOF
+EOF
   source ~/.zshrc
   am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
   ;;
