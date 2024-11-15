@@ -189,6 +189,9 @@ bar {
 }
 #exec_always --no-startup-id "$HOME/.config/polybar/launch.sh --blocks"
 #bindsym $mod+p exec --no-startup-id polybar-msg cmd toggle # 设置快捷键来显示隐藏 polybar
+#exec --no-startup-id i3-sensible-terminal
+#exec --no-startup-id sh -c "i3-sensible-terminal & sleep 1; i3-msg 'focus'; i3-msg 'move container to workspace 1';google-chrome & sleep 1; i3-msg 'focus'; i3-msg 'move container to workspace 2'"
+#exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
 #screenlock
 bindsym Control+$mod+l exec "i3lock -c 000000"
 bindsym $mod+Shift+minus move scratchpad
@@ -200,20 +203,29 @@ bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
 # 音量调节
 bindsym $mod+F1 exec amixer -D pulse sset Master 5%-
 bindsym $mod+F2 exec amixer -D pulse sset Master 5%+
+bindsym $mod+Shift+F1 exec amixer -D pulse sset Master 1%-
+bindsym $mod+Shift+F2 exec amixer -D pulse sset Master 1%+
 # 亮度调节
-bindsym $mod+F3 exec sudo brightnessctl set 10%-
-bindsym $mod+F4 exec sudo brightnessctl set +10%
+bindsym $mod+F3 exec sudo brightnessctl set 5%-
+bindsym $mod+F4 exec sudo brightnessctl set +5%
+bindsym $mod+Shift+F3 exec sudo brightnessctl set 1%-
+bindsym $mod+Shift+F4 exec sudo brightnessctl set +1%
 # wallpapper
-bindsym $mod+F5 exec feh --no-startup-id --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
+bindsym $mod+F5 exec feh --no-startup-id --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper-1920x1080.jpg" &
 bindsym $mod+F6 exec feh --no-startup-id --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper_black.jpg" &
-exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
+# displayOn
+bindsym $mod+F7 exec --no-startup-id /home/kevin/.workspace/script/ubuntu.sh displayOn
+bindsym $mod+F8 exec --no-startup-id /home/kevin/.workspace/script/ubuntu.sh displayOff
+# suspend
+bindsym $mod+F12 exec systemctl suspend
+bindsym $mod+Shift+F12 exec sudo poweroff
+exec_always --no-startup-id feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
 exec_always --no-startup-id picom -b --config /home/$USER/.config/i3/picom.conf
-exec_always --no-startup-id xset s off
-exec_always --no-startup-id xset s off -dpms
-exec_always --no-startup-id xset s noblank
+exec_always --no-startup-id sunshine
 exec_always --no-startup-id fcitx5 -d
-exec --no-startup-id feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
-exec --no-startup-id sh -c "i3-sensible-terminal & sleep 1; i3-msg 'focus'; i3-msg 'move container to workspace 1';google-chrome & sleep 1; i3-msg 'focus'; i3-msg 'move container to workspace 2'"
 exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Tapping Enabled" 1
 exec --no-startup-id xinput set-prop "ELAN0420:00 04F3:3240 Touchpad" "libinput Natural Scrolling Enabled" 1
-
+exec --no-startup-id xset s off
+exec --no-startup-id xset s off -dpms
+exec --no-startup-id xset s noblank
+exec --no-startup-id sh -c "i3-sensible-terminal & sleep 1;google-chrome"
