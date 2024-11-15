@@ -33,130 +33,131 @@ update() {
   #git clone https://github.com/ruanyf/fortunes.git ~/.fortunes && cp ~/.fortunes/data/* $PREFIX/share/games/fortunes/
   read -p "update?(y/n):" choice
   case $choice in
-    y)
-      termux-setup-storage
-      termux-change-repo
-      pkg update && pkg upgrade -y
-      pkg i root-repo x11-repo tur-repo -y
-      pkg i termux-services termux-api tsu -y
-      pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
-      sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
-      pkg i rust golang android-tools python-pip nodejs xmake -y
-      pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
-      pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
-      pkg i ncmpcpp mpd cmus mpg123 tizonia -y
-      pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
-      pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
-      pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
-      pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
-      su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
-      cargo install tlrc mcfly
-      pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
-      npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
-      echo "type openssh passwd:" && passwd && sv-enable sshd
-      sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-      git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
-      git clone https://github.com/kevin010717/workspace.git ~/.workspace 
-      cp -rf ~/.workspace/.config/ ~/ 
-      cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
-      cp -f ~/.workspace/.zshrc ~/.zshrc
-      ;;
+  y)
+    termux-setup-storage
+    termux-change-repo
+    pkg update && pkg upgrade -y
+    pkg i root-repo x11-repo tur-repo -y
+    pkg i termux-services termux-api tsu -y
+    pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
+    sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
+    pkg i rust golang android-tools python-pip nodejs xmake -y
+    pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
+    pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
+    pkg i ncmpcpp mpd cmus mpg123 tizonia -y
+    pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
+    pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
+    pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
+    pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
+    cargo install tlrc mcfly
+    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
+    npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
+    echo "type openssh passwd:" && passwd
+    sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+    git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
+    git clone https://github.com/kevin010717/workspace.git ~/.workspace
+    cp -rf ~/.workspace/.config/ ~/
+    cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
+    cp -f ~/.workspace/.zshrc ~/.zshrc
+    sv-enable sshd
+    ;;
   esac
 
   read -p "prootubuntu?(y/n):" choice
   case $choice in
-    y)
-      proot-distro install ubuntu
-      proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
-      proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
-      ;;
+  y)
+    su -c "/system/bin/device_config set_sync_disabled_for_tests persistent; /system/bin/device_config put activity_manager max_phantom_processes 2147483647" # fix signal 9 problem
+    proot-distro install ubuntu
+    proot-distro login ubuntu --user root --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+    proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "sh /data/data/com.termux/files/home/.workspace/script/prootubuntu.sh"
+    ;;
   esac
 
   read -p "git config?(y/n):" choice
   case $choice in
-    y)
-      ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
-      am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
-      git config --global user.email "k511153362@gmail.com"
-      git config --global user.name "kevin010717"
-      gh auth login
-      ;;
+  y)
+    ssh-keygen -t rsa -b 4096 -C “k511153362gmail.com” && cat ~/.ssh/id_rsa.pub
+    am start -a android.intent.action.VIEW -d https://github.com && read -p "更新github ssh keys" key && ssh -T git@github.com
+    git config --global user.email "k511153362@gmail.com"
+    git config --global user.name "kevin010717"
+    gh auth login
+    ;;
   esac
 
   read -p "clouddrive?(y/n):" choice
   case $choice in
-    y)
-      #curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
-      /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root 
-      cat <<EOF >>~/.zshrc
+  y)
+    #curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
+    /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "clouddrive" > /dev/null; then
         sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:19798/
+    ;;
   esac
 
   read -p "filebrowser?(y/n):" choice
   case $choice in
-    y)
-      mkdir .filebrowser
-      wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
-      tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
-      chmod +x .filebrowser/filebrowser
-      cat <<EOF >>~/.zshrc
+  y)
+    mkdir .filebrowser
+    wget -O .filebrowser/filebrowser.tar.gz https://github.com/filebrowser/filebrowser/releases/download/v2.29.0/linux-arm64-filebrowser.tar.gz
+    tar -zxvf .filebrowser/filebrowser.tar.gz -C .filebrowser
+    chmod +x .filebrowser/filebrowser
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "filebrowser" > /dev/null; then
         sudo nohup ~/.filebrowser/filebrowser -a 0.0.0.0 -p 18650 -r /data/data/com.termux/files -d ~/.filebrowser/filebrowser.db --disable-type-detection-by-header --disable-preview-resize --disable-exec --disable-thumbnails --cache-dir ~/.filebrowser/cache >/dev/null 2>&1 &
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:18650
+    ;;
   esac
 
   read -p "samba?(y/n):" choice
   case $choice in
-    y)
-      sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
-      sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
-      mkdir $PREFIX/etc/samba
-      sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
-      echo "type samba passwd:" && pdbedit -a -u admin
-      cat <<EOF >>~/.zshrc
+  y)
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 445 -j REDIRECT --to-port 4445
+    sudo iptables -t nat -A OUTPUT -p tcp --dport 445 -j REDIRECT --to-port 4445
+    mkdir $PREFIX/etc/samba
+    sed 's#@TERMUX_HOME@/storage/shared#/data/data/com.termux/files/home#g' $PREFIX/share/doc/samba/smb.conf.example >$PREFIX/etc/samba/smb.conf
+    echo "type samba passwd:" && pdbedit -a -u admin
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "smbd" > /dev/null; then
         smbd
       fi
 EOF
-      source ~/.zshrc
-      smbclient -p 445 //127.0.0.1/internal -U admin
-      ;;
+    source ~/.zshrc
+    smbclient -p 445 //127.0.0.1/internal -U admin
+    ;;
   esac
 
   read -p "calibreweb?(y/n):" choice
   case $choice in
-    y)
-      pip install tzdata
-      pkg i libxml2 libxslt -y
-      pip install --user -U calibreweb
-      cat <<EOF >>~/.zshrc
+  y)
+    pip install tzdata
+    pkg i libxml2 libxslt -y
+    pip install --user -U calibreweb
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "calibreweb" > /dev/null; then
         nohup python ~/.local/lib/python3.12/site-packages/calibreweb/__main__.py >/dev/null 2>&1 &
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8083
+    ;;
   esac
 
   read -p "aria2?(y/n):" choice
   case $choice in
-    y)
-      pkg install aria2
-      pkg install git nodejs
-      git clone https://github.com/ziahamza/webui-aria2.git
-      mv webui-aria2 .webui-aria2
-      cat <<EOF >>~/.zshrc
+  y)
+    pkg install aria2
+    pkg install git nodejs
+    git clone https://github.com/ziahamza/webui-aria2.git
+    mv webui-aria2 .webui-aria2
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "aria2" > /dev/null; then
         cd .webui-aria2
         sudo nohup aria2c --enable-rpc --rpc-listen-all >/dev/null 2>&1 &
@@ -164,82 +165,82 @@ EOF
         cd ~
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
-      echo "访问https://github.com/ngosang/trackerslist添加tracker"
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8888
+    echo "访问https://github.com/ngosang/trackerslist添加tracker"
+    ;;
   esac
 
   read -p "qbittorrent?(y/n):" choice
   case $choice in
-    y)
-      wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
-      mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
-      chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
-      cat <<EOF >>~/.zshrc
+  y)
+    wget https://github.com/userdocs/qbittorrent-nox-static/releases/download/release-4.5.2_v2.0.8/aarch64-qbittorrent-nox
+    mv aarch64-qbittorrent-nox /data/data/com.termux/files/usr/bin/qbittorrent
+    chmod +x /data/data/com.termux/files/usr/bin/qbittorrent
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "qbittorrent" > /dev/null; then
         sudo nohup qbittorrent --webui-port=8088 >/dev/null 2>&1 &
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8088
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8088
+    ;;
   esac
 
   read -p "chfs?(y/n):" choice
   case $choice in
-    y)
-      wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
-      unzip chfs-linux-arm64-3.1.zip
-      chmod +x chfs-linux-arm64-3.1
-      mv chfs-linux-arm64-3.1 /data/data/com.termux/files/usr/bin/chfs
-      rm chfs-linux-arm64-3.1.zip
-      cat <<EOF >>~/.zshrc
+  y)
+    wget --no-check-certificate https://iscute.cn/tar/chfs/3.1/chfs-linux-arm64-3.1.zip
+    unzip chfs-linux-arm64-3.1.zip
+    chmod +x chfs-linux-arm64-3.1
+    mv chfs-linux-arm64-3.1 /data/data/com.termux/files/usr/bin/chfs
+    rm chfs-linux-arm64-3.1.zip
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "chfs" > /dev/null; then
         nohup sudo chfs --port=1234 >/dev/null 2>&1 &
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:1234
+    ;;
   esac
 
   read -p "http-server?(y/n):" choice
   case $choice in
-    y)
-      pkg install nodejs
-      npm install -g http-server
-      cat <<EOF >>~/.zshrc
+  y)
+    pkg install nodejs
+    npm install -g http-server
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "http-server" > /dev/null; then
         sudo nohup http-server -a 127.0.0.1 -p 8090 >/dev/null 2>&1 &
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8090
+    ;;
   esac
 
   read -p "code-server?(y/n):" choice
   case $choice in
-    y)
-      apt install tur-repo                          #安装软件源
-      apt install code-server                       #安装
-      cat ~/.suroot/.config/code-server/config.yaml #查看密码
-      cat <<EOF >>~/.zshrc
+  y)
+    apt install tur-repo                          #安装软件源
+    apt install code-server                       #安装
+    cat ~/.suroot/.config/code-server/config.yaml #查看密码
+    cat <<EOF >>~/.zshrc
       if ! pgrep -f "code-server" > /dev/null; then
         sudo nohup code-server >/dev/null 2>&1 &
       fi
 EOF
-      source ~/.zshrc
-      am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
-      ;;
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:8080
+    ;;
   esac
 
   read -p "nodeserver?(y/n):" choice
   case $choice in
-    y)
-      mkdir .nodeserver && cd .nodeserver && npm init && npm install express --save
-      cat <<EOF >>server.js
+  y)
+    mkdir .nodeserver && cd .nodeserver && npm init && npm install express --save
+    cat <<EOF >>server.js
       const express = require('express');
       const app = express();
       app.get('/', (req, res) => {
@@ -249,26 +250,26 @@ EOF
     console.log('Server is running at http://localhost:3000');
   });
 EOF
-  cat <<EOF >>~/.zshrc
+    cat <<EOF >>~/.zshrc
   sudo nohup node server.js >/dev/null 2>&1 &
 EOF
-  source ~/.zshrc
-  am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
-  ;;
-esac
+    source ~/.zshrc
+    am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
+    ;;
+  esac
 
-read -p "tmoe?(y/n):" choice
-case $choice in
+  read -p "tmoe?(y/n):" choice
+  case $choice in
   y)
     curl -LO l.tmoe.me/tinor.deb
     apt install ./tinor.deb
     apt update
     bash -c "$(curl -L l.tmoe.me)"
     ;;
-esac
+  esac
 
-read -p "biliup?(y/n):" choice
-case $choice in
+  read -p "biliup?(y/n):" choice
+  case $choice in
   y)
     mkdir builds
     cd builds/
@@ -283,18 +284,18 @@ case $choice in
     mkdir .biliup && cd .biliup && biliup start
     am start -a android.intent.action.VIEW -d http://127.0.0.1:3000
     ;;
-esac
+  esac
 
-read -p "leetcode-cli?(y/n):" choice
-case $choice in
+  read -p "leetcode-cli?(y/n):" choice
+  case $choice in
   y)
     npm install -g leetcode-cli
     cargo install leetcode-cli
     ;;
-esac
+  esac
 
-read -p "chrootubuntu?(y/n):" choice
-case $choice in
+  read -p "chrootubuntu?(y/n):" choice
+  case $choice in
   y)
     #chroot-ubuntu 需要magisk-busybox
     mkdir chrootubuntu && cd chrootubuntu
@@ -302,7 +303,7 @@ case $choice in
     tar xpvf ubuntu-base-22.04-base-arm64.tar.gz --numeric-owner && sudo mkdir sdcard && sudo mkdir dev/shm
     cd ~ && ~/.workspace/script/chrootubuntu.sh
     ;;
-esac
+  esac
 }
 
 obs() {
@@ -375,17 +376,17 @@ thumbnails() {
   done
 }
 
-chrootubuntu(){
-killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
-am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
-sudo busybox mount --bind $PREFIX/tmp $HOME/chrootubuntu/tmp
-XDG_RUNTIME_DIR=${TMPDIR} termux-x11 :0 -ac &
-sleep 3
-pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
-pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-virgl_test_server_android &
-export UBUNTUPATH='/data/data/com.termux/files/home/chrootubuntu'
-su -c "
+chrootubuntu() {
+  killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
+  am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
+  sudo busybox mount --bind $PREFIX/tmp $HOME/chrootubuntu/tmp
+  XDG_RUNTIME_DIR=${TMPDIR} termux-x11 :0 -ac &
+  sleep 3
+  pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
+  pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+  virgl_test_server_android &
+  export UBUNTUPATH='/data/data/com.termux/files/home/chrootubuntu'
+  su -c "
 # Ubuntu檔案系統所在路徑
 export UBUNTUPATH='/data/data/com.termux/files/home/chrootubuntu'
 
@@ -418,73 +419,80 @@ busybox umount $UBUNTUPATH/sdcard
 "
 }
 
-prootubuntu(){
-    killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
-    am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
-    XDG_RUNTIME_DIR=${TMPDIR}
-    termux-x11 :0 -ac &
-    sleep 3
-    pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
-    pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-    virgl_test_server_android &
-    #MESA_NO_ERROR=1 MESA_GL_VERSION_OVERRIDE=4.3COMPAT MESA_GLES_VERSION_OVERRIDE=3.2 GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
-    #MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
-    proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3" # i3 startxfce4
+prootubuntu() {
+  killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
+  am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
+  XDG_RUNTIME_DIR=${TMPDIR}
+  termux-x11 :0 -ac &
+  sleep 3
+  pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
+  pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+  virgl_test_server_android &
+  #MESA_NO_ERROR=1 MESA_GL_VERSION_OVERRIDE=4.3COMPAT MESA_GLES_VERSION_OVERRIDE=3.2 GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
+  #MESA_LOADER_DRIVER_OVERRIDE=zink GALLIUM_DRIVER=zink ZINK_DESCRIPTORS=lazy virgl_test_server --use-egl-surfaceless --use-gles &
+  proot-distro login ubuntu --user user --shared-tmp --termux-home -- bash -c "export DISPLAY=:0 PULSE_SERVER=tcp:127.0.0.1; dbus-launch --exit-with-session i3" # i3 startxfce4
 }
 
-nativetermux(){
-    killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
-    am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
-    XDG_RUNTIME_DIR=${TMPDIR}
-    termux-x11 :0 -ac &
-    sleep 3
-    pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
-    pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
-    virgl_test_server_android &
-    termux-x11 :0 -xstartup "dbus-launch --exit-with-session i3"
-    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
-    #termux-x11 :0 -xstartup "dbus-launch --exit-with-session openbox-session"
+nativetermux() {
+  killall -9 termux-x11 Xwayland pulseaudio virgl_test_server_android termux-wake-lock
+  am start --user 0 -n com.termux.x11/com.termux.x11.MainActivity
+  XDG_RUNTIME_DIR=${TMPDIR}
+  termux-x11 :0 -ac &
+  sleep 3
+  pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
+  pacmd load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1
+  virgl_test_server_android &
+  termux-x11 :0 -xstartup "dbus-launch --exit-with-session i3"
+  #termux-x11 :0 -xstartup "dbus-launch --exit-with-session xfce4-session"
+  #termux-x11 :0 -xstartup "dbus-launch --exit-with-session openbox-session"
 }
 
 case "$1" in
-  update)
-    time update;;
-  obs)
-    time obs;;
-  gif)
-    time gif;;
-  thumbnails)
-    time thumbnails;;
-  nativetermux)
-    time nativetermux;;
-  prootubuntu)
-    time prootubuntu;;
-  chrootubuntu)
-    time chrootubuntu;;
-  *)
-    # 如果没有有效参数，则显示菜单
-    while true; do
-      echo -e "1. update"
-      echo -e "2. obs"
-      echo -e "3. gif"
-      echo -e "4. thumbnails"
-      echo -e "5. nativetermux"
-      echo -e "6. prootubuntu"
-      echo -e "7. chrootubuntu-start"
-      read -p "请选择一个选项 (或输入其他内容以退出): " choice
-      
-      case $choice in
-        1) time update ;;
-        2) time obs ;;
-        3) time gif ;;
-        4) time thumbnails ;;
-        5) time termuxx11-start ;;
-        6) time prootubuntu  ;;
-        7) time chrootubuntu ;;
-        *) echo "退出。" && break ;;
-      esac
-    done
-    ;;
+update)
+  time update
+  ;;
+obs)
+  time obs
+  ;;
+gif)
+  time gif
+  ;;
+thumbnails)
+  time thumbnails
+  ;;
+nativetermux)
+  time nativetermux
+  ;;
+prootubuntu)
+  time prootubuntu
+  ;;
+chrootubuntu)
+  time chrootubuntu
+  ;;
+*)
+  # 如果没有有效参数，则显示菜单
+  while true; do
+    echo -e "1. update"
+    echo -e "2. obs"
+    echo -e "3. gif"
+    echo -e "4. thumbnails"
+    echo -e "5. nativetermux"
+    echo -e "6. prootubuntu"
+    echo -e "7. chrootubuntu-start"
+    read -p "请选择一个选项 (或输入其他内容以退出): " choice
+
+    case $choice in
+    1) time update ;;
+    2) time obs ;;
+    3) time gif ;;
+    4) time thumbnails ;;
+    5) time termuxx11-start ;;
+    6) time prootubuntu ;;
+    7) time chrootubuntu ;;
+    *) echo "退出。" && break ;;
+    esac
+  done
+  ;;
 esac
 
 cheetsheet_nvim() {

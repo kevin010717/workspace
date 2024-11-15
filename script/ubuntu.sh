@@ -29,9 +29,10 @@ update() {
   #pipx install tomato-clock
   #pipx run --spec tomato-clock tomato
   #git clone --depth=1 https://github.com/adi1090x/polybar-themes.git ~/.config/polybar-themes && chmod +x ~/.config/polybar-themes/setup.sh && ~/.config/polybar-themes/setup.sh
-  #sudo smbclient //192.168.0.102/internal -U admin
+  #smbclient //192.168.0.102/internal -U admin
   #sudo mount -t cifs //192.168.1.151/internal ~/.samba -o username=admin,password=6666
   #sudo umount ~/.samba
+  #scp -P 8022 u0_a589@192.168.0.101:~/.termux/termux.properties ~/termux.properties
   #sudo sshfs -p 8022 u0_a589@192.168.1.151: ~/.sshfs
   #sudo fusermount -u ~/.sshfs
   LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')

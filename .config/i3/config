@@ -63,10 +63,14 @@ bindsym $mod+Shift+q kill
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -75,10 +79,14 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+#bindsym $mod+Shift+j move left
+#bindsym $mod+Shift+k move down
+#bindsym $mod+Shift+l move up
+#bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -87,7 +95,8 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+#bindsym $mod+h split h
+bindsym $mod+Shift+v split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -185,7 +194,13 @@ bindsym $mod+r mode "resize"
 
 bar {
         status_command i3status
-          position top
+        output eDP-1
+        position top
+}
+bar {
+        status_command i3status
+        output HDMI-1
+        position top
 }
 #exec_always --no-startup-id "$HOME/.config/polybar/launch.sh --blocks"
 #bindsym $mod+p exec --no-startup-id polybar-msg cmd toggle # 设置快捷键来显示隐藏 polybar
@@ -194,9 +209,9 @@ bar {
 #exec_always --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
 #screenlock
 bindsym Control+$mod+l exec "i3lock -c 000000"
+bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
-bindsym $mod+d exec --no-startup-id rofi -show drun
 #screenshot
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui # 设置火焰截图
 bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date).png"
@@ -216,6 +231,9 @@ bindsym $mod+F6 exec feh --no-startup-id --no-fehbg --bg-center "$HOME/.workspac
 # displayOn
 bindsym $mod+F7 exec --no-startup-id /home/kevin/.workspace/script/ubuntu.sh displayOn
 bindsym $mod+F8 exec --no-startup-id /home/kevin/.workspace/script/ubuntu.sh displayOff
+# i3status
+bindsym $mod+F9 exec --no-startup-id killall i3bar 
+
 # suspend
 bindsym $mod+F12 exec systemctl suspend
 bindsym $mod+Shift+F12 exec sudo poweroff
