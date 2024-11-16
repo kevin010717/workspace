@@ -40,7 +40,6 @@ update() {
     pkg i root-repo x11-repo tur-repo -y
     pkg i termux-services termux-api tsu -y
     pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
-    sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for termux
     pkg i rust golang android-tools python-pip nodejs xmake -y
     pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
     pkg i hollywood no-more-secrets peaclock tty-clock cmatrix nyancat coreutils figlet toilet weechat fortune cowsay sl w3m greed moon-buggy -y
@@ -60,6 +59,7 @@ update() {
     cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
     cp -f ~/.workspace/.zshrc ~/.zshrc
     sv-enable sshd
+    sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for novnc
     ;;
   esac
 
@@ -88,7 +88,7 @@ update() {
   case $choice in
   y)
     #curl -fsSL "https://mirror.ghproxy.com/https://github.com/kevin010717/clouddrive2/blob/main/cd2-termux.sh" | bash -s install root mirror
-    /data/data/com.termux/files/home/.workspace/script/cd2/cd2-termux.sh install root
+    /data/data/com.termux/files/home/.workspace/script/termux-cd2.sh install root
     cat <<EOF >>~/.zshrc
       if ! pgrep -f "clouddrive" > /dev/null; then
         sudo nohup nsenter -t 1 -m -- /bin/bash -c "cd /data/data/com.termux/files/home/.clouddrive/ && sudo ./clouddrive" >/dev/null 2>&1 &

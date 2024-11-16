@@ -195,12 +195,10 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
         output eDP-1
-        position top
 }
 bar {
         status_command i3status
         output HDMI-1
-        position top
 }
 #exec_always --no-startup-id "$HOME/.config/polybar/launch.sh --blocks"
 #bindsym $mod+p exec --no-startup-id polybar-msg cmd toggle # 设置快捷键来显示隐藏 polybar
@@ -233,10 +231,10 @@ bindsym $mod+F7 exec --no-startup-id /home/kevin/.workspace/script/ubuntu.sh dis
 bindsym $mod+F8 exec --no-startup-id /home/kevin/.workspace/script/ubuntu.sh displayOff
 # i3status
 bindsym $mod+F9 exec --no-startup-id killall i3bar 
-
 # suspend
 bindsym $mod+F12 exec systemctl suspend
 bindsym $mod+Shift+F12 exec sudo poweroff
+
 exec_always --no-startup-id feh --no-fehbg --bg-center "$HOME/.workspace/.config/wallpapper.jpg" &
 exec_always --no-startup-id picom -b --config /home/$USER/.config/i3/picom.conf
 exec_always --no-startup-id sunshine

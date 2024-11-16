@@ -12,18 +12,6 @@
 #
 
 update() {
-  sudo apt remove snapd
-  sudo add-apt-repository ppa:neovim-ppa/unstable
-  sudo apt update && sudo apt install x11-xserver-utils cifs-utils smbclient vlc wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server sshfs build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
-  sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils xbacklight brightnessctl && sudo update-alternatives --config x-terminal-emulator -y
-  sudo apt-add-repository ppa:remmina-ppa-team/remmina-next && sudo apt update && sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
-  pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-  pipx install aider-chat
-  rustup update stable && rustup show && rustup default
-  cargo install --locked yazi-fm yazi-cli tlrc mcfly
-  sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-  git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
-  git clone https://github.com/kevin010717/workspace.git ~/.workspace
   #sudo snap install slides glow lazygit
   #npm install -g percollate #web pages to epub
   #pipx install tomato-clock
@@ -35,12 +23,26 @@ update() {
   #scp -P 8022 u0_a589@192.168.0.101:~/.termux/termux.properties ~/termux.properties
   #sudo sshfs -p 8022 u0_a589@192.168.1.151: ~/.sshfs
   #sudo fusermount -u ~/.sshfs
-  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
-  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-  tar xf lazygit.tar.gz lazygit
-  sudo install lazygit -D -t /usr/local/bin/
+  read -p "update?(y/n):" choice
+  case $choice in
+  y)
+    sudo apt remove snapd
+    sudo add-apt-repository ppa:neovim-ppa/unstable
+    sudo apt update && sudo apt install x11-xserver-utils cifs-utils smbclient vlc wmctrl bpytop gnome-shell-extension-manager cmus screen docker.io docker-compose rustup curl neovim git gh zsh net-tools tmux openssh-server sshfs build-essential npm fzf ytfzf ranger rtv tree neofetch htop kitty calibre pandoc fuse3 python3 python3-venv python3-pip pipx samba -y
+    sudo apt install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils xbacklight brightnessctl && sudo update-alternatives --config x-terminal-emulator -y
+    sudo apt-add-repository ppa:remmina-ppa-team/remmina-next && sudo apt update && sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
+    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+    pipx install aider-chat
+    rustup update stable && rustup show && rustup default
+    cargo install --locked yazi-fm yazi-cli tlrc mcfly
+    sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+    git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
+    git clone https://github.com/kevin010717/workspace.git ~/.workspace
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*') && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" && tar xf lazygit.tar.gz lazygit && sudo install lazygit -D -t /usr/local/bin/
+    ;;
+  esac
 
-  read -p "git config?(y/n):" choice
+  read -p "sunshine?(y/n):" choice
   case $choice in
   y)
     echo 'KERNEL=="uinput", GROUP="input", MODE="0660"' | sudo tee -a /etc/udev/rules.d/85-sunshine-input.rules >/dev/null
@@ -288,8 +290,6 @@ EOF
     sudo apt install ./libwebkit2gtk-4.0-37_2.43.3-1_amd64.deb ./libjavascriptcoregtk-4.0-18_2.43.3-1_amd64.deb ./clash-verge_1.7.7_amd64.deb
     #font
     sudo mkdir -p ~/.local/share/fonts && sudo cp ~/.workspace/.config/0xProtoNerdFont-Regular.ttf ~/.local/share/fonts/ && fc-cache -fv
-    #autostart
-    cp -rf ~/.workspace/.config/autostart/ ~/.config/
     ;;
   esac
 }
