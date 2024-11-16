@@ -103,8 +103,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
-alias mm='mpv --no-video -v "\$(termux-clipboard-get)"'
-alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "\$(termux-clipboard-get)"'
+alias mm='mpv --no-video -v "$(termux-clipboard-get)"'
+alias yy='yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
 alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
 alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
 alias f="sl;nyancat -f 50 -n;cmatrix;"
