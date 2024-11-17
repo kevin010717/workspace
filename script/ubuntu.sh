@@ -36,6 +36,7 @@ update() {
     rustup update stable && rustup show && rustup default
     cargo install --locked yazi-fm yazi-cli tlrc mcfly
     sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+    sh -c "$(curl -fsLS get.chezmoi.io)" && sudo cp ./bin/chezmoi /usr/bin/chezmoi && rm -rf ./bin
     git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
     git clone https://github.com/kevin010717/workspace.git ~/.workspace
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*') && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" && tar xf lazygit.tar.gz lazygit && sudo install lazygit -D -t /usr/local/bin/
