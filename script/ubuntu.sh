@@ -248,7 +248,6 @@ EOF
       -e BASE_URL=https://oneapi.xty.app \
       --restart always \
       yidadaa/chatgpt-next-web
-    #sk-wlm6Xs71oEJ379JE1027B83bEeFa4dF493Dc82Cb4e7dB170 https://apikeyplus.com
     ;;
   esac
 
