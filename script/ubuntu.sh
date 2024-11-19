@@ -7,7 +7,7 @@
 #todo
 #迁移到服务器
 #换键盘布局
-#translate.nvim termdebug.vim vimspector vimwiki editor-outline
+#termdebug.vim vimspector vimwiki editor-outline
 #
 #
 
