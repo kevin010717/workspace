@@ -11,7 +11,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'kevin010717',
-  tagline: 'fuck gui fuck mouse!',
+  tagline: 'fuck gui fuck mouse!!',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
