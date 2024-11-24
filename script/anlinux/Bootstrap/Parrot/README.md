@@ -1,1 +1,0 @@
-Due to a unknown erro when bootstraping the rootfs (Couldn't find these debs: usr-is-merged), script here is currently useless.
