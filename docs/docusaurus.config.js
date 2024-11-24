@@ -10,8 +10,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'kevin010717',
+  tagline: 'Dinosaurs are not cool',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
