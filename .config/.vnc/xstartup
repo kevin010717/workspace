@@ -1,0 +1,9 @@
+#!/bin/bash
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADRESS
+
+export DISPLAY=:1
+export PULSE_SERVER=127.0.0.1
+pulseaudio --start --disable-shm=1 --exit-idle-time=-1
+
+exec dbus-launch --exit-with-session i3
