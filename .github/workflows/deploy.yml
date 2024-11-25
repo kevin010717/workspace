@@ -25,11 +25,11 @@ jobs:
         working-directory: ./docs
 
       - name: Install dependencies
+        working-directory: ./docs  # 设置工作目录为 ./docs
         run: yarn install --frozen-lockfile
-        working-directory: ./docs  # 设置工作目录为 ./docs
       - name: Build website
-        run: yarn build
         working-directory: ./docs  # 设置工作目录为 ./docs
+        run: yarn build
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
