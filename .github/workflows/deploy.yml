@@ -15,10 +15,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+        working-directory: ./docs  # 设置工作目录为 ./docs
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: yarn
+        working-directory: ./docs  # 设置工作目录为 ./docs
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
