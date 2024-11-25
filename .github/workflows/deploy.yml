@@ -22,7 +22,9 @@ jobs:
       # 设置工作目录为 ./docs，确保所有后续步骤都在此目录执行
       - name: Set working directory
         run: echo "Changing directory to ./docs"
+        run: pwd
         working-directory: ./docs
+
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
