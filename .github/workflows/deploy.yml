@@ -22,8 +22,18 @@ jobs:
       # 设置工作目录为 ./docs，确保所有后续步骤都在此目录执行
       - name: Set working directory
         run: echo "Changing directory to ./docs"
-        working-directory: ./docs
+        working-directory: ./workspace/docs
 
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build website
+        run: yarn build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
 
   deploy:
     name: Deploy to GitHub Pages
