@@ -11,7 +11,6 @@ jobs:
   build:
     name: Build Docusaurus
     runs-on: ubuntu-latest
-    working-directory: ./docs
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,8 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+        working-directory: ./docs  # 设置工作目录为 ./docs
       - name: Build website
         run: yarn build
+        working-directory: ./docs  # 设置工作目录为 ./docs
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
@@ -34,7 +35,6 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: build
-    working-directory: ./docs
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
