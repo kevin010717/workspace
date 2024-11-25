@@ -19,11 +19,6 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-      # 设置工作目录为 ./docs，确保所有后续步骤都在此目录执行
-      - name: Set working directory
-        run: echo "Changing directory to ./docs"
-        working-directory: docs
-
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -35,7 +30,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: docs/build
 
   deploy:
     name: Deploy to GitHub Pages
