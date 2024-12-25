@@ -1,6 +1,6 @@
 quit 
-colorscheme green-mono-88
 colorscheme default
+colorscheme green-mono-88
 colorscheme cyan
 bind -f browser space win-activate
 ?
