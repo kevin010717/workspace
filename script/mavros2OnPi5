@@ -1,0 +1,4 @@
+source <(wget -qO- http://fishros.com/install)
+sudo apt install ros-jazzy-mavros ros-jazzy-mavros-extras
+sudo apt install geographiclib-tools
+sudo geographiclib-get-geoids egm96-5
