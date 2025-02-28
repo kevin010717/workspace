@@ -2,3 +2,36 @@ source <(wget -qO- http://fishros.com/install)
 sudo apt install ros-jazzy-mavros ros-jazzy-mavros-extras
 sudo apt install geographiclib-tools
 sudo geographiclib-get-geoids egm96-5
+mkdir -p ~/mavros_ws/src
+cd ~/mavros_ws/src
+ros2 pkg create my_mavros_pkg --build-type ament_cmake
+cd my_mavros_pkg
+-------------mavros_launch.py
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        Node(
+            package='mavros',
+            executable='mavros_node',
+            name='mavros',
+            output='screen',
+            parameters=[{
+                'fcu_url': 'udp://:14540@localhost:14557',
+                'gcs_url': '',
+                'target_system_id': 1,
+                'target_component_id': 1,
+                'fcu_protocol': 'v2.0',
+                'planner': 'mission',
+                'mission': 'auto',
+                'startup_px4_usb_quirk': True,
+                'enable_tunnel': False,
+            }],
+        ),
+    ])
+----------------
+cd ~/mavros_ws
+colcon build
+source install/setup.zsh
+ros2 launch my_mavros_pkg mavros_launch.py
