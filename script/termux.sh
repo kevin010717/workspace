@@ -38,7 +38,7 @@ update() {
     termux-change-repo
     pkg update && pkg upgrade -y
     pkg i root-repo x11-repo tur-repo -y
-    pkg i termux-services termux-api tsu -y
+    pkg i termux-gui-package termux-services termux-api tsu -y
     pkg i busybox openssh sshfs rsync cronie wget ffmpeg mpv iptables samba man iperf3 ripgrep whiptail -y
     pkg i rust golang android-tools python-pip nodejs xmake -y
     pkg i speedtest-go fastfetch rxfetch cpufetch neofetch nethogs htop screen tmux zsh gh git gitui lazygit git-delta cloneit neovim slides glow -y
