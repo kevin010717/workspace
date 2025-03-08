@@ -23,6 +23,3 @@ export LD_LIBRARY_PATH=$OSG_DIR/lib:$LD_LIBRARY_PATH
 export PATH=$OSG_DIR/bin:$PATH
 osgversion
 
-cd ~
-mkdir osg_test
-cd osg_test
