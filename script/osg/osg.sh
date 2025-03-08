@@ -12,7 +12,6 @@ libqt5x11extras5-dev libqt5concurrent5
 
 git clone https://github.com/openscenegraph/OpenSceneGraph.git
 cd OpenSceneGraph
-
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
@@ -23,3 +22,5 @@ export LD_LIBRARY_PATH=$OSG_DIR/lib:$LD_LIBRARY_PATH
 export PATH=$OSG_DIR/bin:$PATH
 osgversion
 
+wget https://openscenegraph.github.io/OpenSceneGraphDotComBackup/OpenSceneGraph/www.openscenegraph.com/downloads/stable_releases/OpenSceneGraph-3.4.0/data/OpenSceneGraph-Data-3.4.0.zip
+sudo unzip OpenSceneGraph-Data-3.4.0.zip -d /usr/local
