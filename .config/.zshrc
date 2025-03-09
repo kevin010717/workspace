@@ -143,8 +143,17 @@ virgl() {
 zink() {
     GALLIUM_DRIVER=zink MESA_GL_VERSION_OVERRIDE=4.0 "$@"
 }
+＃cargo　环境变量
 export PATH="$HOME/.cargo/bin:$PATH"
 export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index"
+#ros2 环境变量
+source /opt/ros/jazzy/setup.zsh
+export ROS_DOMAIN_ID=0
+# OpenSceneGraph 环境变量
+export OSG_DIR=/usr/local
+export LD_LIBRARY_PATH=$OSG_DIR/lib:$LD_LIBRARY_PATH
+export PATH=$OSG_DIR/bin:$PATH
+
 #eval "$(mcfly init zsh)"
 #alias ls="ls | lolcat"
 #alias cat="cat | lolcat"
