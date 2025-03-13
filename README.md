@@ -1,5 +1,5 @@
 ```
-bash -c "$(curl -fsSL https://mirror.ghproxy.com/https://github.com/kevin010717/workspace/blob/main/script/termux.sh )"
+bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspace/blob/main/script/termux.sh )"
 ```
 * [x] github page
 * [x] 合并ubuntu-install和termux-install
