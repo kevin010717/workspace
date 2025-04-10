@@ -52,6 +52,7 @@ update() {
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
     npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
     echo "type openssh passwd:" && passwd
+    git config --global user.email "k511153362@gmail.com" && git config --global user.name "kevin010717" && gh auth login
     sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
     git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
     git clone https://github.com/kevin010717/workspace.git ~/.workspace
