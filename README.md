@@ -18,4 +18,4 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 * [x] 买鞋
 * [ ] slam ros
 * [ ] termux gradle gpt-on-wexin git cmake cpp python rust aria2 calibreweb
-* [ ]  
+* [ ] 123
