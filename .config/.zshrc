@@ -176,4 +176,3 @@ export PATH=$OSG_DIR/bin:$PATH
 #~/.ansiweather/ansiweather -f 1 -l fujin 
 #cal
 #date
-cp -r .workspace/script/fortunes/data/* $PREFIX/share/games/fortunes/
