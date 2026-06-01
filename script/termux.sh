@@ -60,6 +60,7 @@ update() {
     cp -rf ~/.workspace/.config/ ~/
     cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
     cp -f ~/.workspace/.zshrc ~/.zshrc
+    cp -rf fortunes/data/* $PREFIX/share/games/fortunes/
     sv-enable sshd
     sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for novnc
     ;;
