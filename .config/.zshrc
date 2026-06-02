@@ -104,6 +104,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source fzf.zsh
 alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
+# termux-clipboard-set < config.json
 alias mm='pip install --upgrade yt-dlp; mpv --no-video -v "$(termux-clipboard-get)"'
 alias yy='pip install --upgrade yt-dlp; yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
 alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
