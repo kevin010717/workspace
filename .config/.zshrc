@@ -109,6 +109,7 @@ alias yy='pip install --upgrade yt-dlp; yt-dlp --output "%(title)s.%(ext)s" --me
 alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
 alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
 alias f="sl;nyancat -f 50 -n;cmatrix;"
+alias u="dir="$PREFIX/share/games/fortunes"; files=($(ls "$dir" | grep -v '\.dat$')); fortune "$dir/${files[$RANDOM % ${#files[@]}]}" | lolcat"
 alias g="glow ~/workspace/README.md"
 alias h="bpytop"
 alias n="nvim"
@@ -148,7 +149,7 @@ zink() {
 export PATH="$HOME/.cargo/bin:$PATH"
 export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index"
 #ros2 环境变量
-source /opt/ros/jazzy/setup.zsh
+# source /opt/ros/jazzy/setup.zsh
 export ROS_DOMAIN_ID=0
 # OpenSceneGraph 环境变量
 export OSG_DIR=/usr/local
