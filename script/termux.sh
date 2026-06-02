@@ -63,6 +63,7 @@ update() {
     # cp -f ~/.workspace/.zshrc ~/.zshrc
     ln -s "$HOME/.workspace/.config/.zshrc" "$HOME/.zshrc"
     cp -rf ~/.workspace/script/fortunes/data/* $PREFIX/share/games/fortunes/
+    # ssh -p 8022 u0_a314@192.168.1.58
     sv-enable sshd
     sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for novnc
     ;;
