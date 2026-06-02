@@ -109,7 +109,6 @@ alias yy='pip install --upgrade yt-dlp; yt-dlp --output "%(title)s.%(ext)s" --me
 alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
 alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
 alias f="sl;nyancat -f 50 -n;cmatrix;"
-alias u="dir="$PREFIX/share/games/fortunes"; files=($(ls "$dir" | grep -v '\.dat$')); fortune "$dir/${files[$RANDOM % ${#files[@]}]}" | lolcat"
 alias g="glow ~/workspace/README.md"
 alias h="bpytop"
 alias n="nvim"
@@ -145,10 +144,10 @@ virgl() {
 zink() {
     GALLIUM_DRIVER=zink MESA_GL_VERSION_OVERRIDE=4.0 "$@"
 }
-＃cargo　环境变量
+# cargo　环境变量
 export PATH="$HOME/.cargo/bin:$PATH"
 export CARGO_REGISTRY="https://mirrors.tuna.tsinghua.edu.cn/crates.io-index"
-#ros2 环境变量
+# ros2 环境变量
 # source /opt/ros/jazzy/setup.zsh
 export ROS_DOMAIN_ID=0
 # OpenSceneGraph 环境变量
@@ -156,24 +155,24 @@ export OSG_DIR=/usr/local
 export LD_LIBRARY_PATH=$OSG_DIR/lib:$LD_LIBRARY_PATH
 export PATH=$OSG_DIR/bin:$PATH
 
-#eval "$(mcfly init zsh)"
-#alias ls="ls | lolcat"
-#alias cat="cat | lolcat"
-#alias ip="ifconfig | lolcat"
-#if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
-#neofetch
-#rxfetch
-#fastfetch
-#cpufetch
-#figlet Hello,world! | lolcat
-#fortune $PREFIX/share/games/fortunes/fortunes | lolcat
-#fortune $PREFIX/share/games/fortunes/chinese | lolcat
-#fortune $PREFIX/share/games/fortunes/tang300 | lolcat
-#fortune $PREFIX/share/games/fortunes/song100 | lolcat
-#cowsay -r what | lolcat
-#curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
-#curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
-#curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
-#~/.ansiweather/ansiweather -f 1 -l fujin 
-#cal
-#date
+# eval "$(mcfly init zsh)"
+# alias ls="ls | lolcat"
+# alias cat="cat | lolcat"
+# alias ip="ifconfig | lolcat"
+# if tmux has-session 2>/dev/null; then tmux attach; else tmux; fi
+# neofetch
+# rxfetch
+# fastfetch
+# cpufetch
+# figlet Hello,world! | lolcat
+# fortune $PREFIX/share/games/fortunes/fortunes | lolcat
+# fortune $PREFIX/share/games/fortunes/chinese | lolcat
+# fortune $PREFIX/share/games/fortunes/tang300 | lolcat
+# fortune $PREFIX/share/games/fortunes/song100 | lolcat
+# cowsay -r what | lolcat
+# curl -s https://v1.hitokoto.cn | jq '.hitokoto' | lolcat
+# curl -s 'wttr.in/{shanghai,fujin}?lang=zh&2&F&n' | lolcat
+# curl -s 'wttr.in/{shanghai,fujin}?lang=zh&format=4'
+# ~/.ansiweather/ansiweather -f 1 -l fujin 
+# cal
+# date
