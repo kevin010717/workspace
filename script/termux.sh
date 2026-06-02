@@ -60,7 +60,8 @@ update() {
     git clone https://github.com/kevin010717/workspace.git ~/.workspace
     cp -rf ~/.workspace/.config/ ~/
     cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
-    cp -f ~/.workspace/.zshrc ~/.zshrc
+    # cp -f ~/.workspace/.zshrc ~/.zshrc
+    ln -s "$HOME/.workspace/.config/.zshrc" "$HOME/.zshrc"
     cp -rf ~/.workspace/script/fortunes/data/* $PREFIX/share/games/fortunes/
     sv-enable sshd
     sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for novnc
