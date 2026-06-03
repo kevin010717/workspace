@@ -9,7 +9,17 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
+ZSH_THEME="mgutz"
+ZSH_THEME="nicoulaj"
+# ZSH_THEME="random"
 
+# omz theme list
+# omz theme use random
+# echo $RANDOM_THEME $ZSH_THEME
+
+# omz use theme mgutz
+# omz use theme frontcube
+# omz use theme jaischeema
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -102,6 +112,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
 # source fzf.zsh
 alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
 # termux-clipboard-set < config.json
