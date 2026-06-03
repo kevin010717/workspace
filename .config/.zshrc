@@ -102,14 +102,14 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source fzf.zsh
+# source fzf.zsh
 alias c='screen -q -r -D cmus || screen -S cmus $(command -v cmus)' #shell screen -d cmus
 # termux-clipboard-set < config.json
 alias mm='pip install --upgrade yt-dlp; mpv --no-video -v "$(termux-clipboard-get)"'
 alias yy='pip install --upgrade yt-dlp; yt-dlp --output "%(title)s.%(ext)s" --merge-output-format mp4 --embed-thumbnail --add-metadata -f "bestvideo[height<=1080]+bestaudio[ext=m4a]" "$(termux-clipboard-get)"'
 alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
 alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
-alias f="sl;nyancat -f 50 -n;cmatrix;"
+alias f="sl;nyancat -f 50 -n;cmatrix -C cyan -b;"
 alias u='dir="$PREFIX/share/games/fortunes"; files=($(ls "$dir" | grep -v "\.dat$")); fortune "$dir/${files[$(( RANDOM % ${#files[@]} + 1 ))]}" | lolcat'
 alias g="glow ~/workspace/README.md"
 alias h="bpytop"
