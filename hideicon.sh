@@ -25,3 +25,6 @@ pkill -f com.android.systemui
 '"
 # 隐藏状态栏 没啥用
 su -c "sh -c 'settings put global policy_control immersive.status=*; pkill -f com.android.systemui'"
+
+# 隐藏底部横杠
+# 隐藏状态栏透明图标
