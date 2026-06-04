@@ -122,6 +122,7 @@ alias qq='echo "\$(termux-clipboard-get)" | curl -F-=\<- qrenco.de'
 alias calibreweb='python /data/data/com.termux/files/home/.local/lib/python3.12/site-packages/calibreweb/__main__.py'
 alias f="sl;nyancat -f 50 -n;cmatrix -C cyan -b;"
 alias u='dir="$PREFIX/share/games/fortunes"; files=($(ls "$dir" | grep -v "\.dat$")); fortune "$dir/${files[$(( RANDOM % ${#files[@]} + 1 ))]}" | lolcat'
+alias u="fortune $PREFIX/share/games/fortunes/song100 | lolcat"
 alias g="glow ~/workspace/README.md"
 alias h="bpytop"
 alias n="nvim"
