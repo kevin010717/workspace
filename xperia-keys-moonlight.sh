@@ -5,6 +5,7 @@
 # 屏幕触摸功能切换
 # 去广告模块
 # 侧感功能
+# 指纹解锁
 
 # 监听全部输入设备，避免音量上 / 音量下不在同一个 event 里导致无法触发
 GETEVENT_CMD="/system/bin/getevent -lt"
