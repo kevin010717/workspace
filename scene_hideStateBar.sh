@@ -1,3 +1,17 @@
+# 冰箱功能
+su -c 'am force-stop com.limelight.qiin'
+su -c 'pm disable-user --user 0 com.limelight.qiin'
+su -c 'pm enable com.limelight.qiin'
+su -c "sh -c 'pm enable com.limelight.qiin && monkey -p com.limelight.qiin -c android.intent.category.LAUNCHER 1'"
+
+su -c 'pm list packages | grep -i limelight'
+
+su -c 'pm list packages -3'
+su -c 'pm list packages'
+su -c 'pm list packages -s'
+su -c "sh -c 'pm list packages -3 | sort'"
+
+# 隐藏图标
 su -c 'settings get secure icon_blacklist'
 su -c "settings delete secure icon_blacklist"
 su -c 'settings put system status_bar_show_battery_percent 1'
