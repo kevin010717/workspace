@@ -271,7 +271,7 @@ handle_key() {
         VOLUMEUP)
             if [ "$ENABLE_VOLUME_KEYS" = "1" ]; then
                 log_msg "KEY_VOLUMEUP triggered"
-                launch_moonlight
+                # launch_moonlight
             else
                 log_msg "KEY_VOLUMEUP ignored"
             fi
@@ -280,7 +280,7 @@ handle_key() {
         VOLUMEDOWN)
             if [ "$ENABLE_VOLUME_KEYS" = "1" ]; then
                 log_msg "KEY_VOLUMEDOWN triggered"
-                launch_moonlight
+                # launch_moonlight
             else
                 log_msg "KEY_VOLUMEDOWN ignored"
             fi
@@ -288,7 +288,7 @@ handle_key() {
 
         ASSISTANT)
             log_msg "assistant key triggered"
-            launch_moonlight
+            # launch_moonlight
             ;;
 
         CAMERA_FOCUS)
