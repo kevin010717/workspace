@@ -1,0 +1,19 @@
+[opener]
+extract_termux = [
+  { run = 'for f in "$@"; do aunpack "$f" || unar "$f" || 7z x "$f"; done', desc = "Extract here", block = true, for = "unix" },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.zip", use = "extract_termux" },
+  { url = "*.7z", use = "extract_termux" },
+  { url = "*.rar", use = "extract_termux" },
+  { url = "*.tar", use = "extract_termux" },
+  { url = "*.tar.gz", use = "extract_termux" },
+  { url = "*.tgz", use = "extract_termux" },
+  { url = "*.tar.xz", use = "extract_termux" },
+  { url = "*.txz", use = "extract_termux" },
+  { url = "*.tar.bz2", use = "extract_termux" },
+  { url = "*.tbz2", use = "extract_termux" },
+]
+
