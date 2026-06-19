@@ -23,4 +23,10 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 * [ ] termux-swap
 * [ ] termux内嵌图片预览
 * [ ] 
+# 双击长按事件
+# 截图事件
+# 屏幕触摸功能切换
+# 去广告模块
+# 侧感功能
+# 指纹解锁
 
