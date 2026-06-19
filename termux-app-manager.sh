@@ -1,6 +1,9 @@
 #!/usr/bin/env sh
 set -eu
 
+mkdir -p ".termux-app-manager"
+cd ".termux-app-manager"
+
 PROJECT_NAME="${1:-termux-app-manager-ui-demo}"
 
 if ! command -v cargo >/dev/null 2>&1; then

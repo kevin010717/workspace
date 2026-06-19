@@ -19,7 +19,7 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 * [ ] slam ros
 * [ ] termux gradle gpt-on-wexin git cmake cpp python rust aria2 calibreweb
 * [ ] 123
-* [ ] termux sing-box game stimulator termux-clipboard-get cp kevin@192.168.1.55/ 
+* [ ] game stimulator termux-clipboard-get cp kevin@192.168.1.55/ 
 * [ ] termux-swap
 * [ ] termux内嵌图片预览 视频播放
 * [ ] zellij tmux的rust实现
@@ -32,12 +32,11 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 # 侧感功能
 # 指纹解锁
 
-更改脚本和项目名称
 
 app 启动失败
 
 termux开机启动 代理服务 实体按键服务 
 
-桌面固定 隐藏抽屉
+桌面固定 隐藏抽屉 termux中配置netproxy
 
-termux中配置netproxy
+
