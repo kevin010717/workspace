@@ -32,6 +32,8 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 # 侧感功能
 # 指纹解锁
 
+更改脚本和项目名称
+
 app 启动失败
 
 termux开机启动 代理服务 实体按键服务 
