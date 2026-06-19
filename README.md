@@ -21,7 +21,7 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 * [ ] 123
 * [ ] termux sing-box game stimulator termux-clipboard-get cp kevin@192.168.1.55/ 
 * [ ] termux-swap
-* [ ] termux内嵌图片预览
+* [ ] termux内嵌图片预览 视频播放
 * [ ] zellij tmux的rust实现
 
 * [ ] 
