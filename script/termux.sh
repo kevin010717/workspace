@@ -47,7 +47,7 @@ update() {
     pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
     pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
     pkg i fzf fd bat -y && fzf --zsh >fzf.zsh
-    pkg i gum -y
+    pkg i gum btop -y
 
     pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
     pkg install i3 rofi picom feh kitty alacritty polybar pavucontrol flameshot alsa-utils -y #i3
