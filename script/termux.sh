@@ -36,6 +36,7 @@ update() {
   y)
     termux-setup-storage
     termux-change-repo
+    mv $HOME/storage/ $HOME/.storage
     pkg update && pkg upgrade -y
     pkg i root-repo x11-repo tur-repo -y
     pkg i termux-gui-package termux-services termux-api tsu -y
@@ -46,7 +47,7 @@ update() {
     pkg i ncmpcpp mpd cmus mpg123 tizonia -y
     pkg i nnn ranger yazi mc lsd eza zoxide fzf gdu dust tree -y
     pkg i termimage imagemagick jq bc bk lux atuin chezmoi -y
-    pkg i fzf fd bat -y && fzf --zsh >fzf.zsh
+    pkg i fzf fd bat -y && fzf --zsh >.fzf.zsh
     pkg i gum btop -y
 
     pkg install termux-x11-nightly xfce gimp proot-distro pulseaudio virglrenderer-android -y #x11
@@ -55,7 +56,6 @@ update() {
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip install youtube-dl yt-dlp you-get PySocks lolcat bpython tldr
     npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
     echo "type openssh passwd:" && passwd
-    git config --global user.email "k511153362@gmail.com" && git config --global user.name "kevin010717" && gh auth login
     git clone https://github.com/kevin010717/workspace.git ~/.workspace
     cp -rf ~/.workspace/.config/ ~/
     cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
@@ -67,6 +67,7 @@ update() {
     sv-enable sshd
     sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for novnc
     sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+    git config --global user.email "k511153362@gmail.com" && git config --global user.name "kevin010717" && gh auth login
     git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
     ;;
   esac
