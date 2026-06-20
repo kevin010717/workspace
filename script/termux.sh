@@ -56,8 +56,6 @@ update() {
     npm config set registry https://registry.npmmirror.com && npm i docsify-cli mapscii cordova -g
     echo "type openssh passwd:" && passwd
     git config --global user.email "k511153362@gmail.com" && git config --global user.name "kevin010717" && gh auth login
-    sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
-    git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
     git clone https://github.com/kevin010717/workspace.git ~/.workspace
     cp -rf ~/.workspace/.config/ ~/
     cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
@@ -68,6 +66,8 @@ update() {
     # ssh -p 8022 u0_a314@192.168.1.58
     sv-enable sshd
     sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for novnc
+    sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
+    git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
     ;;
   esac
 
