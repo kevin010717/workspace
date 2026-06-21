@@ -5,7 +5,7 @@
 
 # termux-wake-lock
 # sleep 30
-LOG="$HOME/netproxy-boot.log"
+LOG="$HOME/.netproxy-boot.log"
 
 CLI='/data/adb/modules/netproxy/scripts/cli'
 URL='https://30e9533d6d5c2e91c98c9b9e31cd9086.alicdn.sbs/alicdn.com/1729753854'
