@@ -157,7 +157,7 @@ type AppResult<T> = Result<T, Box<dyn Error>>;
 
 const MAX_LOGS: usize = 240;
 const CLICK_MOVE_TOLERANCE: u16 = 2;
-const ROOT_CMD: &str = "su";
+const ROOT_CMD: &str = "sudo";
 const USER_WHITELIST_FILE: &str = "whitelist.txt";
 const APP_ALIASES_FILE: &str = "app_aliases.txt";
 
@@ -263,31 +263,6 @@ fn run_command(program: &str, args: &[String]) -> CmdResult {
     }
 }
 
-fn shell_quote(arg: &str) -> String {
-    if arg.is_empty() {
-        return "''".to_string();
-    }
-
-    let escaped = arg.replace('\'', "'\\''");
-    format!("'{}'", escaped)
-}
-
-fn root_command_line(args: &[String]) -> String {
-    args.iter()
-        .map(|arg| shell_quote(arg))
-        .collect::<Vec<_>>()
-        .join(" ")
-}
-
-fn run_command_as_root(args: &[String]) -> CmdResult {
-    let su_args = vec!["-c".to_string(), root_command_line(args)];
-    run_command(ROOT_CMD, &su_args)
-}
-
-fn format_root_command(args: &[String]) -> String {
-    format!("{} -c {}", ROOT_CMD, shell_quote(&root_command_line(args)))
-}
-
 fn format_command(program: &str, args: &[String]) -> String {
     let mut parts = Vec::new();
     parts.push(program.to_string());
@@ -329,7 +304,7 @@ fn query_launcher_activities(current_user: &str) -> CmdResult {
     let mut sudo_args = vec!["cmd".to_string()];
     sudo_args.extend(args);
 
-    run_command_as_root(&sudo_args)
+    run_command(ROOT_CMD, &sudo_args)
 }
 
 fn query_package_list(current_user: &str, disabled_only: bool) -> CmdResult {
@@ -358,7 +333,7 @@ fn query_package_list(current_user: &str, disabled_only: bool) -> CmdResult {
     let mut sudo_args = vec!["cmd".to_string()];
     sudo_args.extend(args);
 
-    run_command_as_root(&sudo_args)
+    run_command(ROOT_CMD, &sudo_args)
 }
 
 fn parse_launcher_components(output: &str) -> Vec<String> {
@@ -1418,8 +1393,8 @@ impl App {
                     _ => Vec::new(),
                 };
 
-                let result = run_command_as_root(&args);
-                let command = format_root_command(&args);
+                let result = run_command(ROOT_CMD, &args);
+                let command = format_command(ROOT_CMD, &args);
 
                 let summary = if result.success {
                     format!("{} | {}", command, result.summary())
@@ -1872,19 +1847,12 @@ impl App {
                 app.package.clone(),
             ];
 
-            let result = run_command_as_root(&args);
-            let command = format_root_command(&args);
+            let result = run_command(ROOT_CMD, &args);
+            let command = format_command(ROOT_CMD, &args);
 
             if result.success {
                 self.set_status_for_package(&app.package, AppStatus::Running);
-                self.log_success(format!(
-                    "Enable before launch OK: {} | cmd={} | {}",
-                    app.name,
-                    command,
-                    result.summary()
-                ));
-
-                thread::sleep(Duration::from_millis(300));
+                self.log_success(format!("Enable before launch OK: {}", app.name));
             } else {
                 self.log_error(format!(
                     "Enable before launch FAILED: {} | cmd={} | {}",
@@ -1895,9 +1863,6 @@ impl App {
                 return;
             }
         }
-
-        let mut launched = false;
-        let mut last_error = String::new();
 
         if let Some(component) = self.current_component() {
             let args = vec![
@@ -1912,7 +1877,6 @@ impl App {
             let command = format_command("am", &args);
 
             if result.success {
-                launched = true;
                 self.set_status_for_package(&app.package, AppStatus::Running);
 
                 self.log_success(format!(
@@ -1922,40 +1886,14 @@ impl App {
                     result.summary()
                 ));
             } else {
-                self.log_warn(format!(
-                    "Launch normal FAILED, trying root: {} | cmd={} | {}",
+                self.log_error(format!(
+                    "Launch FAILED: {} | cmd={} | {}",
                     app.name,
                     command,
                     result.summary()
                 ));
-
-                let mut root_args = vec!["am".to_string()];
-                root_args.extend(args.clone());
-
-                let root_result = run_command_as_root(&root_args);
-                let root_command = format_root_command(&root_args);
-
-                if root_result.success {
-                    launched = true;
-                    self.set_status_for_package(&app.package, AppStatus::Running);
-
-                    self.log_success(format!(
-                        "Launch by root OK: {} | cmd={} | {}",
-                        app.name,
-                        root_command,
-                        root_result.summary()
-                    ));
-                } else {
-                    last_error = format!(
-                        "am start failed | cmd={} | {}",
-                        root_command,
-                        root_result.summary()
-                    );
-                }
             }
-        }
-
-        if !launched {
+        } else {
             let args = vec![
                 "-p".to_string(),
                 app.package.clone(),
@@ -1968,7 +1906,6 @@ impl App {
             let command = format_command("monkey", &args);
 
             if result.success {
-                launched = true;
                 self.set_status_for_package(&app.package, AppStatus::Running);
 
                 self.log_success(format!(
@@ -1978,45 +1915,13 @@ impl App {
                     result.summary()
                 ));
             } else {
-                self.log_warn(format!(
-                    "Launch by monkey normal FAILED, trying root: {} | cmd={} | {}",
+                self.log_error(format!(
+                    "Launch by monkey FAILED: {} | cmd={} | {}",
                     app.name,
                     command,
                     result.summary()
                 ));
-
-                let mut root_args = vec!["monkey".to_string()];
-                root_args.extend(args.clone());
-
-                let root_result = run_command_as_root(&root_args);
-                let root_command = format_root_command(&root_args);
-
-                if root_result.success {
-                    launched = true;
-                    self.set_status_for_package(&app.package, AppStatus::Running);
-
-                    self.log_success(format!(
-                        "Launch by root monkey OK: {} | cmd={} | {}",
-                        app.name,
-                        root_command,
-                        root_result.summary()
-                    ));
-                } else {
-                    last_error = format!(
-                        "monkey failed | cmd={} | {}",
-                        root_command,
-                        root_result.summary()
-                    );
-                }
             }
-        }
-
-        if !launched {
-            self.log_error(format!(
-                "Launch FAILED: {} | {}",
-                app.name,
-                last_error
-            ));
         }
     }
 
@@ -2037,7 +1942,7 @@ impl App {
                 package.clone(),
             ];
 
-            let result = run_command_as_root(&args);
+            let result = run_command(ROOT_CMD, &args);
 
             if result.success {
                 self.set_status_for_package(&package, AppStatus::Frozen);

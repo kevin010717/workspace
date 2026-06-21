@@ -64,7 +64,9 @@ update() {
     ln -s "$HOME/.workspace/termux-app-manager.sh" "$HOME/.termux-app-manager.sh"
     cp -rf ~/.workspace/script/fortunes/data/* $PREFIX/share/games/fortunes/
     # ssh -p 8022 u0_a314@192.168.1.58
+    source $PREFIX/etc/profile.d/start-services.sh
     sv-enable sshd
+    sv up sshd
     sudo iptables -A INPUT -p tcp --dport 6080 -j ACCEPT # for novnc
     sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
     git config --global user.email "k511153362@gmail.com" && git config --global user.name "kevin010717" && gh auth login
