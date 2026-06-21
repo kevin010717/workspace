@@ -59,7 +59,7 @@ update() {
     git clone https://github.com/kevin010717/workspace.git ~/.workspace
     cp -rf ~/.workspace/.config/ ~/
     cp -f ~/.workspace/.config/.termux/termux.properties ~/.termux/termux.properties && termux-reload-settings
-    # cp -f ~/.workspace/.zshrc ~/.zshrc
+    mv ~/.zshrc ~/.zshrc.bak
     ln -s "$HOME/.workspace/.config/.zshrc" "$HOME/.zshrc"
     ln -s "$HOME/.workspace/termux-app-manager.sh" "$HOME/.termux-app-manager.sh"
     cp -rf ~/.workspace/script/fortunes/data/* $PREFIX/share/games/fortunes/
@@ -69,6 +69,7 @@ update() {
     sh -c "$(curl -fsSL https://install.ohmyz.sh/)"
     git config --global user.email "k511153362@gmail.com" && git config --global user.name "kevin010717" && gh auth login
     git clone https://github.com/LazyVim/starter ~/.config/nvim && nvim
+    source ~/.zshrc
     ;;
   esac
 
