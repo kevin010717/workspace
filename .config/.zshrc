@@ -131,7 +131,8 @@ alias sc="source ~/.zshrc"
 alias la="lazygit"
 alias t="~/.workspace/script/termux.sh"
 alias y="yazi"
-alias ry="sudo yazi"
+alias ry="su -c 'export PATH=/data/data/com.termux/files/usr/bin:/system/bin:/system/xbin:/vendor/bin:$PATH; export HOME=/data/data/com.termux/files/home; export TERM=xterm-256color; /data/data/com.termux/files/usr/bin/yazi'"
+# alias ry="sudo yazi"
 alias rb='su -c /system/bin/reboot'
 alias rbr='su -c \"/system/bin/reboot recovery\"'
 alias gacp="git add . ; git commit -m "1" ;git push origin main"
