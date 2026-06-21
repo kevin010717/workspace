@@ -24,7 +24,6 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 * [ ] termux内嵌图片预览 视频播放
 * [ ] zellij tmux的rust实现
 
-* [ ] 赤伶
 # 双击长按事件
 # 截图事件
 # 屏幕触摸功能切换
@@ -35,7 +34,7 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 
 app 启动失败
 
-termux开机启动 代理服务 实体按键服务 
+termux-boot开机启动 代理服务 实体按键服务 
 
 桌面固定 隐藏抽屉 termux中配置netproxy
 
