@@ -7,3 +7,5 @@ export TERM=xterm-256color
 export LANG=en_US.UTF-8
 cd $HOME
 zsh
+# 修复lazygit dualowner问题
+git config --global --add safe.directory /data/data/com.termux/files/home/.workspace
