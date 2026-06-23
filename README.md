@@ -32,11 +32,12 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 # 侧感功能
 # 指纹解锁
 
+自动旋转屏幕
 
 app 启动失败
 
 termux-boot开机启动 代理服务 实体按键服务 
 
-桌面固定 隐藏抽屉 termux中配置netproxy
+桌面固定 隐藏抽屉 termux中配置netproxy service
 
 
