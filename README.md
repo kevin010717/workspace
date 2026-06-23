@@ -32,6 +32,7 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 # 指纹解锁
 # ratatui其他项目
 
+写一个可用的module
 
 app 启动失败
 
