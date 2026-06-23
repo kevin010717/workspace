@@ -23,16 +23,15 @@ bash -c "$(curl -fsSL https://ghfast.top/https://github.com/kevin010717/workspac
 * [ ] termux-swap
 * [ ] termux内嵌图片预览 视频播放
 * [ ] zellij tmux的rust实现
+* [ ] ratatui其他项目
 
+# 写一个可用的module
 # 双击长按事件
-# 截图事件
-# 屏幕触摸功能切换
-# 去广告模块
+# 截图功能
+# 去广告
 # 侧感功能
 # 指纹解锁
-# ratatui其他项目
 
-写一个可用的module
 
 app 启动失败
 
